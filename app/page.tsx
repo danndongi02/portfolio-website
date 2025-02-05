@@ -3,15 +3,26 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { ArrowDown } from 'lucide-react';
+import { Home as HomeIcon, User, Wrench, FolderGit2, Mail } from 'lucide-react';
+import { NavBar } from "@/components/ui/tubelight-navbar"
 import { useEffect, useState } from 'react';
 import { scrollToSection } from '@/lib/utils';
 import { AboutSection } from '@/components/sections/about';
 import { SkillsSection } from '@/components/sections/skills';
 import { ProjectsSection } from '@/components/sections/projects';
 import { ContactSection } from '@/components/sections/contact';
+import { Footer } from '@/components/footer';
 
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
+
+  const navItems = [
+    { name: 'Home', url: '#', icon: HomeIcon },
+    { name: 'About', url: '#about', icon: User },
+    { name: 'Skills', url: '#skills', icon: Wrench },
+    { name: 'Projects', url: '#projects', icon: FolderGit2 },
+    { name: 'Contact', url: '#contact', icon: Mail }
+  ];
 
   useEffect(() => {
     setIsLoaded(true);
@@ -19,6 +30,7 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center">
+      <NavBar items={navItems} />
       {/* Hero Section */}
       <section className="relative h-screen w-full flex items-center justify-center">
         <div className="absolute inset-0 bg-gradient-to-b from-gray-900/50 to-gray-900">
@@ -100,6 +112,9 @@ export default function Home() {
 
       {/* Contact Section */}
       <ContactSection />
+
+      {/* Footer */}
+      <Footer />
     </main>
   );
 }
