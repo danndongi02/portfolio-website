@@ -31,6 +31,51 @@ export function NavBar({ items, className }: NavBarProps) {
     return () => window.removeEventListener("resize", handleResize)
   }, [])
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = items
+        .filter(item => item.url.startsWith('#') && item.url !== '#')
+        .map(item => ({
+          id: item.url.substring(1),
+          name: item.name
+        }))
+      
+      // Add home section (special case for the top of the page)
+      sections.unshift({ id: 'top', name: 'Home' })
+      
+      // Find which section is currently in view
+      let currentSection = sections[0].name
+      
+      for (const section of sections) {
+        if (section.id === 'top') continue // Skip the home section in this check
+        
+        const element = document.getElementById(section.id)
+        if (element) {
+          const rect = element.getBoundingClientRect()
+          // If the top of the section is near the top of the viewport or above it,
+          // and the bottom is still visible, consider it the active section
+          if (rect.top <= 150 && rect.bottom > 0) {
+            currentSection = section.name
+          }
+        }
+      }
+      
+      // Special case for home - if we're at the top of the page
+      if (window.scrollY < 100) {
+        currentSection = 'Home'
+      }
+      
+      setActiveTab(currentSection)
+    }
+    
+    // Initial check
+    handleScroll()
+    
+    // Add scroll event listener
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [items])
+
   return (
     <div
       className={cn(
