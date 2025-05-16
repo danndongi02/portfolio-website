@@ -1,85 +1,44 @@
-import { useState } from "react";
+'use client';
+
 import { motion } from "framer-motion";
 import { AnimatedSection } from "../ui/section-container";
-import { ProjectCard } from "../ui/project-card";
 import { Button } from "../ui/button";
+import { ArrowRight } from "lucide-react";
+import { ProjectsCarousel } from "../ui/projects-carousel";
+import { projects } from "@/data/projects";
 
-// Placeholder projects data
-const projects = [
-  {
-    title: "E-Commerce Platform",
-    description: "A full-stack e-commerce platform built with Next.js, featuring real-time inventory management, secure payments, and an intuitive admin dashboard.",
-    technologies: ["Next.js", "TypeScript", "Tailwind CSS", "PostgreSQL", "Stripe"],
-    githubUrl: "#",
-    demoUrl: "#",
-  },
-  {
-    title: "AI-Powered Task Manager",
-    description: "Smart task management application that uses AI to prioritize and categorize tasks, with natural language processing for task creation.",
-    technologies: ["React", "Python", "TensorFlow", "FastAPI", "MongoDB"],
-    githubUrl: "#",
-    demoUrl: "#",
-  },
-  {
-    title: "Real-time Chat Application",
-    description: "Feature-rich chat application with real-time messaging, file sharing, and video calls, built with WebSocket technology.",
-    technologies: ["React", "Node.js", "Socket.io", "WebRTC", "Redis"],
-    githubUrl: "#",
-    demoUrl: "#",
-  },
-  {
-    title: "Personal Finance Dashboard",
-    description: "Comprehensive financial management dashboard with expense tracking, budget planning, and interactive data visualizations.",
-    technologies: ["Vue.js", "D3.js", "Express", "MySQL", "Docker"],
-    githubUrl: "#",
-    demoUrl: "#",
-  },
-  {
-    title: "Fitness Tracking Platform",
-    description: "Mobile-first fitness tracking platform with workout planning, progress monitoring, and social features for sharing achievements.",
-    technologies: ["React Native", "GraphQL", "Node.js", "PostgreSQL"],
-    githubUrl: "#",
-  },
-  {
-    title: "Weather Forecast App",
-    description: "Beautiful weather application with detailed forecasts, interactive maps, and severe weather alerts integration.",
-    technologies: ["Next.js", "TypeScript", "Leaflet", "OpenWeatherAPI"],
-    githubUrl: "#",
-    demoUrl: "#",
-  },
-];
-
-// All unique technologies from projects
-const allTechnologies = Array.from(
-  new Set(projects.flatMap((project) => project.technologies))
-).sort();
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0 },
-};
-
+/**
+ * Projects Section Component
+ * 
+ * Displays a showcase of projects using a 3D circular carousel
+ */
 export function ProjectsSection() {
-  const [selectedTech, setSelectedTech] = useState<string | null>(null);
-
-  const filteredProjects = selectedTech
-    ? projects.filter((project) => project.technologies.includes(selectedTech))
-    : projects;
-
   return (
-    <AnimatedSection id="projects" className="bg-gradient-to-b from-gray-950 to-gray-900">
-      <div className="space-y-12">
-        <div className="text-center space-y-4">
+    <AnimatedSection id="projects" className="bg-gradient-to-b from-black via-gray-950 to-gray-900">
+      <div className="space-y-12 relative">
+        {/* Background Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div 
+            className="absolute -top-40 -left-40 w-80 h-80 rounded-full opacity-20 blur-3xl"
+            style={{ background: "linear-gradient(to right, #4F46E5, #8B5CF6)" }}
+          />
+          <div 
+            className="absolute -bottom-20 -right-20 w-80 h-80 rounded-full opacity-20 blur-3xl"
+            style={{ background: "linear-gradient(to right, #8B5CF6, #EC4899)" }}
+          />
+        </div>
+        
+        {/* Section Header */}
+        <div className="text-center space-y-4 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="inline-block px-4 py-1.5 rounded-full bg-gradient-to-r from-blue-500/10 to-indigo-500/10 border border-blue-500/20 text-blue-400 text-sm font-medium mb-2"
+          >
+            My Work
+          </motion.div>
+          
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -88,6 +47,7 @@ export function ProjectsSection() {
           >
             Featured Projects
           </motion.h2>
+          
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -95,61 +55,28 @@ export function ProjectsSection() {
             transition={{ delay: 0.2 }}
             className="text-gray-300 max-w-[600px] mx-auto"
           >
-            A collection of my recent work and personal projects
+            A collection of my recent work showcasing my skills and expertise in full-stack development and automation
           </motion.p>
         </div>
 
-        {/* Technology Filter */}
-        <motion.div
+        {/* Projects Carousel */}
+        <ProjectsCarousel projects={projects} />
+        
+        {/* Call to Action */}
+        <motion.div 
+          className="flex justify-center mt-12"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="flex flex-wrap justify-center gap-3"
+          transition={{ delay: 0.4 }}
         >
-          <Button
-            variant={selectedTech === null ? "default" : "outline"}
-            size="sm"
-            onClick={() => setSelectedTech(null)}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors border
-              ${
-                selectedTech === null
-                  ? "bg-blue-600 text-white border-blue-500"
-                  : "bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700 hover:text-white"
-              }`}
+          <Button 
+            className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-6 rounded-xl shadow-lg shadow-blue-500/20 flex items-center gap-2 text-base"
+            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
           >
-            All
+            <span>Let's work together</span>
+            <ArrowRight className="w-4 h-4 ml-1" />
           </Button>
-          {allTechnologies.map((tech) => (
-            <Button
-              key={tech}
-              variant={selectedTech === tech ? "default" : "outline"}
-              size="sm"
-              onClick={() => setSelectedTech(tech)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors border
-                ${
-                  selectedTech === tech
-                    ? "bg-blue-600 text-white border-blue-500"
-                    : "bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700 hover:text-white"
-                }`}
-            >
-              {tech}
-            </Button>
-          ))}
-        </motion.div>
-
-        {/* Projects Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
-          className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3"
-        >
-          {filteredProjects.map((project) => (
-            <motion.div key={project.title} variants={itemVariants}>
-              <ProjectCard {...project} />
-            </motion.div>
-          ))}
         </motion.div>
       </div>
     </AnimatedSection>
