@@ -15,8 +15,14 @@ export const ProjectsCarousel = ({ projects }: ProjectsCarouselProps) => {
   const [active, setActive] = useState(0);
   const [autoplay, setAutoplay] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const progressRef = useRef(null);
+  const [isClient, setIsClient] = useState(false);
+  const carouselRef = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
+  
+  // Set client-side state after component mounts
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
   
   // Handle autoplay
   useEffect(() => {
@@ -34,7 +40,8 @@ export const ProjectsCarousel = ({ projects }: ProjectsCarouselProps) => {
   const handleMouseLeave = () => setAutoplay(true);
   
   // Handle navigation with transition lock to prevent rapid clicking
-  const handlePrev = () => {
+  const handlePrev = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent event bubbling
     if (isTransitioning) return;
     
     setIsTransitioning(true);
@@ -42,10 +49,11 @@ export const ProjectsCarousel = ({ projects }: ProjectsCarouselProps) => {
     setAutoplay(false);
     
     // Reset transition lock after animation completes
-    setTimeout(() => setIsTransitioning(false), 400);
+    setTimeout(() => setIsTransitioning(false), 500);
   };
   
-  const handleNext = () => {
+  const handleNext = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent event bubbling
     if (isTransitioning) return;
     
     setIsTransitioning(true);
@@ -53,11 +61,21 @@ export const ProjectsCarousel = ({ projects }: ProjectsCarouselProps) => {
     setAutoplay(false);
     
     // Reset transition lock after animation completes
-    setTimeout(() => setIsTransitioning(false), 400);
+    setTimeout(() => setIsTransitioning(false), 500);
   };
+  
+  // Don't render the carousel until client-side hydration is complete
+  if (!isClient) {
+    return (
+      <div className="relative w-full h-[600px] md:h-[650px] flex items-center justify-center">
+        <div className="w-[350px] md:w-[450px] h-[500px] md:h-[550px] bg-gray-900 rounded-2xl animate-pulse" />
+      </div>
+    );
+  }
   
   return (
     <div 
+      ref={carouselRef}
       className="relative w-full h-[600px] md:h-[650px] overflow-hidden"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -103,12 +121,13 @@ export const ProjectsCarousel = ({ projects }: ProjectsCarouselProps) => {
             <button
               key={index}
               className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${active === index ? 'bg-white scale-125' : 'bg-gray-600 hover:bg-gray-500'}`}
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent event bubbling
                 if (isTransitioning) return;
                 setIsTransitioning(true);
                 setActive(index);
                 setAutoplay(false);
-                setTimeout(() => setIsTransitioning(false), 400);
+                setTimeout(() => setIsTransitioning(false), 500);
               }}
               aria-label={`Go to project ${index + 1}`}
             />

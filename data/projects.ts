@@ -5,7 +5,7 @@ export const projects: Project[] = [
     title: "E-Commerce Platform",
     description: "A full-stack e-commerce platform built with Next.js, featuring real-time inventory management, secure payments, and an intuitive admin dashboard.",
     technologies: ["Next.js", "TypeScript", "Tailwind CSS", "PostgreSQL", "Stripe"],
-    githubUrl: "#",
+    githubUrl: "https://github.com/danndongi02/bekoHomeAppliances",
     demoUrl: "#",
     image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
     color: "#4F46E5", // Indigo

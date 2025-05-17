@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { Github, ExternalLink } from "lucide-react";
 import { Project } from "@/types/project";
@@ -23,10 +23,15 @@ export const ProjectCard3D = ({
   totalProjects
 }: ProjectCard3DProps) => {
   const ref = useRef<HTMLDivElement>(null);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  
   const dampen = 30; // Lower number = more rotation
+  const mouseX = useMotionValue(dampen / 2); // Initialize mouseX to the center for no initial rotation
+  const mouseY = useMotionValue(dampen / 2); // Initialize mouseY to the center for no initial rotation
+  const [mounted, setMounted] = useState(false);
+  
+  // Set mounted state after component mounts to ensure client-side rendering
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   const rotateX = useSpring(useTransform(mouseY, [0, dampen], [dampen / 3, -dampen / 3]), {
     stiffness: 300,
     damping: 30,
@@ -52,19 +57,31 @@ export const ProjectCard3D = ({
   const distance = Math.abs(active - index);
   const siblingFade = Math.max(0, 1 - distance * 0.4);
 
-  // Calculate 3D circular position based on active index
+  // Calculate position based on active index
   const position = index - active;
-  const totalItems = totalProjects; // Use actual number of projects
-  const angleStep = (2 * Math.PI) / totalItems;
-  const angle = position * angleStep;
   
-  // Calculate 3D position on a circle
-  const radius = 300; // Radius of the carousel circle
-  const x = Math.sin(angle) * radius;
-  const z = Math.cos(angle) * radius - radius; // Subtract radius to position circle in front
+  // Only use 3D positioning if component has mounted
+  let x = position * 400; // Default to flat layout
+  let z = 0;
+  let cardRotateY = 0;
   
-  // Scale and opacity based on z position (items further back are smaller)
-  const scale = isActive ? 1 : Math.max(0.65, 1 - (Math.abs(z) / (radius * 2)) * 0.4);
+  if (mounted) {
+    // Calculate 3D circular position
+    const totalItems = totalProjects;
+    const angleStep = (2 * Math.PI) / totalItems;
+    const angle = position * angleStep;
+    
+    // Calculate 3D position on a circle
+    const radius = 300;
+    x = Math.sin(angle) * radius;
+    z = Math.cos(angle) * radius - radius;
+    
+    // Only apply rotation to non-front cards
+    cardRotateY = position === 0 ? 0 : -angle * (180 / Math.PI);
+  }
+  
+  // Scale and opacity based on position
+  const scale = isActive ? 1 : Math.max(0.65, 1 - Math.abs(position) * 0.1);
   const zIndex = 100 - Math.abs(position * 10);
 
   return (
@@ -78,29 +95,30 @@ export const ProjectCard3D = ({
         zIndex,
       }}
       initial={{
-        x,
-        z,
+        x: position * 400, // Start with flat layout
+        z: 0,
         scale,
         opacity: siblingFade,
-        rotateY: -angle * (180 / Math.PI), // Convert radians to degrees
+        rotateY: 0, // No rotation initially
+        y: 50, // Added from the second initial prop
       }}
       animate={{
-        x,
-        z,
+        x, // Use calculated x position
+        z, // Use calculated z position
         scale,
         opacity: siblingFade,
-        rotateY: -angle * (180 / Math.PI), // Convert radians to degrees
+        y: 0, // Added from the second initial prop
       }}
-      transition={{ 
-        type: "spring", 
-        stiffness: 260, 
+      transition={{
+        type: "spring",
+        stiffness: 260,
         damping: 25,
-        mass: 1.2 // Slightly higher mass for more natural motion
+        mass: 1.2, // Slightly higher mass for more natural motion
+        delay: 0.1 // Small delay to ensure proper initial state
       }}
       onClick={() => setActive(index)}
       onMouseMove={handleMouseMove}
       onMouseLeave={resetMouse}
-      initial={{ opacity: 0, y: 100 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
     >

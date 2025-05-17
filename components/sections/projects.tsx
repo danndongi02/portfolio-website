@@ -14,19 +14,8 @@ import { projects } from "@/data/projects";
  */
 export function ProjectsSection() {
   return (
-    <AnimatedSection id="projects" className="bg-gradient-to-b from-black via-gray-950 to-gray-900">
+    <AnimatedSection id="projects" className="bg-gradient-to-b from-gray-900 to-gray-950">
       <div className="space-y-12 relative">
-        {/* Background Elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div 
-            className="absolute -top-40 -left-40 w-80 h-80 rounded-full opacity-20 blur-3xl"
-            style={{ background: "linear-gradient(to right, #4F46E5, #8B5CF6)" }}
-          />
-          <div 
-            className="absolute -bottom-20 -right-20 w-80 h-80 rounded-full opacity-20 blur-3xl"
-            style={{ background: "linear-gradient(to right, #8B5CF6, #EC4899)" }}
-          />
-        </div>
         
         {/* Section Header */}
         <div className="text-center space-y-4 relative z-10">
