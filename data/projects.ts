@@ -4,7 +4,7 @@ export const projects: Project[] = [
   {
     title: "E-Commerce Platform",
     description: "A full-stack e-commerce platform built with Next.js, featuring real-time inventory management, secure payments, and an intuitive admin dashboard.",
-    technologies: ["Next.js", "TypeScript", "Tailwind CSS", "PostgreSQL", "Stripe"],
+    technologies: ["Next.js", "TypeScript", "Tailwind CSS", "PostgreSQL", "Stripe", "Redis"],
     githubUrl: "https://github.com/danndongi02/bekoHomeAppliances",
     demoUrl: "#",
     image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
@@ -27,31 +27,5 @@ export const projects: Project[] = [
     demoUrl: "#",
     image: "https://images.unsplash.com/photo-1587463272361-565200f82b33?q=80&w=2070&auto=format&fit=crop",
     color: "#3B82F6", // Blue
-  },
-  {
-    title: "Personal Finance Dashboard",
-    description: "Comprehensive financial management dashboard with expense tracking, budget planning, and interactive data visualizations.",
-    technologies: ["Vue.js", "D3.js", "Express", "MySQL", "Docker"],
-    githubUrl: "#",
-    demoUrl: "#",
-    image: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?q=80&w=2071&auto=format&fit=crop",
-    color: "#8B5CF6", // Violet
-  },
-  {
-    title: "Fitness Tracking Platform",
-    description: "Mobile-first fitness tracking platform with workout planning, progress monitoring, and social features for sharing achievements.",
-    technologies: ["React Native", "GraphQL", "Node.js", "PostgreSQL"],
-    githubUrl: "#",
-    image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=2070&auto=format&fit=crop",
-    color: "#EC4899", // Pink
-  },
-  {
-    title: "Weather Forecast App",
-    description: "Beautiful weather application with detailed forecasts, interactive maps, and severe weather alerts integration.",
-    technologies: ["Next.js", "TypeScript", "Leaflet", "OpenWeatherAPI"],
-    githubUrl: "#",
-    demoUrl: "#",
-    image: "https://images.unsplash.com/photo-1592210454359-9043f067919b?q=80&w=2070&auto=format&fit=crop",
-    color: "#F59E0B", // Amber
   },
 ];
