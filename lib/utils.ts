@@ -20,5 +20,13 @@ export function truncateText(text: string, length: number) {
 
 export const scrollToSection = (sectionId: string) => {
   const element = document.getElementById(sectionId);
-  element?.scrollIntoView({ behavior: "smooth" });
+  if (!element) return;
+
+  import("@/lib/gsap-config").then(({ gsap }) => {
+    gsap.to(window, {
+      scrollTo: { y: element, offsetY: 80 },
+      duration: 1,
+      ease: "power2.inOut",
+    });
+  });
 };

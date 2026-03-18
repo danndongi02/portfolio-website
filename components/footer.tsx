@@ -1,147 +1,214 @@
-"use client"
+"use client";
 
-import { motion } from 'framer-motion';
-import { Github, Linkedin, Mail, Twitter } from 'lucide-react';
-import Link from 'next/link';
+import { useRef } from "react";
+import { motion } from "framer-motion";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "@/lib/gsap-config";
+import { Github, Linkedin, Mail, Twitter } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
+  FadeIn,
+  StaggerContainer,
+  StaggerItem,
+} from "@/components/ui/motion-wrapper";
+import { staggerContainer, staggerItem } from "@/lib/motion-variants";
 
 const socialLinks = [
   {
-    name: 'GitHub',
+    name: "GitHub",
     icon: Github,
-    url: 'https://github.com/danndongi02',
-    color: 'hover:text-[#2ea043]'
+    url: "https://github.com/danndongi02",
+    color: "#2ea043",
   },
   {
-    name: 'LinkedIn',
+    name: "LinkedIn",
     icon: Linkedin,
-    url: 'https://linkedin.com',
-    color: 'hover:text-[#0a66c2]'
+    url: "https://linkedin.com",
+    color: "#0a66c2",
   },
   {
-    name: 'Twitter',
+    name: "Twitter",
     icon: Twitter,
-    url: 'https://twitter.com',
-    color: 'hover:text-[#1da1f2]'
+    url: "https://twitter.com",
+    color: "#1da1f2",
   },
   {
-    name: 'Email',
+    name: "Email",
     icon: Mail,
-    url: 'mailto:your.email@example.com',
-    color: 'hover:text-[#ea4335]'
-  }
+    url: "mailto:your.email@example.com",
+    color: "#ea4335",
+  },
 ];
 
-const FooterLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
-  <Link 
+const FooterLink = ({
+  href,
+  children,
+}: {
+  href: string;
+  children: React.ReactNode;
+}) => (
+  <Link
     href={href}
-    className="text-gray-400 hover:text-blue-400 transition-colors duration-200"
+    className="text-muted-foreground hover:text-primary transition-colors duration-200"
   >
     {children}
   </Link>
 );
 
 export function Footer() {
+  const footerRef = useRef<HTMLElement>(null);
+  const particlesRef = useRef<HTMLDivElement>(null);
+
+  // GSAP: Particle system infinite tweens (keep — 30 particles with random params)
+  useGSAP(
+    () => {
+      if (particlesRef.current) {
+        const particles =
+          particlesRef.current.querySelectorAll<HTMLElement>(".footer-particle");
+        particles.forEach((particle) => {
+          gsap.to(particle, {
+            opacity: gsap.utils.random(0.03, 0.12),
+            scale: gsap.utils.random(1, 1.8),
+            duration: gsap.utils.random(2, 5),
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: -1,
+            delay: gsap.utils.random(0, 3),
+          });
+        });
+      }
+    },
+    { scope: footerRef }
+  );
+
   return (
-    <footer className="relative w-full bg-gray-950">
-      {/* Animated Background */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_800px_at_50%_-100px,rgba(29,78,216,0.03),transparent)]" />
-        <div className="absolute w-full h-full">
-          {[...Array(30)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-1 h-1 bg-blue-400/5 rounded-full"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-              }}
-              animate={{
-                opacity: [0.05, 0.1, 0.05],
-                scale: [1, 1.5, 1],
-              }}
-              transition={{
-                duration: Math.random() * 3 + 2,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: Math.random() * 2,
-              }}
-            />
-          ))}
+    <TooltipProvider delayDuration={200}>
+      <footer ref={footerRef} className="relative w-full bg-muted/50">
+        {/* Animated Background Particles */}
+        <div className="absolute inset-0 -z-10">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_800px_at_50%_-100px,hsl(38_92%_60%_/_0.03),transparent)]" />
+          <div ref={particlesRef} className="absolute w-full h-full">
+            {[...Array(30)].map((_, i) => (
+              <div
+                key={i}
+                className={`footer-particle absolute w-1 h-1 rounded-full ${
+                  i % 2 === 0 ? "bg-primary/5" : "bg-accent/5"
+                }`}
+                style={{
+                  left: `${((i * 3.33 + 7) % 100).toFixed(1)}%`,
+                  top: `${((i * 7.77 + 13) % 100).toFixed(1)}%`,
+                  opacity: 0.05,
+                }}
+              />
+            ))}
+          </div>
         </div>
-      </div>
 
-      <div className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
-          {/* Brand Section */}
-          <div className="space-y-4">
-            <motion.h3 
-              className="text-2xl font-bold text-white"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+        <div className="container mx-auto px-4 py-16">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+            {/* Brand Section */}
+            <FadeIn className="space-y-4">
+              <h3 className="text-2xl font-bold text-foreground">Ian</h3>
+              <p className="text-muted-foreground">
+                Crafting elegant solutions to complex problems
+              </p>
+            </FadeIn>
+
+            {/* Quick Links */}
+            <motion.div
+              className="space-y-4"
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-80px" }}
             >
-              Ian
-            </motion.h3>
-            <p className="text-gray-300">
-              Crafting elegant solutions to complex problems
-            </p>
-          </div>
+              <motion.h4
+                variants={staggerItem}
+                className="text-foreground font-semibold"
+              >
+                Quick Links
+              </motion.h4>
+              <ul className="space-y-2">
+                {["About", "Skills", "Projects", "Contact"].map((link) => (
+                  <motion.li key={link} variants={staggerItem}>
+                    <FooterLink href={`#${link.toLowerCase()}`}>
+                      {link}
+                    </FooterLink>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
 
-          {/* Quick Links */}
-          <div className="space-y-4">
-            <h4 className="text-white font-semibold">Quick Links</h4>
-            <ul className="space-y-2">
-              <li><FooterLink href="#about">About</FooterLink></li>
-              <li><FooterLink href="#skills">Skills</FooterLink></li>
-              <li><FooterLink href="#projects">Projects</FooterLink></li>
-              <li><FooterLink href="#contact">Contact</FooterLink></li>
-            </ul>
-          </div>
-
-          {/* Social Links */}
-          <div className="space-y-4">
-            <h4 className="text-white font-semibold">Connect</h4>
-            <div className="flex flex-wrap gap-4">
-              {socialLinks.map((social) => (
-                <motion.a
-                  key={social.name}
-                  href={social.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`p-2 rounded-full bg-gray-900/50 backdrop-blur-sm border border-gray-800/50 ${social.color} transition-colors duration-300`}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <social.icon size={20} />
-                </motion.a>
-              ))}
+            {/* Social Links */}
+            <div className="space-y-4">
+              <FadeIn>
+                <h4 className="text-foreground font-semibold">Connect</h4>
+              </FadeIn>
+              <StaggerContainer className="flex flex-wrap gap-3">
+                {socialLinks.map((social) => {
+                  const Icon = social.icon;
+                  return (
+                    <StaggerItem key={social.name}>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <motion.div
+                            whileHover={{ scale: 1.15 }}
+                            whileTap={{ scale: 0.9 }}
+                            transition={{ duration: 0.2 }}
+                          >
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              asChild
+                              className="rounded-full bg-card/50 backdrop-blur-sm border border-border/50 text-muted-foreground hover:text-primary hover:border-primary/30 hover:bg-primary/10 transition-colors duration-300"
+                            >
+                              <a
+                                href={social.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                <Icon size={18} />
+                              </a>
+                            </Button>
+                          </motion.div>
+                        </TooltipTrigger>
+                        <TooltipContent
+                          side="bottom"
+                          className="bg-card text-card-foreground border-border"
+                        >
+                          {social.name}
+                        </TooltipContent>
+                      </Tooltip>
+                    </StaggerItem>
+                  );
+                })}
+              </StaggerContainer>
             </div>
           </div>
-        </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-8 mt-8 border-t border-gray-800/50">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <motion.p 
-              className="text-gray-400 text-sm"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-            >
-              {new Date().getFullYear()} Ian. All rights reserved.
-            </motion.p>
-            <motion.div 
-              className="flex gap-4 text-sm text-gray-400"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-            >
-              <FooterLink href="/privacy">Privacy Policy</FooterLink>
-              <FooterLink href="/terms">Terms of Service</FooterLink>
-            </motion.div>
-          </div>
+          {/* Bottom Bar */}
+          <Separator className="bg-border/50" />
+          <FadeIn className="pt-8">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+              <p className="text-muted-foreground text-sm">
+                {new Date().getFullYear()} Ian. All rights reserved.
+              </p>
+              <div className="flex gap-4 text-sm">
+                <FooterLink href="/privacy">Privacy Policy</FooterLink>
+                <FooterLink href="/terms">Terms of Service</FooterLink>
+              </div>
+            </div>
+          </FadeIn>
         </div>
-      </div>
-    </footer>
+      </footer>
+    </TooltipProvider>
   );
 }

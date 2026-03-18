@@ -1,281 +1,250 @@
 "use client";
 
-import { motion, useMotionValue, useTransform, animate } from "framer-motion";
+import { useRef } from "react";
+import { motion } from "framer-motion";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "@/lib/gsap-config";
 import { Circle } from "lucide-react";
-import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { AnimatedText } from "@/components/ui/animated-text";
+import { useMagnetic } from "@/hooks/use-magnetic";
+import { fadeUp } from "@/lib/motion-variants";
 
 function ElegantShape({
-    className,
-    delay = 0,
-    width = 400,
-    height = 100,
-    rotate = 0,
-    gradient = "from-white/[0.08]",
+  className,
+  delay = 0,
+  width = 400,
+  height = 100,
+  rotate = 0,
+  gradient = "from-primary/[0.08]",
 }: {
-    className?: string;
-    delay?: number;
-    width?: number;
-    height?: number;
-    rotate?: number;
-    gradient?: string;
+  className?: string;
+  delay?: number;
+  width?: number;
+  height?: number;
+  rotate?: number;
+  gradient?: string;
 }) {
-    return (
-        <motion.div
-            initial={{
-                opacity: 0,
-                y: -150,
-                rotate: rotate - 15,
-            }}
-            animate={{
-                opacity: 1,
-                y: 0,
-                rotate: rotate,
-            }}
-            transition={{
-                duration: 2.4,
-                delay,
-                ease: [0.23, 0.86, 0.39, 0.96],
-                opacity: { duration: 1.2 },
-            }}
-            className={cn("absolute", className)}
-        >
-            <motion.div
-                animate={{
-                    y: [0, 15, 0],
-                }}
-                transition={{
-                    duration: 12,
-                    repeat: Number.POSITIVE_INFINITY,
-                    ease: "easeInOut",
-                }}
-                style={{
-                    width,
-                    height,
-                }}
-                className="relative"
-            >
-                <div
-                    className={cn(
-                        "absolute inset-0 rounded-full",
-                        "bg-gradient-to-r to-transparent",
-                        gradient,
-                        "backdrop-blur-[2px] border-2 border-white/[0.15]",
-                        "shadow-[0_8px_32px_0_rgba(255,255,255,0.1)]",
-                        "after:absolute after:inset-0 after:rounded-full",
-                        "after:bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.2),transparent_70%)]"
-                    )}
-                />
-            </motion.div>
-        </motion.div>
-    );
-}
+  const shapeRef = useRef<HTMLDivElement>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
 
-function TypewriterText({ text, className }: { text: string; className?: string }) {
-    const [displayText, setDisplayText] = useState("");
-    const [currentIndex, setCurrentIndex] = useState(0);
-    
-    useEffect(() => {
-        if (currentIndex < text.length) {
-            const timeout = setTimeout(() => {
-                setDisplayText(prev => prev + text[currentIndex]);
-                setCurrentIndex(prev => prev + 1);
-            }, 40); // Speed of typing
-            
-            return () => clearTimeout(timeout);
-        }
-    }, [currentIndex, text]);
-    
-    return (
-        <span className={className}>
-            {displayText}
-            {currentIndex < text.length && (
-                <span className="inline-block w-[2px] h-[1em] bg-white/60 animate-pulse ml-1"></span>
-            )}
-        </span>
-    );
+  useGSAP(
+    () => {
+      gsap.from(shapeRef.current, {
+        opacity: 0,
+        y: -150,
+        rotate: rotate - 15,
+        duration: 2.4,
+        delay,
+        ease: "power3.out",
+      });
+
+      gsap.to(innerRef.current, {
+        y: 15,
+        duration: 6,
+        ease: "sine.inOut",
+        yoyo: true,
+        repeat: -1,
+      });
+    },
+    { scope: shapeRef }
+  );
+
+  return (
+    <div
+      ref={shapeRef}
+      className={cn("absolute", className)}
+      style={{ opacity: 0 }}
+    >
+      <div ref={innerRef} style={{ width, height }} className="relative">
+        <div
+          className={cn(
+            "absolute inset-0 rounded-full",
+            "bg-gradient-to-r to-transparent",
+            gradient,
+            "backdrop-blur-[2px] border border-white/[0.08]",
+            "shadow-[0_8px_32px_0_rgba(255,255,255,0.05)]",
+            "after:absolute after:inset-0 after:rounded-full",
+            "after:bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1),transparent_70%)]"
+          )}
+        />
+      </div>
+    </div>
+  );
 }
 
 function HeroGeometric({
-    badge = "Design Collective",
-    title1 = "Elevate Your Digital Vision",
-    title2 = "Crafting Exceptional Websites",
-    description = "Crafting exceptional digital experiences through innovative design and cutting-edge technology.",
-    subDescription,
-    showButtons = true,
-    onViewWorkClick,
-    onContactClick,
+  badge = "Design Collective",
+  title1 = "Elevate Your Digital Vision",
+  title2 = "Crafting Exceptional Websites",
+  description = "Crafting exceptional digital experiences through innovative design and cutting-edge technology.",
+  subDescription,
+  showButtons = true,
+  onViewWorkClick,
+  onContactClick,
 }: {
-    badge?: string;
-    title1?: string;
-    title2?: string;
-    description?: string;
-    subDescription?: string;
-    showButtons?: boolean;
-    onViewWorkClick?: () => void;
-    onContactClick?: () => void;
+  badge?: string;
+  title1?: string;
+  title2?: string;
+  description?: string;
+  subDescription?: string;
+  showButtons?: boolean;
+  onViewWorkClick?: () => void;
+  onContactClick?: () => void;
 }) {
-    const fadeUpVariants = {
-        hidden: { opacity: 0, y: 30 },
-        visible: (i: number) => ({
-            opacity: 1,
-            y: 0,
-            transition: {
-                duration: 1,
-                delay: 0.5 + i * 0.2,
-                ease: [0.25, 0.4, 0.25, 1],
-            },
-        }),
-    };
+  const viewWorkRef = useRef<HTMLButtonElement>(null);
+  const contactRef = useRef<HTMLButtonElement>(null);
 
-    return (
-        <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-gray-900">
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/[0.05] via-transparent to-rose-500/[0.05] blur-3xl" />
+  useMagnetic(viewWorkRef, 0.25);
+  useMagnetic(contactRef, 0.25);
 
-            <div className="absolute inset-0 overflow-hidden">
-                <ElegantShape
-                    delay={0.3}
-                    width={600}
-                    height={140}
-                    rotate={12}
-                    gradient="from-indigo-500/[0.15]"
-                    className="left-[-10%] md:left-[-5%] top-[15%] md:top-[20%]"
-                />
+  return (
+    <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-background">
+      {/* Background gradients */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,hsl(38_92%_60%/0.04),transparent_50%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,hsl(172_66%_50%/0.04),transparent_50%)]" />
 
-                <ElegantShape
-                    delay={0.5}
-                    width={500}
-                    height={120}
-                    rotate={-15}
-                    gradient="from-rose-500/[0.15]"
-                    className="right-[-5%] md:right-[0%] top-[70%] md:top-[75%]"
-                />
+      {/* Floating shapes */}
+      <div className="absolute inset-0 overflow-hidden">
+        <ElegantShape
+          delay={0.3}
+          width={600}
+          height={140}
+          rotate={12}
+          gradient="from-primary/[0.12]"
+          className="left-[-10%] md:left-[-5%] top-[15%] md:top-[20%]"
+        />
+        <ElegantShape
+          delay={0.5}
+          width={500}
+          height={120}
+          rotate={-15}
+          gradient="from-accent/[0.12]"
+          className="right-[-5%] md:right-[0%] top-[70%] md:top-[75%]"
+        />
+        <ElegantShape
+          delay={0.4}
+          width={300}
+          height={80}
+          rotate={-8}
+          gradient="from-secondary/[0.12]"
+          className="left-[5%] md:left-[10%] bottom-[5%] md:bottom-[10%]"
+        />
+        <ElegantShape
+          delay={0.6}
+          width={200}
+          height={60}
+          rotate={20}
+          gradient="from-primary/[0.10]"
+          className="right-[15%] md:right-[20%] top-[10%] md:top-[15%]"
+        />
+        <ElegantShape
+          delay={0.7}
+          width={150}
+          height={40}
+          rotate={-25}
+          gradient="from-accent/[0.10]"
+          className="left-[20%] md:left-[25%] top-[5%] md:top-[10%]"
+        />
+      </div>
 
-                <ElegantShape
-                    delay={0.4}
-                    width={300}
-                    height={80}
-                    rotate={-8}
-                    gradient="from-violet-500/[0.15]"
-                    className="left-[5%] md:left-[10%] bottom-[5%] md:bottom-[10%]"
-                />
+      {/* Content */}
+      <div className="relative z-10 container mx-auto px-4 md:px-6">
+        <div className="max-w-3xl mx-auto text-center">
+          {/* Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 30, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+          >
+            <Badge
+              variant="outline"
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/[0.05] border-primary/20 mb-8 md:mb-12 cursor-default"
+            >
+              <Circle className="h-2 w-2 fill-primary/80" />
+              <span className="text-sm text-muted-foreground tracking-wide">
+                {badge}
+              </span>
+            </Badge>
+          </motion.div>
 
-                <ElegantShape
-                    delay={0.6}
-                    width={200}
-                    height={60}
-                    rotate={20}
-                    gradient="from-amber-500/[0.15]"
-                    className="right-[15%] md:right-[20%] top-[10%] md:top-[15%]"
-                />
+          {/* Titles — React-safe character reveal */}
+          <div className="mb-4 md:mb-6">
+            <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold tracking-tight leading-[1.1]">
+              <AnimatedText
+                text={title1}
+                delay={0.6}
+                charClassName="text-foreground"
+              />
+              {title2 && (
+                <>
+                  <br />
+                  <AnimatedText
+                    text={title2}
+                    delay={1.0}
+                    charClassName="text-primary"
+                  />
+                </>
+              )}
+            </h1>
+          </div>
 
-                <ElegantShape
-                    delay={0.7}
-                    width={150}
-                    height={40}
-                    rotate={-25}
-                    gradient="from-cyan-500/[0.15]"
-                    className="left-[20%] md:left-[25%] top-[5%] md:top-[10%]"
-                />
-            </div>
+          {/* Description */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 1.8, ease: "easeOut" }}
+            className="text-base sm:text-lg md:text-xl text-muted-foreground mb-4 leading-relaxed font-light tracking-wide max-w-xl mx-auto px-4"
+          >
+            {description}
+          </motion.p>
 
-            <div className="relative z-10 container mx-auto px-4 md:px-6">
-                <div className="max-w-3xl mx-auto text-center">
-                    <motion.div
-                        custom={0}
-                        variants={fadeUpVariants}
-                        initial="hidden"
-                        animate="visible"
-                        className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.08] mb-8 md:mb-12"
-                        whileHover={{ 
-                            scale: 1.05,
-                            backgroundColor: "rgba(255, 255, 255, 0.05)",
-                            transition: { duration: 0.3 }
-                        }}
-                    >
-                        <Circle className="h-2 w-2 fill-rose-500/80" />
-                        <span className="text-sm text-white/60 tracking-wide">
-                            {badge}
-                        </span>
-                    </motion.div>
+          {/* Sub-description */}
+          {subDescription && (
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 2.2, ease: "easeOut" }}
+              className="text-lg sm:text-xl mb-10 font-medium tracking-wide max-w-xl mx-auto px-4 bg-clip-text text-transparent bg-gradient-to-r from-primary via-foreground/90 to-accent"
+            >
+              {subDescription}
+            </motion.p>
+          )}
 
-                    <motion.div
-                        custom={1}
-                        variants={fadeUpVariants}
-                        initial="hidden"
-                        animate="visible"
-                    >
-                        <h1 className="text-2xl sm:text-4xl md:text-6xl font-bold mb-4 md:mb-6 tracking-tight leading-[1.1]">
-                            <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-white/80">
-                                {title1}
-                            </span>
-                            {title2 && (
-                                <>
-                                    <br />
-                                    <span
-                                        className={cn(
-                                            "bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-white/90 to-rose-300 "
-                                        )}
-                                    >
-                                        {title2}
-                                    </span>
-                                </>
-                            )}
-                        </h1>
-                    </motion.div>
-
-                    <motion.div
-                        custom={2}
-                        variants={fadeUpVariants}
-                        initial="hidden"
-                        animate="visible"
-                    >
-                        <p className="text-base sm:text-lg md:text-xl text-white/40 mb-4 leading-relaxed font-light tracking-wide max-w-xl mx-auto px-4">
-                            <TypewriterText text={description} />
-                        </p>
-                    </motion.div>
-
-                    {subDescription && (
-                        <motion.div
-                            custom={2.5}
-                            variants={fadeUpVariants}
-                            initial="hidden"
-                            animate="visible"
-                        >
-                            <p className="text-lg sm:text-xl text-white/80 mb-10 font-medium tracking-wide max-w-xl mx-auto px-4 bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-white/90 to-rose-300">
-                                {subDescription}
-                            </p>
-                        </motion.div>
-                    )}
-
-                    {showButtons && (
-                        <motion.div
-                            custom={3}
-                            variants={fadeUpVariants}
-                            initial="hidden"
-                            animate="visible"
-                            className="space-x-4"
-                        >
-                            <button
-                                onClick={onViewWorkClick}
-                                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg transition-colors duration-300"
-                            >
-                                View My Work
-                            </button>
-                            <button
-                                onClick={onContactClick}
-                                className="bg-transparent border-2 border-white hover:bg-white hover:text-gray-900 text-white px-8 py-3 rounded-lg transition-colors duration-300"
-                            >
-                                Contact Me
-                            </button>
-                        </motion.div>
-                    )}
-                </div>
-            </div>
-
-            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-gray-900/80 pointer-events-none" />
+          {/* CTA Buttons */}
+          {showButtons && (
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 2.5, ease: "easeOut" }}
+              className="flex flex-col sm:flex-row items-center justify-center gap-4"
+            >
+              <Button
+                ref={viewWorkRef}
+                onClick={onViewWorkClick}
+                className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 rounded-lg text-base font-medium shadow-lg shadow-primary/20"
+              >
+                View My Work
+              </Button>
+              <Button
+                ref={contactRef}
+                variant="outline"
+                onClick={onContactClick}
+                className="border-2 border-foreground/20 hover:bg-foreground/5 text-foreground px-8 py-3 rounded-lg text-base"
+              >
+                Contact Me
+              </Button>
+            </motion.div>
+          )}
         </div>
-    );
+      </div>
+
+      {/* Bottom gradient fade */}
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/60 pointer-events-none" />
+    </div>
+  );
 }
 
-export { HeroGeometric }
+export { HeroGeometric };
