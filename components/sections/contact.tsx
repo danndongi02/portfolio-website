@@ -1,179 +1,91 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Github, Linkedin, Mail, MessageSquare, MapPin, Clock } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { ContactForm } from "@/components/ui/contact-form";
 import { SectionHeading } from "@/components/ui/section-heading";
-import {
-  FadeIn,
-  SlideIn,
-  StaggerContainer,
-  StaggerItem,
-} from "@/components/ui/motion-wrapper";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { ContactForm } from "@/components/ui/contact-form";
+import { SlideIn } from "@/components/ui/motion-wrapper";
 
 const contactLinks = [
-  {
-    name: "GitHub",
-    icon: Github,
-    href: "https://github.com/yourusername",
-    hoverColor: "#6e5494",
-  },
-  {
-    name: "LinkedIn",
-    icon: Linkedin,
-    href: "https://linkedin.com/in/yourusername",
-    hoverColor: "#0077b5",
-  },
-  {
-    name: "Email",
-    icon: Mail,
-    href: "mailto:your.email@example.com",
-    hoverColor: "#ef4444",
-  },
-  {
-    name: "WhatsApp",
-    icon: MessageSquare,
-    href: "https://wa.me/yourphonenumber",
-    hoverColor: "#25D366",
-  },
+  { label: "EMAIL", href: "mailto:your.email@example.com", display: "ian@example.com" },
+  { label: "GITHUB", href: "https://github.com/danndongi02", display: "danndongi02" },
+  { label: "LINKEDIN", href: "https://linkedin.com", display: "Profile" },
+  { label: "WHATSAPP", href: "https://wa.me/yourphonenumber", display: "Message" },
 ];
 
 export function ContactSection() {
   return (
-    <TooltipProvider delayDuration={200}>
-      <section
-        id="contact"
-        className="bg-background min-h-screen relative overflow-hidden"
-      >
-        {/* Background glow */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
+    <section
+      id="contact"
+      className="bg-void py-24 md:py-32 relative"
+    >
+      {/* Radial depth */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,#111116_0%,#08080a_70%)] pointer-events-none" />
+
+      <div className="container mx-auto px-6 md:px-8 relative z-10">
+        <SectionHeading
+          number="006"
+          label="CONTACT"
+          title={
+            <>
+              Let&apos;s build something
+              <br />
+              that runs{" "}
+              <span className="serif-italic relative">
+                itself
+                <span className="absolute bottom-0 left-0 right-0 h-px bg-coral" />
+              </span>
+              .
+            </>
+          }
+        />
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+          {/* Left — Info */}
+          <SlideIn direction="left" className="lg:col-span-5 space-y-8">
+            <p className="text-sm font-mono text-[#aaa] leading-[1.8] max-w-[420px]">
+              I&apos;m currently available for contract work &mdash; software
+              development, automation systems, and agentic AI workflows.
+              Let&apos;s talk about what you need.
+            </p>
+
+            {/* Availability indicator */}
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-coral" />
+              <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-coral">
+                Available for Work
+              </span>
+            </div>
+
+            {/* Contact links */}
+            <div className="space-y-3 pt-4 border-t border-iron">
+              {contactLinks.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 group"
+                >
+                  <span className="text-xs font-mono uppercase tracking-[0.15em] text-cream group-hover:text-coral transition-colors">
+                    {link.label} ↗
+                  </span>
+                  <span className="text-xs font-mono text-[#888]">
+                    {link.display}
+                  </span>
+                </a>
+              ))}
+            </div>
+
+            <p className="text-[11px] font-mono text-[#666]">
+              Based in Nairobi, KE &mdash; Available worldwide
+            </p>
+          </SlideIn>
+
+          {/* Right — Form */}
+          <SlideIn direction="right" className="lg:col-span-7">
+            <ContactForm />
+          </SlideIn>
         </div>
-
-        <div className="container mx-auto px-4 py-20 relative z-10">
-          <SectionHeading
-            badge="CONTACT"
-            title="Get In Touch"
-            description="Have a project in mind or want to discuss opportunities? I'd love to hear from you."
-            align="center"
-          />
-
-          <div className="grid gap-12 md:grid-cols-2 items-start max-w-5xl mx-auto">
-            {/* Contact Form */}
-            <SlideIn direction="left">
-              <div className="mx-auto w-full max-w-md">
-                <ContactForm />
-              </div>
-            </SlideIn>
-
-            {/* Contact Info */}
-            <SlideIn direction="right">
-              <div className="space-y-8">
-                <div className="space-y-3">
-                  <h3 className="text-xl font-semibold text-foreground">
-                    Connect With Me
-                  </h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
-                    Feel free to reach out through any of these platforms.
-                    I&apos;ll get back to you as soon as possible.
-                  </p>
-                </div>
-
-                {/* Social links */}
-                <StaggerContainer className="flex flex-wrap gap-3">
-                  {contactLinks.map((link) => {
-                    const Icon = link.icon;
-                    return (
-                      <StaggerItem key={link.name}>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <motion.div
-                              whileHover={{ scale: 1.08, y: -3 }}
-                              whileTap={{ scale: 0.95 }}
-                              transition={{ duration: 0.2 }}
-                            >
-                              <Button
-                                asChild
-                                variant="outline"
-                                className="gap-2 border-border bg-card text-foreground hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-colors"
-                              >
-                                <a
-                                  href={link.href}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                >
-                                  <Icon className="h-4 w-4" />
-                                  {link.name}
-                                </a>
-                              </Button>
-                            </motion.div>
-                          </TooltipTrigger>
-                          <TooltipContent
-                            side="bottom"
-                            className="bg-card text-card-foreground border-border"
-                          >
-                            Open {link.name}
-                          </TooltipContent>
-                        </Tooltip>
-                      </StaggerItem>
-                    );
-                  })}
-                </StaggerContainer>
-
-                {/* Info cards */}
-                <FadeIn>
-                  <div className="space-y-4">
-                    <Card className="border-border/50 bg-card/80 backdrop-blur-sm">
-                      <CardContent className="p-4 flex items-start gap-4">
-                        <div className="p-2 rounded-lg bg-primary/10">
-                          <MapPin className="w-5 h-5 text-primary" />
-                        </div>
-                        <div>
-                          <h4 className="text-sm font-semibold text-foreground mb-1">
-                            Location
-                          </h4>
-                          <p className="text-muted-foreground text-sm">
-                            Based in Your City, Country
-                            <br />
-                            Available for remote work worldwide
-                          </p>
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    <Card className="border-border/50 bg-card/80 backdrop-blur-sm">
-                      <CardContent className="p-4 flex items-start gap-4">
-                        <div className="p-2 rounded-lg bg-accent/10">
-                          <Clock className="w-5 h-5 text-accent" />
-                        </div>
-                        <div>
-                          <h4 className="text-sm font-semibold text-foreground mb-1">
-                            Working Hours
-                          </h4>
-                          <p className="text-muted-foreground text-sm">
-                            Monday - Friday
-                            <br />
-                            9:00 AM - 6:00 PM (Your Timezone)
-                          </p>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                </FadeIn>
-              </div>
-            </SlideIn>
-          </div>
-        </div>
-      </section>
-    </TooltipProvider>
+      </div>
+    </section>
   );
 }

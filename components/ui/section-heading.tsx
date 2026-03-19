@@ -2,44 +2,34 @@
 
 import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/motion-variants";
-import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 interface SectionHeadingProps {
-  badge: string;
-  title: string;
-  description?: string;
+  number: string;
+  label: string;
+  title: React.ReactNode;
   className?: string;
-  align?: "center" | "left";
 }
 
 export function SectionHeading({
-  badge,
+  number,
+  label,
   title,
-  description,
   className,
-  align = "center",
 }: SectionHeadingProps) {
   return (
-    <div
-      className={cn(
-        "space-y-4 mb-16",
-        align === "center" && "text-center",
-        className
-      )}
-    >
+    <div className={cn("mb-16 space-y-6", className)}>
       <motion.div
         variants={fadeUp}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
+        className="flex items-center gap-4"
       >
-        <Badge
-          variant="outline"
-          className="px-4 py-1.5 text-sm font-medium bg-primary/10 text-primary border-primary/20"
-        >
-          {badge}
-        </Badge>
+        <span className="text-xs uppercase tracking-[0.2em] text-[#666]">
+          {number} &mdash; {label}
+        </span>
+        <div className="h-px flex-1 bg-iron" />
       </motion.div>
 
       <motion.h2
@@ -47,25 +37,10 @@ export function SectionHeading({
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
-        className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-foreground"
+        className="font-serif text-4xl text-cream sm:text-5xl md:text-[3.5rem] leading-[1.1]"
       >
         {title}
       </motion.h2>
-
-      {description && (
-        <motion.p
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className={cn(
-            "text-muted-foreground",
-            align === "center" && "max-w-[600px] mx-auto"
-          )}
-        >
-          {description}
-        </motion.p>
-      )}
     </div>
   );
 }

@@ -3,43 +3,37 @@
 @tailwind utilities;
 
 @layer base {
-  /* Midnight Ember — dark-only portfolio theme */
+  /* Editorial Brutalist V2 — dark-only portfolio theme */
   :root {
-    --background: 222 47% 6%;
-    --foreground: 210 40% 96%;
+    --background: 230 33% 3%;
+    --foreground: 30 22% 93%;
 
-    --card: 222 35% 10%;
-    --card-foreground: 210 40% 96%;
+    --card: 240 18% 5%;
+    --card-foreground: 30 22% 93%;
 
-    --popover: 222 35% 10%;
-    --popover-foreground: 210 40% 96%;
+    --popover: 240 18% 5%;
+    --popover-foreground: 30 22% 93%;
 
-    --primary: 38 92% 60%;
-    --primary-foreground: 222 47% 6%;
+    --primary: 8 100% 60%;
+    --primary-foreground: 0 0% 0%;
 
-    --secondary: 20 70% 55%;
-    --secondary-foreground: 210 40% 96%;
+    --secondary: 240 18% 5%;
+    --secondary-foreground: 30 22% 93%;
 
-    --muted: 222 30% 14%;
-    --muted-foreground: 215 15% 55%;
+    --muted: 240 18% 5%;
+    --muted-foreground: 0 0% 53%;
 
-    --accent: 172 66% 50%;
-    --accent-foreground: 222 47% 6%;
+    --accent: 8 100% 60%;
+    --accent-foreground: 0 0% 0%;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 96%;
+    --destructive-foreground: 30 22% 93%;
 
-    --border: 222 20% 20%;
-    --input: 222 20% 20%;
-    --ring: 38 92% 60%;
+    --border: 240 11% 11%;
+    --input: 240 11% 11%;
+    --ring: 8 100% 60%;
 
-    --radius: 0.5rem;
-
-    --chart-1: 38 92% 60%;
-    --chart-2: 172 66% 50%;
-    --chart-3: 20 70% 55%;
-    --chart-4: 199 89% 48%;
-    --chart-5: 280 65% 60%;
+    --radius: 0px;
   }
 }
 
@@ -52,26 +46,60 @@
   }
 }
 
+/* Grain overlay */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+/* Blueprint grid for hero */
+.blueprint-grid {
+  background-image:
+    linear-gradient(to right, #1a1a1e 1px, transparent 1px),
+    linear-gradient(to bottom, #1a1a1e 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Serif italic utility */
+.serif-italic {
+  font-family: var(--font-serif), 'Instrument Serif', 'Playfair Display', serif;
+  font-style: italic;
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: hsl(222, 47%, 4%);
+  background: #050507;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(222, 20%, 18%);
-  border-radius: 4px;
+  background: #1a1a1e;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(222, 20%, 25%);
+  background: #2a2a2e;
 }
 
 /* Selection color */
 ::selection {
-  background: hsl(38 92% 60% / 0.25);
-  color: hsl(210 40% 96%);
+  background: rgba(255, 79, 51, 0.2);
+  color: #f0ece6;
+}
+
+/* Dotted separator utility */
+.dotted-separator {
+  background-image: linear-gradient(to right, #333 10%, transparent 0%);
+  background-size: 8px 1px;
+  background-repeat: repeat-x;
+  height: 1px;
 }

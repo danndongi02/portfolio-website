@@ -43,13 +43,15 @@ export default {
   			border: 'hsl(var(--border))',
   			input: 'hsl(var(--input))',
   			ring: 'hsl(var(--ring))',
-  			chart: {
-  				'1': 'hsl(var(--chart-1))',
-  				'2': 'hsl(var(--chart-2))',
-  				'3': 'hsl(var(--chart-3))',
-  				'4': 'hsl(var(--chart-4))',
-  				'5': 'hsl(var(--chart-5))'
-  			}
+  			coral: '#ff4f33',
+  			cream: '#f0ece6',
+  			surface: '#0f0f12',
+  			iron: '#1a1a1e',
+  			void: '#08080a',
+  		},
+  		fontFamily: {
+  			serif: ['var(--font-serif)', 'Instrument Serif', 'Playfair Display', 'serif'],
+  			mono: ['var(--font-mono)', 'JetBrains Mono', 'Space Mono', 'monospace'],
   		},
   		borderRadius: {
   			lg: 'var(--radius)',

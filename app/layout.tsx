@@ -1,14 +1,25 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
-const inter = Inter({ subsets: ["latin"] });
+const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+  variable: "--font-serif",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-mono",
+});
 
 export const metadata: Metadata = {
-  title: "Ian Portfolio - Software Engineer",
+  title: "Ian — Software Developer & Automation Architect",
   description:
-    "Personal portfolio showcasing my projects, skills, and experience in software development.",
+    "Full-stack developer and automation architect building intelligent systems, agentic workflows, and software that runs itself.",
 };
 
 export default function RootLayout({
@@ -19,8 +30,13 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={cn(inter.className, "min-h-screen bg-background text-foreground antialiased")}
+        className={cn(
+          instrumentSerif.variable,
+          jetbrainsMono.variable,
+          "font-mono min-h-screen bg-background text-foreground antialiased"
+        )}
       >
+        <div className="grain-overlay" aria-hidden="true" />
         {children}
       </body>
     </html>

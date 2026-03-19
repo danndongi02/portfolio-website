@@ -1,36 +1,26 @@
 "use client";
 
 import { useRef } from "react";
-import { motion } from "framer-motion";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap-config";
 import { SectionHeading } from "@/components/ui/section-heading";
-import {
-  FadeIn,
-  SlideIn,
-  StaggerContainer,
-  StaggerItem,
-} from "@/components/ui/motion-wrapper";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { staggerContainer, staggerItem } from "@/lib/motion-variants";
-import { ArrowRight } from "lucide-react";
-
-const stats = [
-  { number: 2, suffix: "+", label: "Years Experience", icon: "💼" },
-  { number: 7, suffix: "+", label: "Projects Completed", icon: "🚀" },
-  { number: 5, suffix: "+", label: "Happy Clients", icon: "😊" },
-  { number: 100, suffix: "%", label: "Client Satisfaction", icon: "⭐" },
-];
+import { TerminalWindow } from "@/components/ui/terminal-window";
+import { FadeIn, SlideIn } from "@/components/ui/motion-wrapper";
 
 const techStack = [
-  "React",
-  "Next.js",
-  "TypeScript",
-  "Node.js",
-  "Python",
-  "AWS",
+  { category: "LANGUAGES", items: "TypeScript, Python, JavaScript" },
+  { category: "FRONTEND", items: "Next.js, React, Tailwind CSS" },
+  { category: "BACKEND", items: "Node.js, FastAPI, Firebase" },
+  { category: "AUTOMATION", items: "N8N, Make.com, Manychat, Jumper" },
+  { category: "AI / AGENTS", items: "LangChain, OpenAI API, Claude API" },
+  { category: "INFRA", items: "Vercel, AWS, Docker" },
+];
+
+const stats = [
+  { number: "2+", label: "YEARS" },
+  { number: "7+", label: "PROJECTS" },
+  { number: "50+", label: "AUTOMATIONS", highlight: true },
+  { number: "100%", label: "RETENTION" },
 ];
 
 export function AboutSection() {
@@ -38,28 +28,16 @@ export function AboutSection() {
 
   useGSAP(
     () => {
-      // Border line scaleY scrub animation
-      gsap.from(".about-border-line", {
-        scaleY: 0,
-        transformOrigin: "top",
-        duration: 1,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: ".about-paragraphs",
-          start: "top 80%",
-          end: "bottom 60%",
-          scrub: 1,
-        },
-      });
-
-      // Animated stat counters with ScrollTrigger
       gsap.utils.toArray<HTMLElement>(".stat-number").forEach((el) => {
-        const endValue = parseFloat(el.dataset.value || "0");
-        const suffix = el.dataset.suffix || "";
+        const rawValue = el.dataset.value || "0";
+        const isPercent = rawValue.includes("%");
+        const hasPlus = rawValue.includes("+");
+        const numValue = parseFloat(rawValue);
+        const suffix = isPercent ? "%" : hasPlus ? "+" : "";
         const obj = { value: 0 };
         gsap.to(obj, {
-          value: endValue,
-          duration: 1.5,
+          value: numValue,
+          duration: 1.2,
           ease: "power2.out",
           scrollTrigger: {
             trigger: el,
@@ -76,126 +54,129 @@ export function AboutSection() {
   );
 
   return (
-    <section id="about" className="bg-background py-20">
-      <div ref={sectionRef} className="container mx-auto px-4">
-        {/* Section Header */}
+    <section id="about" className="bg-void py-24 md:py-32">
+      <div ref={sectionRef} className="container mx-auto px-6 md:px-8">
         <SectionHeading
-          badge="ABOUT ME"
-          title="About Me"
-          description="Turning Ideas into Code, and Code into Impact"
-          align="center"
+          number="002"
+          label="ABOUT"
+          title={
+            <>
+              The architect behind
+              <br />
+              the <span className="serif-italic">systems</span>
+            </>
+          }
         />
 
-        {/* Two-column layout: content left, stats right */}
-        <div className="grid gap-16 lg:grid-cols-12 items-start">
-          {/* Left column - Content */}
-          <div className="space-y-8 lg:col-span-7">
-            <div className="about-paragraphs relative">
-              {/* Vertical amber accent line on the left border */}
-              <div className="about-border-line absolute left-0 top-0 bottom-0 w-1 rounded-full bg-amber-500" />
-
-              <StaggerContainer className="space-y-6">
-                <StaggerItem className="pl-6">
-                  <p className="text-lg leading-relaxed text-muted-foreground">
-                    Hey, I&apos;m Ian—a full-stack developer and automation
-                    engineer passionate about building elegant solutions for
-                    complex problems. My journey started with an insatiable
-                    curiosity about how things work, evolving into a career where
-                    I craft seamless digital experiences.
-                  </p>
-                </StaggerItem>
-
-                <StaggerItem className="pl-6">
-                  <p className="text-lg leading-relaxed text-muted-foreground">
-                    I specialize in modern web technologies, blending creativity
-                    with technical expertise to build intuitive frontends and
-                    scalable backend systems. Whether it&apos;s designing
-                    user-friendly interfaces, automating workflows, or
-                    engineering powerful applications, I thrive on solving
-                    challenges that push the boundaries of innovation.
-                  </p>
-                </StaggerItem>
-
-                <StaggerItem className="pl-6">
-                  <p className="text-lg leading-relaxed text-muted-foreground">
-                    Beyond coding, you&apos;ll find me exploring emerging tech,
-                    contributing to open-source projects, or sharing insights
-                    with the developer community. Always learning, always
-                    building—let&apos;s shape the future, one project at a time.
-                  </p>
-                </StaggerItem>
-              </StaggerContainer>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+          {/* Left — Bio + Stats */}
+          <div className="lg:col-span-5 space-y-10">
+            {/* Decorative number */}
+            <div className="relative">
+              <span className="absolute -top-16 -left-4 font-serif text-[180px] leading-none text-[#151518] select-none pointer-events-none">
+                02
+              </span>
             </div>
 
-            {/* CTA link */}
+            <SlideIn direction="left">
+              <div className="space-y-6 relative">
+                <p className="text-sm text-[#aaa] font-mono leading-[1.8]">
+                  I&apos;m a full-stack developer and automation architect who
+                  builds software that eliminates human bottlenecks. My work sits
+                  at the intersection of clean code, workflow automation, and
+                  agentic AI &mdash; creating systems that don&apos;t just execute,
+                  but reason.
+                </p>
+                <p className="text-sm text-[#aaa] font-mono leading-[1.8]">
+                  From pixel-perfect interfaces to self-running automation
+                  pipelines, I deliver end-to-end solutions that scale.
+                </p>
+              </div>
+            </SlideIn>
+
+            {/* Stats */}
             <FadeIn>
-              <a
-                href="#projects"
-                className="inline-flex items-center group"
-              >
-                <span className="text-primary font-medium mr-2 group-hover:text-primary/80 transition-colors">
-                  View my work
-                </span>
-                <ArrowRight className="w-5 h-5 text-primary group-hover:translate-x-1 transition-transform group-hover:text-primary/80" />
-              </a>
+              <div className="flex items-start gap-6 md:gap-8 pt-6 border-t border-iron">
+                {stats.map((stat) => (
+                  <div key={stat.label} className="text-center">
+                    <div
+                      className={`stat-number font-serif text-4xl ${
+                        stat.highlight ? "text-coral" : "text-cream"
+                      }`}
+                      data-value={stat.number}
+                    >
+                      0
+                    </div>
+                    <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#888] mt-1">
+                      {stat.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </FadeIn>
           </div>
 
-          {/* Right column - Stats */}
-          <div className="lg:col-span-5">
+          {/* Right — Terminal */}
+          <div className="lg:col-span-7">
             <SlideIn direction="right">
-              <Card className="about-stats-card border-border bg-card">
-                <CardContent className="p-6">
-                  {/* Stats grid */}
-                  <div className="grid grid-cols-2 gap-4">
-                    {stats.map((stat) => (
-                      <div
-                        key={stat.label}
-                        className="stat-card text-center p-4 rounded-lg bg-background border border-border hover:border-primary/30 transition-colors duration-300 group"
-                      >
-                        <div className="text-2xl mb-1">{stat.icon}</div>
-                        <div
-                          className="stat-number text-2xl font-bold text-foreground group-hover:text-primary transition-colors"
-                          data-value={stat.number}
-                          data-suffix={stat.suffix}
-                        >
-                          0{stat.suffix}
-                        </div>
-                        <div className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
-                          {stat.label}
-                        </div>
-                      </div>
+              <TerminalWindow title="ian.config.ts">
+                <pre className="font-mono text-xs md:text-sm leading-[1.9] overflow-x-auto">
+                  <code>
+                    <span className="text-coral">const</span>{" "}
+                    <span className="text-cream">developer</span>{" "}
+                    <span className="text-[#555]">=</span>{" "}
+                    <span className="text-[#555]">{"{"}</span>
+                    {"\n"}
+                    {"  "}
+                    <span className="text-[#888]">name:</span>{" "}
+                    <span className="text-cream">&quot;Ian&quot;</span>,{"\n"}
+                    {"  "}
+                    <span className="text-[#888]">role:</span>{" "}
+                    <span className="text-cream">
+                      &quot;Full-Stack Dev &amp; Automation Architect&quot;
+                    </span>
+                    ,{"\n"}
+                    {"\n"}
+                    {techStack.map((row) => (
+                      <span key={row.category}>
+                        {"  "}
+                        <span className="text-[#888]">
+                          {row.category.toLowerCase().replace(/\s\/\s/g, "_")}:
+                        </span>{" "}
+                        <span className="text-cream">
+                          [{row.items.split(", ").map((item, i, arr) => (
+                            <span key={item}>
+                              &quot;{item}&quot;
+                              {i < arr.length - 1 ? ", " : ""}
+                            </span>
+                          ))}]
+                        </span>
+                        ,{"\n"}
+                      </span>
                     ))}
-                  </div>
+                    {"\n"}
+                    {"  "}
+                    <span className="text-[#888]">status:</span>{" "}
+                    <span className="text-[#22c55e]">
+                      &quot;available&quot;
+                    </span>
+                    ,{"\n"}
+                    {"  "}
+                    <span className="text-[#888]">location:</span>{" "}
+                    <span className="text-cream">
+                      &quot;Remote — Worldwide&quot;
+                    </span>
+                    ,{"\n"}
+                    <span className="text-[#555]">{"}"}</span>{" "}
+                    <span className="text-coral">satisfies</span>{" "}
+                    <span className="text-cream">Developer</span>;
+                  </code>
+                </pre>
+              </TerminalWindow>
 
-                  <Separator className="my-6" />
-
-                  {/* Tech Stack */}
-                  <div>
-                    <h3 className="text-lg font-medium text-foreground mb-3">
-                      Tech Stack
-                    </h3>
-                    <motion.div
-                      className="flex flex-wrap gap-2"
-                      variants={staggerContainer}
-                      initial="hidden"
-                      whileInView="visible"
-                      viewport={{ once: true }}
-                    >
-                      {techStack.map((tech) => (
-                        <motion.div key={tech} variants={staggerItem}>
-                          <Badge
-                            variant="outline"
-                            className="px-3 py-1 bg-primary/10 border-border text-muted-foreground hover:border-primary/50 hover:text-primary transition-all cursor-default"
-                          >
-                            {tech}
-                          </Badge>
-                        </motion.div>
-                      ))}
-                    </motion.div>
-                  </div>
-                </CardContent>
-              </Card>
+              <p className="text-xs font-mono text-[#888] italic mt-4">
+                Always shipping. Always learning.
+              </p>
             </SlideIn>
           </div>
         </div>

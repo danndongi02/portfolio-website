@@ -1,234 +1,175 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, ArrowRight, ExternalLink, Github } from "lucide-react";
+import { motion } from "framer-motion";
 import { projects } from "@/data/projects";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { useGsap3DTilt } from "@/hooks/use-gsap-3d-tilt";
-import { useMagnetic } from "@/hooks/use-magnetic";
+import { staggerContainer, staggerItem, fadeUp } from "@/lib/motion-variants";
 
 export function ProjectsSection() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const project = projects[activeIndex];
-
-  const cardRef = useRef<HTMLDivElement>(null);
-  const prevBtnRef = useRef<HTMLButtonElement>(null);
-  const nextBtnRef = useRef<HTMLButtonElement>(null);
-
-  useGsap3DTilt(cardRef, 20);
-  useMagnetic(prevBtnRef, 0.3);
-  useMagnetic(nextBtnRef, 0.3);
-
-  const goToPrev = () => {
-    setActiveIndex((prev) => (prev === 0 ? projects.length - 1 : prev - 1));
-  };
-
-  const goToNext = () => {
-    setActiveIndex((prev) => (prev === projects.length - 1 ? 0 : prev + 1));
-  };
-
-  const progressPercent = ((activeIndex + 1) / projects.length) * 100;
+  const featured = projects[0];
+  const rest = projects.slice(1, 5);
 
   return (
-    <section id="projects" className="bg-background py-20 md:py-28">
-      <div className="container mx-auto px-4">
-        {/* Section Header */}
+    <section id="projects" className="bg-void py-24 md:py-32 relative">
+      {/* Subtle radial depth */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,#111116_0%,#08080a_70%)] pointer-events-none" />
+
+      <div className="container mx-auto px-6 md:px-8 relative z-10">
         <SectionHeading
-          badge="My Work"
-          title="Featured Projects"
-          description="A collection of my recent work showcasing my skills and expertise in full-stack development and automation."
+          number="004"
+          label="WORK"
+          title={
+            <>
+              Selected <span className="serif-italic">work</span>.
+            </>
+          }
         />
 
-        {/* Featured Project Card */}
-        <div className="max-w-[850px] mx-auto">
-          <AnimatePresence mode="wait">
+        {/* Featured project */}
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="border border-iron bg-surface mb-16"
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-2">
+            {/* Left — Details */}
+            <div className="p-8 md:p-12 flex flex-col justify-center">
+              <span className="text-xs font-mono uppercase tracking-[0.2em] text-coral mb-4">
+                FEATURED
+              </span>
+              <h3 className="font-serif text-3xl md:text-4xl text-cream serif-italic mb-4">
+                {featured.title}
+              </h3>
+              <p className="text-sm font-mono text-[#aaa] leading-[1.7] mb-6">
+                {featured.description}
+              </p>
+
+              {/* Tech tags */}
+              <div className="flex flex-wrap gap-x-3 gap-y-1 mb-8">
+                {featured.technologies.map((tech) => (
+                  <span
+                    key={tech}
+                    className="text-[11px] font-mono uppercase tracking-[0.1em] text-[#888]"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+
+              {/* Links */}
+              <div className="flex gap-6">
+                <a
+                  href={featured.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs font-mono uppercase tracking-[0.15em] text-cream hover:text-coral transition-colors"
+                >
+                  GITHUB ↗
+                </a>
+                {featured.demoUrl && featured.demoUrl !== "#" && (
+                  <a
+                    href={featured.demoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs font-mono uppercase tracking-[0.15em] text-coral hover:text-coral/80 transition-colors"
+                  >
+                    VIEW PROJECT &rarr;
+                  </a>
+                )}
+              </div>
+            </div>
+
+            {/* Right — Wireframe placeholder */}
+            <div className="bg-[#0a0c10] border-l border-iron p-8 md:p-12 flex items-center justify-center min-h-[300px]">
+              <div className="w-full max-w-[300px] opacity-15">
+                <svg viewBox="0 0 300 200" fill="none" className="w-full">
+                  {/* Wireframe UI schematic */}
+                  <rect x="0" y="0" width="300" height="200" stroke="#f0ece6" strokeWidth="1" />
+                  <rect x="0" y="0" width="60" height="200" stroke="#f0ece6" strokeWidth="0.5" />
+                  <rect x="75" y="15" width="100" height="12" stroke="#f0ece6" strokeWidth="0.5" />
+                  <rect x="75" y="40" width="210" height="70" stroke="#f0ece6" strokeWidth="0.5" rx="0" />
+                  <rect x="75" y="125" width="100" height="60" stroke="#f0ece6" strokeWidth="0.5" />
+                  <rect x="185" y="125" width="100" height="60" stroke="#f0ece6" strokeWidth="0.5" />
+                  <line x1="10" y1="20" x2="50" y2="20" stroke="#f0ece6" strokeWidth="0.5" />
+                  <line x1="10" y1="35" x2="45" y2="35" stroke="#f0ece6" strokeWidth="0.5" />
+                  <line x1="10" y1="50" x2="50" y2="50" stroke="#f0ece6" strokeWidth="0.5" />
+                  <line x1="10" y1="65" x2="40" y2="65" stroke="#f0ece6" strokeWidth="0.5" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Project grid — staggered */}
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+          className="grid grid-cols-1 md:grid-cols-2 gap-6"
+        >
+          {rest.map((project, i) => (
             <motion.div
               key={project.title}
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -50 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
+              variants={staggerItem}
+              className={`group border border-iron bg-surface hover:border-coral/30 transition-colors duration-200 ${
+                i % 2 === 1 ? "md:mt-12" : ""
+              }`}
             >
-              <div
-                ref={cardRef}
-                style={{ transformStyle: "preserve-3d" }}
-              >
-                <Card
-                  className="relative overflow-hidden border-border/50 bg-card shadow-2xl"
-                  style={{
-                    boxShadow: `0 25px 50px -12px hsl(var(--foreground) / 0.15), 0 0 40px 0px ${project.color}30`,
-                  }}
+              {/* Accent bar */}
+              <div className="h-0.5 bg-coral" />
+
+              <div className="p-6 md:p-8">
+                <span className="text-xs font-mono text-[#666]">
+                  {String(i + 2).padStart(2, "0")}
+                </span>
+                <h3 className="font-serif text-xl md:text-2xl text-cream serif-italic mt-2 mb-2">
+                  {project.title}
+                </h3>
+                <p className="text-xs font-mono text-[#aaa] leading-[1.7] mb-4">
+                  {project.description}
+                </p>
+
+                {/* Tags */}
+                <div className="flex flex-wrap gap-x-2 gap-y-1 mb-4">
+                  {project.technologies.map((tech) => (
+                    <span
+                      key={tech}
+                      className="text-[10px] font-mono uppercase tracking-[0.1em] text-[#888]"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+
+                <a
+                  href={project.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs font-mono uppercase tracking-[0.15em] text-coral hover:text-coral/80 transition-colors"
                 >
-                  {/* Image background with content overlay */}
-                  <div className="relative h-[350px] sm:h-[420px] overflow-hidden">
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-full object-cover"
-                    />
-                    <div
-                      className="absolute inset-0"
-                      style={{
-                        background: `linear-gradient(to bottom, transparent 10%, hsl(var(--background) / 0.7) 50%, hsl(var(--background)) 100%), linear-gradient(to right, ${project.color}30, transparent)`,
-                      }}
-                    />
-
-                    {/* Content overlay */}
-                    <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-8">
-                      <h3 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
-                        {project.title}
-                      </h3>
-                      <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-[600px] mb-4">
-                        {project.description}
-                      </p>
-
-                      {/* Tech badges */}
-                      <div className="flex flex-wrap gap-2 mb-5">
-                        {project.technologies.map((tech) => (
-                          <Badge
-                            key={tech}
-                            variant="outline"
-                            className="text-xs border-border/50 text-muted-foreground"
-                            style={{
-                              backgroundColor: `${project.color}15`,
-                              borderColor: `${project.color}30`,
-                            }}
-                          >
-                            {tech}
-                          </Badge>
-                        ))}
-                      </div>
-
-                      {/* Links */}
-                      <div className="flex gap-3">
-                        {project.githubUrl && project.githubUrl !== "#" && (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="gap-2 border-border/50 text-foreground hover:bg-accent"
-                            asChild
-                          >
-                            <a
-                              href={project.githubUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <Github className="w-4 h-4" />
-                              Code
-                            </a>
-                          </Button>
-                        )}
-                        {project.demoUrl && project.demoUrl !== "#" && (
-                          <Button
-                            size="sm"
-                            className="gap-2"
-                            style={{
-                              backgroundColor: project.color,
-                              color: "#fff",
-                            }}
-                            asChild
-                          >
-                            <a
-                              href={project.demoUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              <ExternalLink className="w-4 h-4" />
-                              Live Demo
-                            </a>
-                          </Button>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </Card>
+                  VIEW &rarr;
+                </a>
               </div>
             </motion.div>
-          </AnimatePresence>
+          ))}
+        </motion.div>
 
-          {/* Progress Bar */}
-          <div className="mt-6 space-y-2">
-            <div className="flex justify-between text-sm text-muted-foreground">
-              <span>{project.title}</span>
-              <span>
-                {activeIndex + 1} / {projects.length}
-              </span>
-            </div>
-            <div className="h-1 bg-muted rounded-full overflow-hidden">
-              <motion.div
-                className="h-full rounded-full"
-                style={{
-                  background: `linear-gradient(to right, ${project.color}, ${project.color}cc)`,
-                }}
-                animate={{ width: `${progressPercent}%` }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
-              />
-            </div>
-          </div>
-
-          {/* Navigation */}
-          <div className="flex items-center justify-between mt-6">
-            {/* Left arrow */}
-            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
-              <Button
-                ref={prevBtnRef}
-                variant="outline"
-                size="icon"
-                className="rounded-full border-border/50 text-foreground hover:bg-accent"
-                onClick={goToPrev}
-                aria-label="Previous project"
-              >
-                <ArrowLeft className="w-5 h-5" />
-              </Button>
-            </motion.div>
-
-            {/* Dot indicators */}
-            <div className="flex items-center gap-2">
-              {projects.map((p, i) => (
-                <button
-                  key={p.title}
-                  onClick={() => setActiveIndex(i)}
-                  aria-label={`View project: ${p.title}`}
-                  className="relative p-1 group"
-                >
-                  <motion.div
-                    className="rounded-full transition-colors"
-                    animate={{
-                      width: i === activeIndex ? 32 : 10,
-                      height: 10,
-                      backgroundColor:
-                        i === activeIndex
-                          ? p.color
-                          : "hsl(var(--muted-foreground) / 0.3)",
-                    }}
-                    whileHover={{
-                      scale: 1.3,
-                      backgroundColor: p.color,
-                    }}
-                    transition={{ duration: 0.3, ease: "easeOut" }}
-                  />
-                </button>
-              ))}
-            </div>
-
-            {/* Right arrow */}
-            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
-              <Button
-                ref={nextBtnRef}
-                variant="outline"
-                size="icon"
-                className="rounded-full border-border/50 text-foreground hover:bg-accent"
-                onClick={goToNext}
-                aria-label="Next project"
-              >
-                <ArrowRight className="w-5 h-5" />
-              </Button>
-            </motion.div>
-          </div>
+        {/* Bottom */}
+        <div className="border-t border-iron mt-16 pt-8 flex items-center justify-between">
+          <span className="text-xs font-mono text-[#888]">
+            More work available on request.
+          </span>
+          <a
+            href="https://github.com/danndongi02"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs font-mono uppercase tracking-[0.15em] text-coral hover:text-coral/80 transition-colors"
+          >
+            GITHUB ↗
+          </a>
         </div>
       </div>
     </section>
