@@ -1,121 +1,91 @@
-import { motion } from "framer-motion";
-import { AnimatedSection } from "../ui/section-container";
-import { ContactForm } from "../ui/contact-form";
-import { Github, Linkedin, Mail, MessageSquare } from "lucide-react";
-import { Button } from "../ui/button";
+"use client";
+
+import { SectionHeading } from "@/components/ui/section-heading";
+import { ContactForm } from "@/components/ui/contact-form";
+import { SlideIn } from "@/components/ui/motion-wrapper";
 
 const contactLinks = [
-  {
-    name: "GitHub",
-    icon: Github,
-    href: "https://github.com/yourusername",
-    color: "bg-gray-800 hover:bg-gray-700 text-white border-gray-700",
-  },
-  {
-    name: "LinkedIn",
-    icon: Linkedin,
-    href: "https://linkedin.com/in/yourusername",
-    color: "bg-[#0077b5] hover:bg-[#006399] text-white border-[#006399]",
-  },
-  {
-    name: "Email",
-    icon: Mail,
-    href: "mailto:your.email@example.com",
-    color: "bg-red-600 hover:bg-red-700 text-white border-red-700",
-  },
-  {
-    name: "WhatsApp",
-    icon: MessageSquare,
-    href: "https://wa.me/yourphonenumber",
-    color: "bg-[#25D366] hover:bg-[#20bd5a] text-white border-[#20bd5a]",
-  },
+  { label: "EMAIL", href: "mailto:your.email@example.com", display: "ian@example.com" },
+  { label: "GITHUB", href: "https://github.com/danndongi02", display: "danndongi02" },
+  { label: "LINKEDIN", href: "https://linkedin.com", display: "Profile" },
+  { label: "WHATSAPP", href: "https://wa.me/yourphonenumber", display: "Message" },
 ];
 
 export function ContactSection() {
   return (
-    <AnimatedSection id="contact" className="bg-gradient-to-b from-gray-900 to-gray-950">
-      <div className="space-y-12">
-        <div className="text-center space-y-4">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-white"
-          >
-            Get In Touch
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="text-gray-300 max-w-[600px] mx-auto"
-          >
-            Have a project in mind or want to discuss opportunities? I'd love to hear from you.
-          </motion.p>
-        </div>
+    <section
+      id="contact"
+      className="bg-void py-24 md:py-32 relative"
+    >
+      {/* Radial depth */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,#111116_0%,#08080a_70%)] pointer-events-none" />
 
-        <div className="grid gap-12 md:grid-cols-2 items-start">
-          {/* Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="mx-auto w-full max-w-md"
-          >
-            <ContactForm />
-          </motion.div>
+      <div className="container mx-auto px-6 md:px-8 relative z-10">
+        <SectionHeading
+          number="006"
+          label="CONTACT"
+          title={
+            <>
+              Let&apos;s build something
+              <br />
+              that runs{" "}
+              <span className="serif-italic relative">
+                itself
+                <span className="absolute bottom-0 left-0 right-0 h-px bg-coral" />
+              </span>
+              .
+            </>
+          }
+        />
 
-          {/* Contact Info */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="space-y-8"
-          >
-            <div className="space-y-4">
-              <h3 className="text-xl font-semibold text-white">Connect With Me</h3>
-              <p className="text-gray-300">
-                Feel free to reach out through any of these platforms. I'll get back to you as soon as possible.
-              </p>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+          {/* Left — Info */}
+          <SlideIn direction="left" className="lg:col-span-5 space-y-8">
+            <p className="text-sm font-mono text-[#aaa] leading-[1.8] max-w-[420px]">
+              I&apos;m currently available for contract work &mdash; software
+              development, automation systems, and agentic AI workflows.
+              Let&apos;s talk about what you need.
+            </p>
+
+            {/* Availability indicator */}
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-coral" />
+              <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-coral">
+                Available for Work
+              </span>
             </div>
 
-            <div className="flex flex-wrap gap-4">
+            {/* Contact links */}
+            <div className="space-y-3 pt-4 border-t border-iron">
               {contactLinks.map((link) => (
-                <Button
-                  key={link.name}
-                  size="lg"
-                  className={`gap-2 border ${link.color}`}
-                  asChild
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 group"
                 >
-                  <a href={link.href} target="_blank" rel="noopener noreferrer">
-                    <link.icon className="h-5 w-5" />
-                    {link.name}
-                  </a>
-                </Button>
+                  <span className="text-xs font-mono uppercase tracking-[0.15em] text-cream group-hover:text-coral transition-colors">
+                    {link.label} ↗
+                  </span>
+                  <span className="text-xs font-mono text-[#888]">
+                    {link.display}
+                  </span>
+                </a>
               ))}
             </div>
 
-            <div className="space-y-4">
-              <h3 className="text-xl font-semibold text-white">Location</h3>
-              <p className="text-gray-300">
-                Based in Your City, Country
-                <br />
-                Available for remote work worldwide
-              </p>
-            </div>
+            <p className="text-[11px] font-mono text-[#666]">
+              Based in Nairobi, KE &mdash; Available worldwide
+            </p>
+          </SlideIn>
 
-            <div className="space-y-4">
-              <h3 className="text-xl font-semibold text-white">Working Hours</h3>
-              <p className="text-gray-300">
-                Monday - Friday
-                <br />
-                9:00 AM - 6:00 PM (Your Timezone)
-              </p>
-            </div>
-          </motion.div>
+          {/* Right — Form */}
+          <SlideIn direction="right" className="lg:col-span-7">
+            <ContactForm />
+          </SlideIn>
         </div>
       </div>
-    </AnimatedSection>
+    </section>
   );
 }

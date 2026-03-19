@@ -1,157 +1,177 @@
-import { useState } from "react";
+"use client";
+
 import { motion } from "framer-motion";
-import { AnimatedSection } from "../ui/section-container";
-import { ProjectCard } from "../ui/project-card";
-import { Button } from "../ui/button";
-
-// Placeholder projects data
-const projects = [
-  {
-    title: "E-Commerce Platform",
-    description: "A full-stack e-commerce platform built with Next.js, featuring real-time inventory management, secure payments, and an intuitive admin dashboard.",
-    technologies: ["Next.js", "TypeScript", "Tailwind CSS", "PostgreSQL", "Stripe"],
-    githubUrl: "#",
-    demoUrl: "#",
-  },
-  {
-    title: "AI-Powered Task Manager",
-    description: "Smart task management application that uses AI to prioritize and categorize tasks, with natural language processing for task creation.",
-    technologies: ["React", "Python", "TensorFlow", "FastAPI", "MongoDB"],
-    githubUrl: "#",
-    demoUrl: "#",
-  },
-  {
-    title: "Real-time Chat Application",
-    description: "Feature-rich chat application with real-time messaging, file sharing, and video calls, built with WebSocket technology.",
-    technologies: ["React", "Node.js", "Socket.io", "WebRTC", "Redis"],
-    githubUrl: "#",
-    demoUrl: "#",
-  },
-  {
-    title: "Personal Finance Dashboard",
-    description: "Comprehensive financial management dashboard with expense tracking, budget planning, and interactive data visualizations.",
-    technologies: ["Vue.js", "D3.js", "Express", "MySQL", "Docker"],
-    githubUrl: "#",
-    demoUrl: "#",
-  },
-  {
-    title: "Fitness Tracking Platform",
-    description: "Mobile-first fitness tracking platform with workout planning, progress monitoring, and social features for sharing achievements.",
-    technologies: ["React Native", "GraphQL", "Node.js", "PostgreSQL"],
-    githubUrl: "#",
-  },
-  {
-    title: "Weather Forecast App",
-    description: "Beautiful weather application with detailed forecasts, interactive maps, and severe weather alerts integration.",
-    technologies: ["Next.js", "TypeScript", "Leaflet", "OpenWeatherAPI"],
-    githubUrl: "#",
-    demoUrl: "#",
-  },
-];
-
-// All unique technologies from projects
-const allTechnologies = Array.from(
-  new Set(projects.flatMap((project) => project.technologies))
-).sort();
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0 },
-};
+import { projects } from "@/data/projects";
+import { SectionHeading } from "@/components/ui/section-heading";
+import { staggerContainer, staggerItem, fadeUp } from "@/lib/motion-variants";
 
 export function ProjectsSection() {
-  const [selectedTech, setSelectedTech] = useState<string | null>(null);
-
-  const filteredProjects = selectedTech
-    ? projects.filter((project) => project.technologies.includes(selectedTech))
-    : projects;
+  const featured = projects[0];
+  const rest = projects.slice(1, 5);
 
   return (
-    <AnimatedSection id="projects" className="bg-gradient-to-b from-gray-950 to-gray-900">
-      <div className="space-y-12">
-        <div className="text-center space-y-4">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-white"
-          >
-            Featured Projects
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="text-gray-300 max-w-[600px] mx-auto"
-          >
-            A collection of my recent work and personal projects
-          </motion.p>
-        </div>
+    <section id="projects" className="bg-void py-24 md:py-32 relative">
+      {/* Subtle radial depth */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,#111116_0%,#08080a_70%)] pointer-events-none" />
 
-        {/* Technology Filter */}
+      <div className="container mx-auto px-6 md:px-8 relative z-10">
+        <SectionHeading
+          number="004"
+          label="WORK"
+          title={
+            <>
+              Selected <span className="serif-italic">work</span>.
+            </>
+          }
+        />
+
+        {/* Featured project */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
           viewport={{ once: true }}
-          className="flex flex-wrap justify-center gap-3"
+          className="border border-iron bg-surface mb-16"
         >
-          <Button
-            variant={selectedTech === null ? "default" : "outline"}
-            size="sm"
-            onClick={() => setSelectedTech(null)}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors border
-              ${
-                selectedTech === null
-                  ? "bg-blue-600 text-white border-blue-500"
-                  : "bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700 hover:text-white"
-              }`}
-          >
-            All
-          </Button>
-          {allTechnologies.map((tech) => (
-            <Button
-              key={tech}
-              variant={selectedTech === tech ? "default" : "outline"}
-              size="sm"
-              onClick={() => setSelectedTech(tech)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors border
-                ${
-                  selectedTech === tech
-                    ? "bg-blue-600 text-white border-blue-500"
-                    : "bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700 hover:text-white"
-                }`}
-            >
-              {tech}
-            </Button>
-          ))}
+          <div className="grid grid-cols-1 lg:grid-cols-2">
+            {/* Left — Details */}
+            <div className="p-8 md:p-12 flex flex-col justify-center">
+              <span className="text-xs font-mono uppercase tracking-[0.2em] text-coral mb-4">
+                FEATURED
+              </span>
+              <h3 className="font-serif text-3xl md:text-4xl text-cream serif-italic mb-4">
+                {featured.title}
+              </h3>
+              <p className="text-sm font-mono text-[#aaa] leading-[1.7] mb-6">
+                {featured.description}
+              </p>
+
+              {/* Tech tags */}
+              <div className="flex flex-wrap gap-x-3 gap-y-1 mb-8">
+                {featured.technologies.map((tech) => (
+                  <span
+                    key={tech}
+                    className="text-[11px] font-mono uppercase tracking-[0.1em] text-[#888]"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+
+              {/* Links */}
+              <div className="flex gap-6">
+                <a
+                  href={featured.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs font-mono uppercase tracking-[0.15em] text-cream hover:text-coral transition-colors"
+                >
+                  GITHUB ↗
+                </a>
+                {featured.demoUrl && featured.demoUrl !== "#" && (
+                  <a
+                    href={featured.demoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs font-mono uppercase tracking-[0.15em] text-coral hover:text-coral/80 transition-colors"
+                  >
+                    VIEW PROJECT &rarr;
+                  </a>
+                )}
+              </div>
+            </div>
+
+            {/* Right — Wireframe placeholder */}
+            <div className="bg-[#0a0c10] border-l border-iron p-8 md:p-12 flex items-center justify-center min-h-[300px]">
+              <div className="w-full max-w-[300px] opacity-15">
+                <svg viewBox="0 0 300 200" fill="none" className="w-full">
+                  {/* Wireframe UI schematic */}
+                  <rect x="0" y="0" width="300" height="200" stroke="#f0ece6" strokeWidth="1" />
+                  <rect x="0" y="0" width="60" height="200" stroke="#f0ece6" strokeWidth="0.5" />
+                  <rect x="75" y="15" width="100" height="12" stroke="#f0ece6" strokeWidth="0.5" />
+                  <rect x="75" y="40" width="210" height="70" stroke="#f0ece6" strokeWidth="0.5" rx="0" />
+                  <rect x="75" y="125" width="100" height="60" stroke="#f0ece6" strokeWidth="0.5" />
+                  <rect x="185" y="125" width="100" height="60" stroke="#f0ece6" strokeWidth="0.5" />
+                  <line x1="10" y1="20" x2="50" y2="20" stroke="#f0ece6" strokeWidth="0.5" />
+                  <line x1="10" y1="35" x2="45" y2="35" stroke="#f0ece6" strokeWidth="0.5" />
+                  <line x1="10" y1="50" x2="50" y2="50" stroke="#f0ece6" strokeWidth="0.5" />
+                  <line x1="10" y1="65" x2="40" y2="65" stroke="#f0ece6" strokeWidth="0.5" />
+                </svg>
+              </div>
+            </div>
+          </div>
         </motion.div>
 
-        {/* Projects Grid */}
+        {/* Project grid — staggered */}
         <motion.div
-          variants={containerVariants}
+          variants={staggerContainer}
           initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
-          className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+          className="grid grid-cols-1 md:grid-cols-2 gap-6"
         >
-          {filteredProjects.map((project) => (
-            <motion.div key={project.title} variants={itemVariants}>
-              <ProjectCard {...project} />
+          {rest.map((project, i) => (
+            <motion.div
+              key={project.title}
+              variants={staggerItem}
+              className={`group border border-iron bg-surface hover:border-coral/30 transition-colors duration-200 ${
+                i % 2 === 1 ? "md:mt-12" : ""
+              }`}
+            >
+              {/* Accent bar */}
+              <div className="h-0.5 bg-coral" />
+
+              <div className="p-6 md:p-8">
+                <span className="text-xs font-mono text-[#666]">
+                  {String(i + 2).padStart(2, "0")}
+                </span>
+                <h3 className="font-serif text-xl md:text-2xl text-cream serif-italic mt-2 mb-2">
+                  {project.title}
+                </h3>
+                <p className="text-xs font-mono text-[#aaa] leading-[1.7] mb-4">
+                  {project.description}
+                </p>
+
+                {/* Tags */}
+                <div className="flex flex-wrap gap-x-2 gap-y-1 mb-4">
+                  {project.technologies.map((tech) => (
+                    <span
+                      key={tech}
+                      className="text-[10px] font-mono uppercase tracking-[0.1em] text-[#888]"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+
+                <a
+                  href={project.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs font-mono uppercase tracking-[0.15em] text-coral hover:text-coral/80 transition-colors"
+                >
+                  VIEW &rarr;
+                </a>
+              </div>
             </motion.div>
           ))}
         </motion.div>
+
+        {/* Bottom */}
+        <div className="border-t border-iron mt-16 pt-8 flex items-center justify-between">
+          <span className="text-xs font-mono text-[#888]">
+            More work available on request.
+          </span>
+          <a
+            href="https://github.com/danndongi02"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs font-mono uppercase tracking-[0.15em] text-coral hover:text-coral/80 transition-colors"
+          >
+            GITHUB ↗
+          </a>
+        </div>
       </div>
-    </AnimatedSection>
+    </section>
   );
 }
