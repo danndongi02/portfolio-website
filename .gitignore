@@ -42,3 +42,6 @@ next-env.d.ts
 
 # other
 /docs/
+
+# temporary portfolio intel
+.tmp/

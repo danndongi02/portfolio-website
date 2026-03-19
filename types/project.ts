@@ -2,8 +2,10 @@ export interface Project {
   title: string;
   description: string;
   technologies: string[];
-  githubUrl: string;
+  githubUrl?: string;
   demoUrl?: string;
   image: string;
   color: string;
+  status?: "completed" | "in-progress";
+  category?: string;
 }

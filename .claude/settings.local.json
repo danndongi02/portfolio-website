@@ -12,7 +12,8 @@
       "mcp__shadcn__list_items_in_registries",
       "mcp__shadcn__get_project_registries",
       "mcp__shadcn__get_item_examples_from_registries",
-      "Bash(npx next build)"
+      "Bash(npx next build)",
+      "Bash(npx puppeteer:*)"
     ]
   },
   "enableAllProjectMcpServers": true,
