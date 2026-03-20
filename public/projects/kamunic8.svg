@@ -1,0 +1,26 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="800" fill="#0a0c10"/>
+  <!-- Subtle grid -->
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1a1a1e" stroke-width="0.5"/>
+  </pattern>
+  <rect width="1200" height="800" fill="url(#grid)"/>
+  <!-- Center accent -->
+  <rect x="560" y="320" width="80" height="80" fill="none" stroke="#25D366" stroke-width="1.5"/>
+  <rect x="575" y="335" width="50" height="50" fill="#25D366" opacity="0.15"/>
+  <!-- Title -->
+  <text x="600" y="460" text-anchor="middle" fill="#f0ece6" font-family="serif" font-size="28" font-style="italic" letter-spacing="4">Kamunic8</text>
+  <!-- Subtitle -->
+  <text x="600" y="490" text-anchor="middle" fill="#666" font-family="monospace" font-size="11" letter-spacing="3">AI APPOINTMENT PLATFORM</text>
+  <!-- Corner marks -->
+  <line x1="40" y1="40" x2="80" y2="40" stroke="#333" stroke-width="1"/>
+  <line x1="40" y1="40" x2="40" y2="80" stroke="#333" stroke-width="1"/>
+  <line x1="1160" y1="40" x2="1120" y2="40" stroke="#333" stroke-width="1"/>
+  <line x1="1160" y1="40" x2="1160" y2="80" stroke="#333" stroke-width="1"/>
+  <line x1="40" y1="760" x2="80" y2="760" stroke="#333" stroke-width="1"/>
+  <line x1="40" y1="760" x2="40" y2="720" stroke="#333" stroke-width="1"/>
+  <line x1="1160" y1="760" x2="1120" y2="760" stroke="#333" stroke-width="1"/>
+  <line x1="1160" y1="760" x2="1160" y2="720" stroke="#333" stroke-width="1"/>
+  <!-- NDA notice -->
+  <text x="600" y="540" text-anchor="middle" fill="#444" font-family="monospace" font-size="10" letter-spacing="2">CONFIDENTIAL PROJECT — NO SCREENSHOTS AVAILABLE</text>
+</svg>

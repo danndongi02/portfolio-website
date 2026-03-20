@@ -1,9 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { projects } from "@/data/projects";
+import { Project } from "@/types/project";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { ProjectDetailModal } from "@/components/ui/project-detail-modal";
 import { staggerContainer, staggerItem, fadeUp } from "@/lib/motion-variants";
 
 function StatusBadge({ status }: { status?: string }) {
@@ -17,6 +20,7 @@ function StatusBadge({ status }: { status?: string }) {
 }
 
 export function ProjectsSection() {
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const featured = projects[0];
   const rest = projects.slice(1);
 
@@ -84,16 +88,12 @@ export function ProjectsSection() {
                     GITHUB ↗
                   </a>
                 )}
-                {featured.demoUrl && featured.demoUrl !== "#" && (
-                  <a
-                    href={featured.demoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs font-mono uppercase tracking-[0.15em] text-coral hover:text-coral/80 transition-colors"
-                  >
-                    VIEW PROJECT &rarr;
-                  </a>
-                )}
+                <button
+                  onClick={() => setSelectedProject(featured)}
+                  className="text-xs font-mono uppercase tracking-[0.15em] text-coral hover:text-coral/80 transition-colors cursor-pointer"
+                >
+                  LEARN MORE &rarr;
+                </button>
               </div>
             </div>
 
@@ -167,16 +167,12 @@ export function ProjectsSection() {
                         GITHUB ↗
                       </a>
                     )}
-                    {project.demoUrl && project.demoUrl !== "#" && (
-                      <a
-                        href={project.demoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs font-mono uppercase tracking-[0.15em] text-coral hover:text-coral/80 transition-colors"
-                      >
-                        VIEW &rarr;
-                      </a>
-                    )}
+                    <button
+                      onClick={() => setSelectedProject(project)}
+                      className="text-xs font-mono uppercase tracking-[0.15em] text-coral hover:text-coral/80 transition-colors cursor-pointer"
+                    >
+                      LEARN MORE &rarr;
+                    </button>
                   </div>
                 </div>
               </motion.div>
@@ -199,6 +195,15 @@ export function ProjectsSection() {
           </a>
         </div>
       </div>
+
+      {/* Project Detail Modal */}
+      <ProjectDetailModal
+        project={selectedProject}
+        open={selectedProject !== null}
+        onOpenChange={(open) => {
+          if (!open) setSelectedProject(null);
+        }}
+      />
     </section>
   );
 }
