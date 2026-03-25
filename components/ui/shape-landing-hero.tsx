@@ -1,281 +1,211 @@
 "use client";
 
-import { motion, useMotionValue, useTransform, animate } from "framer-motion";
-import { Circle } from "lucide-react";
-import { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
-function ElegantShape({
-    className,
-    delay = 0,
-    width = 400,
-    height = 100,
-    rotate = 0,
-    gradient = "from-white/[0.08]",
-}: {
-    className?: string;
-    delay?: number;
-    width?: number;
-    height?: number;
-    rotate?: number;
-    gradient?: string;
-}) {
-    return (
-        <motion.div
-            initial={{
-                opacity: 0,
-                y: -150,
-                rotate: rotate - 15,
-            }}
-            animate={{
-                opacity: 1,
-                y: 0,
-                rotate: rotate,
-            }}
-            transition={{
-                duration: 2.4,
-                delay,
-                ease: [0.23, 0.86, 0.39, 0.96],
-                opacity: { duration: 1.2 },
-            }}
-            className={cn("absolute", className)}
-        >
-            <motion.div
-                animate={{
-                    y: [0, 15, 0],
-                }}
-                transition={{
-                    duration: 12,
-                    repeat: Number.POSITIVE_INFINITY,
-                    ease: "easeInOut",
-                }}
-                style={{
-                    width,
-                    height,
-                }}
-                className="relative"
-            >
-                <div
-                    className={cn(
-                        "absolute inset-0 rounded-full",
-                        "bg-gradient-to-r to-transparent",
-                        gradient,
-                        "backdrop-blur-[2px] border-2 border-white/[0.15]",
-                        "shadow-[0_8px_32px_0_rgba(255,255,255,0.1)]",
-                        "after:absolute after:inset-0 after:rounded-full",
-                        "after:bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.2),transparent_70%)]"
-                    )}
-                />
-            </motion.div>
-        </motion.div>
-    );
-}
-
-function TypewriterText({ text, className }: { text: string; className?: string }) {
-    const [displayText, setDisplayText] = useState("");
-    const [currentIndex, setCurrentIndex] = useState(0);
-    
-    useEffect(() => {
-        if (currentIndex < text.length) {
-            const timeout = setTimeout(() => {
-                setDisplayText(prev => prev + text[currentIndex]);
-                setCurrentIndex(prev => prev + 1);
-            }, 40); // Speed of typing
-            
-            return () => clearTimeout(timeout);
-        }
-    }, [currentIndex, text]);
-    
-    return (
-        <span className={className}>
-            {displayText}
-            {currentIndex < text.length && (
-                <span className="inline-block w-[2px] h-[1em] bg-white/60 animate-pulse ml-1"></span>
-            )}
-        </span>
-    );
-}
+const mechanical = [0.25, 0.1, 0.25, 1] as const;
 
 function HeroGeometric({
-    badge = "Design Collective",
-    title1 = "Elevate Your Digital Vision",
-    title2 = "Crafting Exceptional Websites",
-    description = "Crafting exceptional digital experiences through innovative design and cutting-edge technology.",
-    subDescription,
-    showButtons = true,
-    onViewWorkClick,
-    onContactClick,
+  onViewWorkClick,
+  onContactClick,
 }: {
-    badge?: string;
-    title1?: string;
-    title2?: string;
-    description?: string;
-    subDescription?: string;
-    showButtons?: boolean;
-    onViewWorkClick?: () => void;
-    onContactClick?: () => void;
+  badge?: string;
+  title1?: string;
+  title2?: string;
+  description?: string;
+  subDescription?: string;
+  showButtons?: boolean;
+  onViewWorkClick?: () => void;
+  onContactClick?: () => void;
 }) {
-    const fadeUpVariants = {
-        hidden: { opacity: 0, y: 30 },
-        visible: (i: number) => ({
-            opacity: 1,
-            y: 0,
-            transition: {
-                duration: 1,
-                delay: 0.5 + i * 0.2,
-                ease: [0.25, 0.4, 0.25, 1],
-            },
-        }),
-    };
+  return (
+    <div className="relative min-h-screen w-full flex items-center overflow-hidden bg-void">
+      {/* Blueprint grid */}
+      <div className="absolute inset-0 blueprint-grid opacity-30" />
 
-    return (
-        <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-gray-900">
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/[0.05] via-transparent to-rose-500/[0.05] blur-3xl" />
+      {/* Content */}
+      <div className="relative z-10 container mx-auto px-6 md:px-8 pt-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          {/* Left — Content */}
+          <div className="lg:col-span-7">
+            {/* Section label */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.3, ease: mechanical }}
+              className="flex items-center gap-4 mb-8"
+            >
+              <span className="text-xs uppercase tracking-[0.2em] text-[#666] font-mono">
+                001 &mdash; Introduction
+              </span>
+              <div className="h-px flex-1 bg-iron max-w-[200px]" />
+            </motion.div>
 
-            <div className="absolute inset-0 overflow-hidden">
-                <ElegantShape
-                    delay={0.3}
-                    width={600}
-                    height={140}
-                    rotate={12}
-                    gradient="from-indigo-500/[0.15]"
-                    className="left-[-10%] md:left-[-5%] top-[15%] md:top-[20%]"
+            {/* Headline */}
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.5, ease: mechanical }}
+              className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] text-cream leading-[1.05] mb-6"
+            >
+              Software that
+              <br />
+              <span className="serif-italic">thinks</span> for itself.
+            </motion.h1>
+
+            {/* Description */}
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 1, ease: mechanical }}
+              className="text-sm md:text-[15px] text-[#aaa] font-mono leading-[1.8] max-w-[520px] mb-8"
+            >
+              Full-stack developer &amp; automation architect. I build intelligent
+              systems, agentic workflows, and software that eliminates human
+              bottlenecks.
+            </motion.p>
+
+            {/* CTAs */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 1.3, ease: mechanical }}
+              className="flex flex-wrap gap-4 mb-10"
+            >
+              <Button onClick={onViewWorkClick}>
+                View Work &rarr;
+              </Button>
+              <Button variant="outline" onClick={onContactClick}>
+                Get In Touch
+              </Button>
+            </motion.div>
+
+            {/* Stats */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 1.6, ease: mechanical }}
+              className="flex items-center gap-6 text-xs font-mono text-[#888] uppercase tracking-[0.15em]"
+            >
+              <span>50+ Automations</span>
+              <span className="text-iron">|</span>
+              <span>7+ Projects</span>
+              <span className="text-iron">|</span>
+              <span>100% Retention</span>
+            </motion.div>
+          </div>
+
+          {/* Right — Portrait (desktop) */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.8 }}
+            className="hidden lg:flex lg:col-span-5 justify-end"
+          >
+            <div className="relative group w-full max-w-[480px]">
+              {/* Offset border frame — editorial brutalist aesthetic */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.8, delay: 1.4, ease: mechanical }}
+                className="absolute -top-3 -right-3 w-full h-full border border-[#1a1a1e]"
+              />
+
+              {/* Coral accent corner */}
+              <motion.div
+                initial={{ scaleY: 0 }}
+                animate={{ scaleY: 1 }}
+                transition={{ duration: 0.6, delay: 1.8, ease: mechanical }}
+                className="absolute -left-4 top-0 w-[2px] h-20 bg-coral origin-top"
+              />
+
+              {/* Image container — hover on parent group triggers grayscale removal */}
+              <div className="relative w-full aspect-[3/4] overflow-hidden border border-iron">
+                <Image
+                  src="/me.png"
+                  alt="Ian — Software Developer & Automation Architect"
+                  fill
+                  className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                  priority
+                  sizes="(min-width: 1024px) 480px, 0px"
                 />
 
-                <ElegantShape
-                    delay={0.5}
-                    width={500}
-                    height={120}
-                    rotate={-15}
-                    gradient="from-rose-500/[0.15]"
-                    className="right-[-5%] md:right-[0%] top-[70%] md:top-[75%]"
-                />
+                {/* Subtle gradient overlay at bottom */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#08080a] via-transparent to-transparent opacity-60 pointer-events-none" />
+              </div>
 
-                <ElegantShape
-                    delay={0.4}
-                    width={300}
-                    height={80}
-                    rotate={-8}
-                    gradient="from-violet-500/[0.15]"
-                    className="left-[5%] md:left-[10%] bottom-[5%] md:bottom-[10%]"
-                />
-
-                <ElegantShape
-                    delay={0.6}
-                    width={200}
-                    height={60}
-                    rotate={20}
-                    gradient="from-amber-500/[0.15]"
-                    className="right-[15%] md:right-[20%] top-[10%] md:top-[15%]"
-                />
-
-                <ElegantShape
-                    delay={0.7}
-                    width={150}
-                    height={40}
-                    rotate={-25}
-                    gradient="from-cyan-500/[0.15]"
-                    className="left-[20%] md:left-[25%] top-[5%] md:top-[10%]"
-                />
+              {/* Label beneath the image */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.6, delay: 2, ease: mechanical }}
+                className="mt-3 flex items-center justify-between"
+              >
+                <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#555]">
+                  Ian Muigai
+                </span>
+                <span className="text-[10px] font-mono text-[#333]">
+                  // developer &amp; automation architect
+                </span>
+              </motion.div>
             </div>
+          </motion.div>
 
-            <div className="relative z-10 container mx-auto px-4 md:px-6">
-                <div className="max-w-3xl mx-auto text-center">
-                    <motion.div
-                        custom={0}
-                        variants={fadeUpVariants}
-                        initial="hidden"
-                        animate="visible"
-                        className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.08] mb-8 md:mb-12"
-                        whileHover={{ 
-                            scale: 1.05,
-                            backgroundColor: "rgba(255, 255, 255, 0.05)",
-                            transition: { duration: 0.3 }
-                        }}
-                    >
-                        <Circle className="h-2 w-2 fill-rose-500/80" />
-                        <span className="text-sm text-white/60 tracking-wide">
-                            {badge}
-                        </span>
-                    </motion.div>
+          {/* Portrait (mobile/tablet) — shown below content on smaller screens */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1.2, ease: mechanical }}
+            className="lg:hidden flex justify-center mt-4"
+          >
+            <div className="relative group w-full max-w-[320px] sm:max-w-[380px]">
+              {/* Coral accent corner */}
+              <div className="absolute -left-3 top-0 w-[2px] h-12 bg-coral" />
 
-                    <motion.div
-                        custom={1}
-                        variants={fadeUpVariants}
-                        initial="hidden"
-                        animate="visible"
-                    >
-                        <h1 className="text-2xl sm:text-4xl md:text-6xl font-bold mb-4 md:mb-6 tracking-tight leading-[1.1]">
-                            <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-white/80">
-                                {title1}
-                            </span>
-                            {title2 && (
-                                <>
-                                    <br />
-                                    <span
-                                        className={cn(
-                                            "bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-white/90 to-rose-300 "
-                                        )}
-                                    >
-                                        {title2}
-                                    </span>
-                                </>
-                            )}
-                        </h1>
-                    </motion.div>
+              <div className="relative w-full aspect-[3/4] overflow-hidden border border-iron">
+                <Image
+                  src="/me.png"
+                  alt="Ian — Software Developer & Automation Architect"
+                  fill
+                  className="object-cover"
+                  priority
+                  sizes="(max-width: 640px) 320px, 380px"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#08080a] via-transparent to-transparent opacity-60 pointer-events-none" />
+              </div>
 
-                    <motion.div
-                        custom={2}
-                        variants={fadeUpVariants}
-                        initial="hidden"
-                        animate="visible"
-                    >
-                        <p className="text-base sm:text-lg md:text-xl text-white/40 mb-4 leading-relaxed font-light tracking-wide max-w-xl mx-auto px-4">
-                            <TypewriterText text={description} />
-                        </p>
-                    </motion.div>
-
-                    {subDescription && (
-                        <motion.div
-                            custom={2.5}
-                            variants={fadeUpVariants}
-                            initial="hidden"
-                            animate="visible"
-                        >
-                            <p className="text-lg sm:text-xl text-white/80 mb-10 font-medium tracking-wide max-w-xl mx-auto px-4 bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-white/90 to-rose-300">
-                                {subDescription}
-                            </p>
-                        </motion.div>
-                    )}
-
-                    {showButtons && (
-                        <motion.div
-                            custom={3}
-                            variants={fadeUpVariants}
-                            initial="hidden"
-                            animate="visible"
-                            className="space-x-4"
-                        >
-                            <button
-                                onClick={onViewWorkClick}
-                                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg transition-colors duration-300"
-                            >
-                                View My Work
-                            </button>
-                            <button
-                                onClick={onContactClick}
-                                className="bg-transparent border-2 border-white hover:bg-white hover:text-gray-900 text-white px-8 py-3 rounded-lg transition-colors duration-300"
-                            >
-                                Contact Me
-                            </button>
-                        </motion.div>
-                    )}
-                </div>
+              <div className="mt-2 flex items-center justify-between">
+                <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#555]">
+                  Ian Muigai
+                </span>
+                <span className="text-[10px] font-mono text-[#333]">
+                  // developer &amp; automation architect
+                </span>
+              </div>
             </div>
-
-            <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-gray-900/80 pointer-events-none" />
+          </motion.div>
         </div>
-    );
+      </div>
+
+      {/* Scroll indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2.5, duration: 0.6 }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+      >
+        <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-[#555]">
+          Scroll
+        </span>
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 2, ease: "easeInOut", repeat: Infinity }}
+          className="w-px h-8 bg-gradient-to-b from-[#555] to-transparent"
+        />
+      </motion.div>
+    </div>
+  );
 }
 
-export { HeroGeometric }
+export { HeroGeometric };

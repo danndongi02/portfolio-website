@@ -1,9 +1,22 @@
-import { useState } from "react";
+"use client";
+
+import { useRef, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Button } from "./button";
-import { motion } from "framer-motion";
+import { gsap } from "@/lib/gsap-config";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { TerminalWindow } from "@/components/ui/terminal-window";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
 
 const contactFormSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -14,100 +27,139 @@ const contactFormSchema = z.object({
 type ContactFormData = z.infer<typeof contactFormSchema>;
 
 export function ContactForm() {
+  const successRef = useRef<HTMLDivElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
+  const [submitStatus, setSubmitStatus] = useState<
+    "idle" | "success" | "error"
+  >("idle");
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<ContactFormData>({
+  const form = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      message: "",
+    },
   });
+
+  useEffect(() => {
+    if (!successRef.current) return;
+
+    if (submitStatus === "success") {
+      gsap.fromTo(
+        successRef.current,
+        { opacity: 0, height: 0 },
+        { opacity: 1, height: "auto", duration: 0.4, ease: "power2.out" }
+      );
+    } else {
+      gsap.to(successRef.current, {
+        opacity: 0,
+        height: 0,
+        duration: 0.3,
+        ease: "power2.in",
+      });
+    }
+  }, [submitStatus]);
 
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
-    // Simulated form submission
     await new Promise((resolve) => setTimeout(resolve, 1000));
     setSubmitStatus("success");
     setIsSubmitting(false);
-    reset();
-    // Reset success message after 3 seconds
+    form.reset();
     setTimeout(() => setSubmitStatus("idle"), 3000);
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 w-full max-w-md">
-      <div>
-        <label htmlFor="name" className="block text-sm font-medium text-gray-200 mb-2">
-          Name
-        </label>
-        <input
-          {...register("name")}
-          type="text"
-          id="name"
-          className="w-full px-4 py-2 rounded-md bg-gray-800 border border-gray-600 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-colors"
-          placeholder="Your name"
-        />
-        {errors.name && (
-          <p className="mt-1 text-sm text-red-400">{errors.name.message}</p>
-        )}
-      </div>
+    <TerminalWindow title="new_project.init">
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-6"
+        >
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[11px] font-mono uppercase tracking-[0.2em] text-[#888]">
+                  NAME
+                </FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="Your name" />
+                </FormControl>
+                <FormMessage className="text-destructive text-xs font-mono" />
+              </FormItem>
+            )}
+          />
 
-      <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-200 mb-2">
-          Email
-        </label>
-        <input
-          {...register("email")}
-          type="email"
-          id="email"
-          className="w-full px-4 py-2 rounded-md bg-gray-800 border border-gray-600 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-colors"
-          placeholder="your.email@example.com"
-        />
-        {errors.email && (
-          <p className="mt-1 text-sm text-red-400">{errors.email.message}</p>
-        )}
-      </div>
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[11px] font-mono uppercase tracking-[0.2em] text-[#888]">
+                  EMAIL
+                </FormLabel>
+                <FormControl>
+                  <Input {...field} type="email" placeholder="your@email.com" />
+                </FormControl>
+                <FormMessage className="text-destructive text-xs font-mono" />
+              </FormItem>
+            )}
+          />
 
-      <div>
-        <label htmlFor="message" className="block text-sm font-medium text-gray-200 mb-2">
-          Message
-        </label>
-        <textarea
-          {...register("message")}
-          id="message"
-          rows={5}
-          className="w-full px-4 py-2 rounded-md bg-gray-800 border border-gray-600 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-colors resize-none"
-          placeholder="Your message..."
-        />
-        {errors.message && (
-          <p className="mt-1 text-sm text-red-400">{errors.message.message}</p>
-        )}
-      </div>
+          <FormField
+            control={form.control}
+            name="message"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-[11px] font-mono uppercase tracking-[0.2em] text-[#888]">
+                  MESSAGE
+                </FormLabel>
+                <FormControl>
+                  <Textarea
+                    {...field}
+                    rows={5}
+                    placeholder="Tell me about your project..."
+                  />
+                </FormControl>
+                <FormMessage className="text-destructive text-xs font-mono" />
+              </FormItem>
+            )}
+          />
 
-      <motion.div
-        initial={false}
-        animate={
-          submitStatus === "success"
-            ? { opacity: 1, height: "auto" }
-            : { opacity: 0, height: 0 }
-        }
-        className="overflow-hidden"
-      >
-        <p className="text-green-400 text-sm">
-          Thank you! Your message has been sent successfully.
-        </p>
-      </motion.div>
+          {/* Success message */}
+          <div
+            ref={successRef}
+            className="overflow-hidden"
+            style={{ opacity: 0, height: 0 }}
+          >
+            <div className="text-xs font-mono text-[#22c55e] border border-[#22c55e]/20 px-4 py-3">
+              // message sent successfully
+            </div>
+          </div>
 
-      <Button
-        type="submit"
-        disabled={isSubmitting}
-        className="w-full bg-blue-600 text-white hover:bg-blue-500"
-      >
-        {isSubmitting ? "Sending..." : "Send Message"}
-      </Button>
-    </form>
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full"
+          >
+            {isSubmitting ? (
+              <>
+                <div className="w-3 h-3 border border-black/30 border-t-black rounded-full animate-spin" />
+                Processing...
+              </>
+            ) : (
+              "Initialize Project →"
+            )}
+          </Button>
+
+          <p className="text-[11px] font-mono text-[#666]">
+            // typically responds within 24 hours
+          </p>
+        </form>
+      </Form>
+    </TerminalWindow>
   );
 }

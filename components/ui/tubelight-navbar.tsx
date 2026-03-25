@@ -1,130 +1,152 @@
-"use client"
+"use client";
 
-import React, { useEffect, useState } from "react"
-import { motion } from "framer-motion"
-import Link from "next/link"
-import { LucideIcon } from "lucide-react"
-import { cn } from "@/lib/utils"
+import React, { useEffect, useRef, useState } from "react";
+import { useGSAP } from "@gsap/react";
+import { gsap, ScrollTrigger } from "@/lib/gsap-config";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 interface NavItem {
-  name: string
-  url: string
-  icon: LucideIcon
+  name: string;
+  url: string;
 }
 
 interface NavBarProps {
-  items: NavItem[]
-  className?: string
+  items: NavItem[];
+  className?: string;
 }
 
 export function NavBar({ items, className }: NavBarProps) {
-  const [activeTab, setActiveTab] = useState(items[0].name)
-  const [isMobile, setIsMobile] = useState(false)
+  const [activeTab, setActiveTab] = useState(items[0].name);
+  const [isMobile, setIsMobile] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const navBarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768)
-    }
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
-    handleResize()
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
+  useGSAP(() => {
+    const sections = items
+      .filter((item) => item.url.startsWith("#") && item.url !== "#")
+      .map((item) => ({
+        id: item.url.substring(1),
+        name: item.name,
+      }));
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = items
-        .filter(item => item.url.startsWith('#') && item.url !== '#')
-        .map(item => ({
-          id: item.url.substring(1),
-          name: item.name
-        }))
-      
-      // Add home section (special case for the top of the page)
-      sections.unshift({ id: 'top', name: 'Home' })
-      
-      // Find which section is currently in view
-      let currentSection = sections[0].name
-      
-      for (const section of sections) {
-        if (section.id === 'top') continue // Skip the home section in this check
-        
-        const element = document.getElementById(section.id)
-        if (element) {
-          const rect = element.getBoundingClientRect()
-          // If the top of the section is near the top of the viewport or above it,
-          // and the bottom is still visible, consider it the active section
-          if (rect.top <= 150 && rect.bottom > 0) {
-            currentSection = section.name
-          }
-        }
-      }
-      
-      // Special case for home - if we're at the top of the page
-      if (window.scrollY < 100) {
-        currentSection = 'Home'
-      }
-      
-      setActiveTab(currentSection)
+    sections.forEach(({ id, name }) => {
+      ScrollTrigger.create({
+        trigger: `#${id}`,
+        start: "top center",
+        end: "bottom center",
+        onEnter: () => setActiveTab(name),
+        onEnterBack: () => setActiveTab(name),
+      });
+    });
+
+    ScrollTrigger.create({
+      trigger: "main",
+      start: "top top",
+      end: "100px top",
+      onEnterBack: () => setActiveTab("Home"),
+    });
+
+    if (navBarRef.current) {
+      const showAnim = gsap
+        .from(navBarRef.current, {
+          yPercent: -100,
+          paused: true,
+          duration: 0.3,
+          ease: "power2.out",
+        })
+        .progress(1);
+
+      ScrollTrigger.create({
+        start: "top top",
+        end: "max",
+        onUpdate: (self) => {
+          self.direction === -1 ? showAnim.play() : showAnim.reverse();
+        },
+      });
     }
-    
-    // Initial check
-    handleScroll()
-    
-    // Add scroll event listener
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [items])
+  }, { dependencies: [isMobile] });
 
   return (
-    <div
+    <nav
+      ref={navBarRef}
       className={cn(
-        "fixed bottom-0 sm:top-0 left-1/2 -translate-x-1/2 z-50 mb-6 sm:pt-6",
-        className,
+        "fixed top-0 left-0 right-0 z-50",
+        className
       )}
     >
-      <div className="flex items-center gap-3 bg-gray-900/30 border border-white/10 backdrop-blur-xl py-1 px-1 rounded-full shadow-lg">
-        {items.map((item) => {
-          const Icon = item.icon
-          const isActive = activeTab === item.name
+      <div className="container mx-auto px-6 md:px-8">
+        <div className="flex items-center justify-between h-16 md:h-20 border-b border-iron/50">
+          {/* Logo */}
+          <Link
+            href="#"
+            className="text-sm uppercase tracking-[0.3em] text-cream font-mono font-medium"
+          >
+            IAN
+          </Link>
 
-          return (
-            <Link
-              key={item.name}
-              href={item.url}
-              onClick={() => setActiveTab(item.name)}
-              className={cn(
-                "relative cursor-pointer text-sm font-semibold px-6 py-2 rounded-full transition-colors",
-                "text-gray-300 hover:text-blue-400",
-                isActive && "bg-white/10 text-blue-400",
-              )}
-            >
-              <span className="hidden md:inline">{item.name}</span>
-              <span className="md:hidden">
-                <Icon size={18} strokeWidth={2.5} />
-              </span>
-              {isActive && (
-                <motion.div
-                  layoutId="lamp"
-                  className="absolute inset-0 w-full bg-blue-400/5 rounded-full -z-10"
-                  initial={false}
-                  transition={{
-                    type: "spring",
-                    stiffness: 300,
-                    damping: 30,
-                  }}
-                >
-                  <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-1 bg-blue-400 rounded-t-full">
-                    <div className="absolute w-12 h-6 bg-blue-400/20 rounded-full blur-md -top-2 -left-2" />
-                    <div className="absolute w-8 h-6 bg-blue-400/20 rounded-full blur-md -top-1" />
-                    <div className="absolute w-4 h-4 bg-blue-400/20 rounded-full blur-sm top-0 left-2" />
-                  </div>
-                </motion.div>
-              )}
-            </Link>
-          )
-        })}
+          {/* Desktop nav */}
+          <div className="hidden md:flex items-center gap-8">
+            {items.filter(i => i.name !== "Home").map((item) => (
+              <Link
+                key={item.name}
+                href={item.url}
+                onClick={() => setActiveTab(item.name)}
+                className={cn(
+                  "text-xs uppercase tracking-[0.2em] font-mono transition-colors duration-200",
+                  activeTab === item.name
+                    ? "text-cream"
+                    : "text-[#666] hover:text-cream"
+                )}
+              >
+                {item.name}
+                {item.name === "Contact" && (
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-coral ml-2 relative -top-0.5" />
+                )}
+              </Link>
+            ))}
+          </div>
+
+          {/* Mobile menu button */}
+          <button
+            className="md:hidden text-cream text-xs uppercase tracking-[0.2em] font-mono"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            {menuOpen ? "CLOSE" : "MENU"}
+          </button>
+        </div>
+
+        {/* Mobile menu */}
+        {menuOpen && isMobile && (
+          <div className="md:hidden py-6 space-y-4 border-b border-iron/50 bg-void">
+            {items.filter(i => i.name !== "Home").map((item) => (
+              <Link
+                key={item.name}
+                href={item.url}
+                onClick={() => {
+                  setActiveTab(item.name);
+                  setMenuOpen(false);
+                }}
+                className={cn(
+                  "block text-xs uppercase tracking-[0.2em] font-mono transition-colors",
+                  activeTab === item.name
+                    ? "text-cream"
+                    : "text-[#666] hover:text-cream"
+                )}
+              >
+                {item.name}
+              </Link>
+            ))}
+          </div>
+        )}
       </div>
-    </div>
-  )
+    </nav>
+  );
 }
