@@ -20,11 +20,11 @@ This is a **Next.js 16 (App Router)** single-page portfolio website built with R
 ### Layout
 
 The entire site lives in a single page (`app/page.tsx`) composed of sequential full-height sections:
-**Navbar → Hero → About → Skills → Projects → Contact → Footer**
+**Navbar → Hero → About → Services → Projects → Process → Contact → Footer**
 
 ### Component Organization
 
-- `components/sections/` — Full page sections (about, skills, projects, contact). Each section contains its own static data (project lists, skill arrays) defined inline.
+- `components/sections/` — Full page sections (about, services, projects, process, contact). Each section contains its own static data defined inline.
 - `components/ui/` — Reusable building blocks (button, navbar, hero, cards, forms, section-container). These follow the **shadcn/ui** pattern with CVA (Class Variance Authority) for variant management.
 - `components/footer.tsx` — Footer component at the root level.
 - `lib/utils.ts` — Shared utilities including `cn()` (clsx + tailwind-merge) and `scrollToSection()`.
@@ -38,9 +38,10 @@ The entire site lives in a single page (`app/page.tsx`) composed of sequential f
 
 ### Animation Stack
 
-- **Framer Motion** — Section reveals, card hovers, hero floating shapes, typewriter text
-- **react-intersection-observer** — Triggers scroll-based animations when elements enter viewport
-- `AnimatedSection` wrapper in `components/ui/section-container.tsx` handles scroll reveal for all sections
+- **Framer Motion** — Section reveals, card hovers, hero floating shapes; `AnimatedSection` in `section-container.tsx` uses `whileInView` for scroll-triggered reveals
+- **GSAP + ScrollTrigger** — Configured in `lib/gsap-config.ts`; `scrollToSection()` in `lib/utils.ts` drives smooth scrolling via `ScrollToPlugin`
+- **`lib/motion-variants.ts`** — Shared Framer Motion variant presets (`fadeUp`, `fadeIn`, etc.)
+- **`lib/use-gsap-3d-tilt.ts`**, **`lib/use-magnetic.ts`** — Custom interaction hooks
 
 ### Scroll-Aware Navigation
 
@@ -53,6 +54,13 @@ Contact form uses **React Hook Form + Zod** for validation. Submission is curren
 ### Path Aliases
 
 `@/*` maps to the project root (configured in `tsconfig.json`).
+
+### State & Data
+
+- **Zustand** — Client-side state management
+- **`@octokit/rest`** — GitHub API client (used in projects section)
+- **Google reCAPTCHA v3** — Contact form bot protection
+- **Embla Carousel** — Used for carousel UI components
 
 ### MCP Integration
 
