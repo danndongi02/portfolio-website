@@ -121,6 +121,62 @@ export const projects: Project[] = [
     ],
   },
   {
+    title: "Emergency Services Chatbot",
+    description:
+      "A WhatsApp-based roadside rescue assistant that automates emergency dispatch, membership management, and sales for a leading roadside assistance provider — replacing traditional call center workflows with a scalable digital system.",
+    longDescription:
+      "Built for a leading roadside assistance and emergency services provider, this WhatsApp chatbot serves as a 24/7 automated rescue assistant that handles everything from emergency triage to membership renewals. Users are guided through structured interactive menus — eliminating typing errors — while the system verifies membership status in real time, collects precise GPS location via WhatsApp location pins, and extracts vehicle details from license disc photos using OCR. Safety triage protocols assess whether police or security presence is needed, and diagnostic question trees ensure patrol teams arrive with the right equipment. For mechanical breakdowns, the bot surfaces nearby approved repair centers ranked by rating. On the sales side, it acts as a fully compliant digital sales agent — capturing CRM data, checking IDs against databases to prevent duplicates, displaying product tiers with pricing, obtaining legal consent, and generating secure payment links for renewals. The solution replaces inconsistent, error-prone call center operations with a uniform, scalable system that maintains data accuracy and compliance across every interaction.",
+    technologies: [
+      "WhatsApp Business API",
+      "OCR (Optical Character Recognition)",
+      "Real-time Geolocation / Maps API",
+      "Payment Gateway Integration",
+      "CRM Integration",
+      "Backend Database",
+    ],
+    image: "/projects/emergency-services-chatbot.png",
+    color: "#E63946",
+    status: "completed",
+    category: "Automation",
+    tasks: [
+      {
+        title: "Emergency Triage & Dispatch Flow",
+        description:
+          "Designed and built the core emergency workflow — from initial greeting to dispatch — using interactive WhatsApp menus to guide users through safety triage, passenger and accessibility checks, and issue classification, ensuring the right resources are sent every time.",
+      },
+      {
+        title: "Membership Verification & Dual-Path Journeys",
+        description:
+          "Implemented real-time membership status checks that split users into tailored flows — verified members get personalized service, while non-members are offered a pay-as-you-use model to capture leads without turning them away.",
+      },
+      {
+        title: "OCR-Powered License Disc Scanning",
+        description:
+          "Integrated optical character recognition so users can simply photograph their license disc and have their vehicle's make, model, VIN, and registration extracted automatically — removing manual data entry and reducing errors.",
+      },
+      {
+        title: "GPS Location Pinning for Dispatch",
+        description:
+          "Leveraged WhatsApp's native location sharing to capture precise GPS coordinates from users, feeding exact pickup points directly to dispatch teams rather than relying on verbal descriptions.",
+      },
+      {
+        title: "Patrol Diagnostic Mode",
+        description:
+          "Built a customizable diagnostic question tree for roadside patrol issues (flat tyres, fuel, jump starts, etc.) that collects specific vehicle and situation details so patrol teams arrive on scene fully prepared with the correct tools and parts.",
+      },
+      {
+        title: "Repair Centre Recommendation Engine",
+        description:
+          "Integrated a geolocation-based search that identifies and surfaces a shortlist of top-rated, approved repair centres near the user's breakdown location, simplifying a stressful decision for members in the field.",
+      },
+      {
+        title: "Automated Membership Sales & Renewals",
+        description:
+          "Developed a fully compliant sales flow that captures CRM data, validates ID numbers against existing records to prevent duplicates, presents product tiers with pricing, records legal consent and marketing preferences, and generates unique secure payment links for instant membership purchase or renewal.",
+      },
+    ],
+  },
+  {
     title: "Portfolio Website",
     description:
       "An editorial brutalist-tech portfolio with Framer Motion scroll animations, SVG grain textures, and a dark monochrome design system with coral accents — the site you're looking at right now.",

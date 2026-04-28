@@ -24,10 +24,13 @@ The entire site lives in a single page (`app/page.tsx`) composed of sequential f
 
 ### Component Organization
 
-- `components/sections/` — Full page sections (about, services, projects, process, contact). Each section contains its own static data defined inline.
+- `components/sections/` — Full page sections (about, services, projects, process, contact). Most sections define data inline; project data lives in `data/projects.ts`.
 - `components/ui/` — Reusable building blocks (button, navbar, hero, cards, forms, section-container). These follow the **shadcn/ui** pattern with CVA (Class Variance Authority) for variant management.
-- `components/footer.tsx` — Footer component at the root level.
-- `lib/utils.ts` — Shared utilities including `cn()` (clsx + tailwind-merge) and `scrollToSection()`.
+- `components/footer.tsx` — Footer component (direct child of `components/`, imported as `@/components/footer`).
+- `data/` — Static data files. `data/projects.ts` holds all project entries typed against `types/project.ts`.
+- `types/` — TypeScript interfaces. `types/project.ts` exports `Project` and `ProjectTask`.
+- `hooks/` — Custom React hooks (`use-gsap-3d-tilt.ts`, `use-magnetic.ts`).
+- `lib/utils.ts` — Shared utilities: `cn()` (clsx + tailwind-merge) and `scrollToSection()`.
 
 ### Styling System
 
@@ -41,7 +44,7 @@ The entire site lives in a single page (`app/page.tsx`) composed of sequential f
 - **Framer Motion** — Section reveals, card hovers, hero floating shapes; `AnimatedSection` in `section-container.tsx` uses `whileInView` for scroll-triggered reveals
 - **GSAP + ScrollTrigger** — Configured in `lib/gsap-config.ts`; `scrollToSection()` in `lib/utils.ts` drives smooth scrolling via `ScrollToPlugin`
 - **`lib/motion-variants.ts`** — Shared Framer Motion variant presets (`fadeUp`, `fadeIn`, etc.)
-- **`lib/use-gsap-3d-tilt.ts`**, **`lib/use-magnetic.ts`** — Custom interaction hooks
+- **`hooks/use-gsap-3d-tilt.ts`**, **`hooks/use-magnetic.ts`** — Custom interaction hooks
 
 ### Scroll-Aware Navigation
 
@@ -61,6 +64,10 @@ Contact form uses **React Hook Form + Zod** for validation. Submission is curren
 - **`@octokit/rest`** — GitHub API client (used in projects section)
 - **Google reCAPTCHA v3** — Contact form bot protection
 - **Embla Carousel** — Used for carousel UI components
+
+### Image Configuration
+
+External image hostnames must be whitelisted in `next.config.ts` under `images.remotePatterns`. Currently only `images.unsplash.com` is listed — add new domains there before using `<Image>` with remote URLs.
 
 ### MCP Integration
 
