@@ -17,7 +17,7 @@ const services = [
     title: "Automation Systems",
     description:
       "End-to-end workflow automation. Eliminating manual processes, connecting tools, scaling operations without scaling headcount.",
-    tags: ["N8N", "MAKE.COM", "ZAPIER", "REST APIS", "WEBHOOKS"],
+    tags: ["N8N", "WHATSAPP API", "MANYCHAT", "REST APIS", "WEBHOOKS"],
     active: true,
   },
   {
@@ -25,7 +25,7 @@ const services = [
     title: "Agentic Workflows",
     description:
       "AI agent systems that reason, decide, and execute. Multi-step autonomous workflows powered by large language models.",
-    tags: ["LANGCHAIN", "OPENAI", "CLAUDE", "RAG", "TOOL USE"],
+    tags: ["LANGCHAIN", "OPENAI", "CLAUDE API", "GOOGLE ADK", "TOOL USE"],
   },
 ];
 

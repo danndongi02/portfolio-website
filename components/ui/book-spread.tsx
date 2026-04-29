@@ -21,14 +21,14 @@ export const BookSpread = ({ project, spreadIndex }: BookSpreadProps) => {
       x: 0,
       transition: {
         duration: 0.7,
-        ease: [0.4, 0, 0.2, 1],
+        ease: [0.4, 0, 0.2, 1] as [number, number, number, number],
       }
     },
     exit: {
       opacity: 0,
       rotateY: 30,
       x: 20,
-      transition: { duration: 0.5, ease: [0.4, 0, 1, 1] }
+      transition: { duration: 0.5, ease: [0.4, 0, 1, 1] as [number, number, number, number] }
     }
   };
 
@@ -40,7 +40,7 @@ export const BookSpread = ({ project, spreadIndex }: BookSpreadProps) => {
       x: 0,
       transition: {
         duration: 0.7,
-        ease: [0.4, 0, 0.2, 1],
+        ease: [0.4, 0, 0.2, 1] as [number, number, number, number],
         delay: 0.15
       }
     },
@@ -48,7 +48,7 @@ export const BookSpread = ({ project, spreadIndex }: BookSpreadProps) => {
       opacity: 0,
       rotateY: -30,
       x: -20,
-      transition: { duration: 0.5, ease: [0.4, 0, 1, 1] }
+      transition: { duration: 0.5, ease: [0.4, 0, 1, 1] as [number, number, number, number] }
     }
   };
 
