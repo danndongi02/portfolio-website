@@ -1,13 +1,28 @@
 "use client";
 
+import { useState } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { projects } from "@/data/projects";
+import { Project } from "@/types/project";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { ProjectDetailModal } from "@/components/ui/project-detail-modal";
 import { staggerContainer, staggerItem, fadeUp } from "@/lib/motion-variants";
 
+function StatusBadge({ status }: { status?: string }) {
+  if (status !== "in-progress") return null;
+  return (
+    <span className="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-[0.2em] text-[#f0a030]">
+      <span className="w-1.5 h-1.5 rounded-full bg-[#f0a030] animate-pulse" />
+      In Progress
+    </span>
+  );
+}
+
 export function ProjectsSection() {
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const featured = projects[0];
-  const rest = projects.slice(1, 5);
+  const rest = projects.slice(1);
 
   return (
     <section id="projects" className="bg-void py-24 md:py-32 relative">
@@ -36,9 +51,12 @@ export function ProjectsSection() {
           <div className="grid grid-cols-1 lg:grid-cols-2">
             {/* Left — Details */}
             <div className="p-8 md:p-12 flex flex-col justify-center">
-              <span className="text-xs font-mono uppercase tracking-[0.2em] text-coral mb-4">
-                FEATURED
-              </span>
+              <div className="flex items-center gap-4 mb-4">
+                <span className="text-xs font-mono uppercase tracking-[0.2em] text-coral">
+                  FEATURED
+                </span>
+                <StatusBadge status={featured.status} />
+              </div>
               <h3 className="font-serif text-3xl md:text-4xl text-cream serif-italic mb-4">
                 {featured.title}
               </h3>
@@ -60,102 +78,107 @@ export function ProjectsSection() {
 
               {/* Links */}
               <div className="flex gap-6">
-                <a
-                  href={featured.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs font-mono uppercase tracking-[0.15em] text-cream hover:text-coral transition-colors"
-                >
-                  GITHUB ↗
-                </a>
-                {featured.demoUrl && featured.demoUrl !== "#" && (
+                {featured.githubUrl && (
                   <a
-                    href={featured.demoUrl}
+                    href={featured.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs font-mono uppercase tracking-[0.15em] text-coral hover:text-coral/80 transition-colors"
+                    className="text-xs font-mono uppercase tracking-[0.15em] text-cream hover:text-coral transition-colors"
                   >
-                    VIEW PROJECT &rarr;
+                    GITHUB ↗
                   </a>
                 )}
+                <button
+                  onClick={() => setSelectedProject(featured)}
+                  className="text-xs font-mono uppercase tracking-[0.15em] text-coral hover:text-coral/80 transition-colors cursor-pointer"
+                >
+                  LEARN MORE &rarr;
+                </button>
               </div>
             </div>
 
-            {/* Right — Wireframe placeholder */}
-            <div className="bg-[#0a0c10] border-l border-iron p-8 md:p-12 flex items-center justify-center min-h-[300px]">
-              <div className="w-full max-w-[300px] opacity-15">
-                <svg viewBox="0 0 300 200" fill="none" className="w-full">
-                  {/* Wireframe UI schematic */}
-                  <rect x="0" y="0" width="300" height="200" stroke="#f0ece6" strokeWidth="1" />
-                  <rect x="0" y="0" width="60" height="200" stroke="#f0ece6" strokeWidth="0.5" />
-                  <rect x="75" y="15" width="100" height="12" stroke="#f0ece6" strokeWidth="0.5" />
-                  <rect x="75" y="40" width="210" height="70" stroke="#f0ece6" strokeWidth="0.5" rx="0" />
-                  <rect x="75" y="125" width="100" height="60" stroke="#f0ece6" strokeWidth="0.5" />
-                  <rect x="185" y="125" width="100" height="60" stroke="#f0ece6" strokeWidth="0.5" />
-                  <line x1="10" y1="20" x2="50" y2="20" stroke="#f0ece6" strokeWidth="0.5" />
-                  <line x1="10" y1="35" x2="45" y2="35" stroke="#f0ece6" strokeWidth="0.5" />
-                  <line x1="10" y1="50" x2="50" y2="50" stroke="#f0ece6" strokeWidth="0.5" />
-                  <line x1="10" y1="65" x2="40" y2="65" stroke="#f0ece6" strokeWidth="0.5" />
-                </svg>
-              </div>
+            {/* Right — Project screenshot */}
+            <div className="bg-[#0a0c10] border-l border-iron relative overflow-hidden min-h-[300px]">
+              <Image
+                src={featured.image}
+                alt={featured.title}
+                fill
+                className="object-cover object-top opacity-90 hover:opacity-100 transition-opacity duration-300"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
             </div>
           </div>
         </motion.div>
 
         {/* Project grid — staggered */}
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6"
-        >
-          {rest.map((project, i) => (
-            <motion.div
-              key={project.title}
-              variants={staggerItem}
-              className={`group border border-iron bg-surface hover:border-coral/30 transition-colors duration-200 ${
-                i % 2 === 1 ? "md:mt-12" : ""
-              }`}
-            >
-              {/* Accent bar */}
-              <div className="h-0.5 bg-coral" />
+        {rest.length > 0 && (
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+            className="grid grid-cols-1 md:grid-cols-2 gap-6"
+          >
+            {rest.map((project, i) => (
+              <motion.div
+                key={project.title}
+                variants={staggerItem}
+                className={`group border border-iron bg-surface hover:border-coral/30 transition-colors duration-200 ${
+                  i % 2 === 1 ? "md:mt-12" : ""
+                }`}
+              >
+                {/* Accent bar */}
+                <div className="h-0.5 bg-coral" />
 
-              <div className="p-6 md:p-8">
-                <span className="text-xs font-mono text-[#666]">
-                  {String(i + 2).padStart(2, "0")}
-                </span>
-                <h3 className="font-serif text-xl md:text-2xl text-cream serif-italic mt-2 mb-2">
-                  {project.title}
-                </h3>
-                <p className="text-xs font-mono text-[#aaa] leading-[1.7] mb-4">
-                  {project.description}
-                </p>
-
-                {/* Tags */}
-                <div className="flex flex-wrap gap-x-2 gap-y-1 mb-4">
-                  {project.technologies.map((tech) => (
-                    <span
-                      key={tech}
-                      className="text-[10px] font-mono uppercase tracking-[0.1em] text-[#888]"
-                    >
-                      {tech}
+                <div className="p-6 md:p-8">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-mono text-[#666]">
+                      {String(i + 2).padStart(2, "0")}
                     </span>
-                  ))}
-                </div>
+                    <StatusBadge status={project.status} />
+                  </div>
+                  <h3 className="font-serif text-xl md:text-2xl text-cream serif-italic mt-2 mb-2">
+                    {project.title}
+                  </h3>
+                  <p className="text-xs font-mono text-[#aaa] leading-[1.7] mb-4">
+                    {project.description}
+                  </p>
 
-                <a
-                  href={project.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs font-mono uppercase tracking-[0.15em] text-coral hover:text-coral/80 transition-colors"
-                >
-                  VIEW &rarr;
-                </a>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-x-2 gap-y-1 mb-4">
+                    {project.technologies.map((tech) => (
+                      <span
+                        key={tech}
+                        className="text-[10px] font-mono uppercase tracking-[0.1em] text-[#888]"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="flex gap-6">
+                    {project.githubUrl && (
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs font-mono uppercase tracking-[0.15em] text-cream hover:text-coral transition-colors"
+                      >
+                        GITHUB ↗
+                      </a>
+                    )}
+                    <button
+                      onClick={() => setSelectedProject(project)}
+                      className="text-xs font-mono uppercase tracking-[0.15em] text-coral hover:text-coral/80 transition-colors cursor-pointer"
+                    >
+                      LEARN MORE &rarr;
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
 
         {/* Bottom */}
         <div className="border-t border-iron mt-16 pt-8 flex items-center justify-between">
@@ -172,6 +195,15 @@ export function ProjectsSection() {
           </a>
         </div>
       </div>
+
+      {/* Project Detail Modal */}
+      <ProjectDetailModal
+        project={selectedProject}
+        open={selectedProject !== null}
+        onOpenChange={(open) => {
+          if (!open) setSelectedProject(null);
+        }}
+      />
     </section>
   );
 }

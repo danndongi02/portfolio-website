@@ -11,9 +11,9 @@ const techStack = [
   { category: "LANGUAGES", items: "TypeScript, Python, JavaScript" },
   { category: "FRONTEND", items: "Next.js, React, Tailwind CSS" },
   { category: "BACKEND", items: "Node.js, FastAPI, Firebase" },
-  { category: "AUTOMATION", items: "N8N, Make.com, Manychat, Jumper" },
-  { category: "AI / AGENTS", items: "LangChain, OpenAI API, Claude API" },
-  { category: "INFRA", items: "Vercel, AWS, Docker" },
+  { category: "AUTOMATION", items: "N8N, Manychat, Jumper, WhatsApp Business API" },
+  { category: "AI / AGENTS", items: "LangChain, OpenAI API, Claude API, Google ADK" },
+  { category: "INFRA", items: "Vercel, Google Cloud Platform (GCP)" },
 ];
 
 const stats = [
@@ -88,8 +88,9 @@ export function AboutSection() {
                   but reason.
                 </p>
                 <p className="text-sm text-[#aaa] font-mono leading-[1.8]">
-                  From pixel-perfect interfaces to self-running automation
-                  pipelines, I deliver end-to-end solutions that scale.
+                  From pixel-perfect interfaces and conversational WhatsApp
+                  systems to self-running agentic AI pipelines, I deliver
+                  end-to-end solutions that scale.
                 </p>
               </div>
             </SlideIn>
