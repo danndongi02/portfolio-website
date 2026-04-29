@@ -2,65 +2,57 @@ import { Project } from "@/types/project";
 
 export const projects: Project[] = [
   {
-    title: "Phoetic",
+    title: "Intric Solves Website",
     description:
-      "A premium photography portfolio featuring advanced scroll-driven GSAP animations, parallax floating images, filterable masonry galleries with lightbox, and a validated contact system — designed and built for a professional photographer.",
+      "A modern, high-converting landing page for Intric Solves — an AI automation agency — built to communicate their \"Max Compute\" brand, showcase their 4 core service engines, and drive consultation bookings.",
     longDescription:
-      "Phoetic is a high-end photography portfolio website built for a professional photographer. The project demanded a visually immersive experience that would let the photography speak for itself while maintaining buttery-smooth performance. Every section features custom scroll-driven animations powered by GSAP ScrollTrigger, from center-outward clip-path text reveals to parallax depth-layered floating images that respond to mouse movement. The portfolio page includes a filterable masonry gallery with a direction-aware lightbox viewer, sticky filter bar, and dynamic category routing. The contact system uses React Hook Form with Zod validation and features a morphing submit button with animated state transitions.",
+      "Intric Solves is a Johannesburg-based AI automation agency operating under the \"Max Compute\" philosophy — the belief that no business resource should ever remain idle. I designed and built their full website from scratch using Next.js, creating a multi-page experience that positions the brand as a premium B2B AI partner. The site features an animated hero section with live-style metrics widgets, a scrolling client logo marquee, a detailed breakdown of their 4 productized service engines (Client Acquisition, Talent Acquisition, Data Analytics, and Data Acquisition), an animated stats section, a testimonials carousel, and a clear call-to-action funnel driving visitors to book a consultation. The site is fully responsive and designed to build credibility, communicate ROI-focused value propositions, and convert visitors into leads.",
     technologies: [
-      "Next.js 16",
-      "React 19",
-      "TypeScript",
-      "Tailwind CSS 4",
-      "GSAP",
-      "Framer Motion",
-      "shadcn/ui",
-      "Radix UI",
-      "Zod",
-      "React Hook Form",
+      "Next.js",
+      "React",
+      "Tailwind CSS",
+      "JavaScript",
     ],
-    demoUrl: "https://phoetic.vercel.app/",
-    image: "/projects/phoetic.png",
+    demoUrl: "https://intricsolves.com/",
+    image: "/projects/intric-solves-landing-page.png",
     screenshots: [
-      "/projects/phoetic.png",
-      "/projects/phoetic-portfolio.png",
-      "/projects/phoetic-services.png",
-      "/projects/phoetic-about.png",
-      "/projects/phoetic-contact.png",
+      "/projects/intric-solves-landing-page.png",
+      "/projects/intric-solves-services-page.png",
+      "/projects/intric-solves-contact-page.png",
     ],
-    color: "#10B981",
-    status: "in-progress",
-    category: "Software Dev",
+    color: "#6366F1",
+    status: "completed",
+    category: "Full-Stack",
     tasks: [
       {
-        title: "Scroll-Driven Animation System",
+        title: "Full Website Design & Development",
         description:
-          "Built a comprehensive GSAP ScrollTrigger animation system with pinned sections, scrub-based parallax, staggered grid reveals, and clip-path text animations that trigger on viewport entry.",
+          "Designed and built the entire Intric Solves website from scratch in Next.js, covering all pages including Home, About, Services, Products, and Contact — translating the brand's \"Max Compute\" identity into a cohesive, professional visual experience.",
       },
       {
-        title: "Parallax Floating Image Engine",
+        title: "Animated Hero Section with Live Metrics UI",
         description:
-          "Implemented mouse-responsive floating images with depth layers using useAnimationFrame for high-performance position calculations across multiple z-depth planes.",
+          "Built an eye-catching hero section featuring animated real-time-style analytics widgets (tasks automated, accuracy rate, time saved, workflow statuses) to immediately communicate the platform's automation value to visitors.",
       },
       {
-        title: "Masonry Gallery with Lightbox",
+        title: "Scrolling Client Logo Marquee",
         description:
-          "Created a filterable responsive masonry gallery (2/3/4 columns) with a sticky filter bar, GSAP sliding underline, and a direction-aware lightbox viewer with keyboard navigation.",
+          "Implemented an infinite-scroll animated marquee showcasing trusted client and partner logos, including AA, DBSA, Lifestyle Aviation, and others, to build credibility above the fold.",
       },
       {
-        title: "Contact Form with Animated States",
+        title: "4 Productized Service Engine Cards",
         description:
-          "Built a validated contact form using React Hook Form + Zod with a morphing submit button that transitions through idle, sending, success, and error states via GSAP timelines.",
+          "Designed and developed detailed, structured cards for each of Intric's 4 service engines — Client Acquisition, Talent Acquisition, Data Analytics, and Data Acquisition — each with target audience, outcomes, and included features clearly laid out.",
       },
       {
-        title: "Multi-Page Architecture",
+        title: "Animated Stats & Social Proof Sections",
         description:
-          "Designed and implemented 5 distinct pages (Home, Portfolio, Services, About, Contact) with shared layout components, page transition animations, and dynamic category routing.",
+          "Built an animated counters/stats section highlighting key metrics (success rates, resource utilization, hiring speed), and a scrolling testimonials carousel featuring client quotes to reinforce trust and credibility.",
       },
       {
-        title: "3D Perspective Interactions",
+        title: "Multi-Page Structure & Navigation",
         description:
-          "Added 3D perspective tilt cards in the Why Choose Us section and per-character rotateY flip animations for hero text across multiple pages.",
+          "Architected a clean multi-page Next.js site with a responsive navigation bar, structured routing across all pages, and a consistent footer with contact details, service links, and legal pages.",
       },
     ],
   },
@@ -121,6 +113,51 @@ export const projects: Project[] = [
     ],
   },
   {
+    title: "Data Analysis Chatbot",
+    description:
+      "A WhatsApp-connected AI agent that lets political analysts query a large voter database in plain English and instantly receive detailed analysis, summaries, and auto-generated data visualizations.",
+    longDescription:
+      "Built for a political party (client confidential), this project transforms how analysts interact with large-scale voter data. Instead of writing SQL queries or navigating dashboards, users simply ask questions in natural language over WhatsApp. The message is routed to an AI agent with direct access to a Google BigQuery database, which autonomously constructs the appropriate queries, retrieves the relevant data, and returns a detailed written analysis alongside a contextually appropriate data visualization — bar charts, histograms, and more — generated on the fly. Use cases ranged from identifying rejection rate patterns and youth voter targeting opportunities, to pinpointing high-priority voting districts and looking up individual voter records. The system effectively democratizes data access, enabling non-technical campaign staff to extract actionable intelligence from complex datasets in seconds.",
+    technologies: [
+      "WhatsApp Business API",
+      "Google ADK (Agent Development Kit)",
+      "Google BigQuery",
+      "Data Visualization",
+      "Natural Language to SQL",
+    ],
+    image: "/projects/data-analysis-chatbot.png",
+    color: "#4285F4",
+    status: "completed",
+    category: "AI/Agents",
+    tasks: [
+      {
+        title: "Natural Language Query Interface via WhatsApp",
+        description:
+          "Built a WhatsApp-based interface that accepts plain English questions from users and routes them to an AI agent, eliminating the need for technical knowledge or query languages to access complex voter data.",
+      },
+      {
+        title: "AI Agent with BigQuery Access",
+        description:
+          "Developed an AI agent capable of interpreting user questions, constructing appropriate database queries against a large Google BigQuery voter dataset, and retrieving accurate, relevant results autonomously.",
+      },
+      {
+        title: "Automated Data Analysis & Summarization",
+        description:
+          "Configured the agent to go beyond raw data retrieval — synthesizing query results into detailed written analyses and actionable summaries, including strategic recommendations such as campaign targeting and resource allocation insights.",
+      },
+      {
+        title: "Dynamic Data Visualization Generation",
+        description:
+          "Implemented automatic generation of contextually appropriate visualizations (e.g. bar charts for provincial comparisons, histograms for age distributions) returned directly to the user alongside the written analysis, enabling quick visual comprehension of complex data.",
+      },
+      {
+        title: "Individual Voter Lookup",
+        description:
+          "Built a conversational voter search flow where users can provide a name and date of birth to retrieve individual voter registration details, district assignments, and address information from the database.",
+      },
+    ],
+  },
+  {
     title: "Emergency Services Chatbot",
     description:
       "A WhatsApp-based roadside rescue assistant that automates emergency dispatch, membership management, and sales for a leading roadside assistance provider — replacing traditional call center workflows with a scalable digital system.",
@@ -177,46 +214,65 @@ export const projects: Project[] = [
     ],
   },
   {
-    title: "Portfolio Website",
+    title: "Phoetic",
     description:
-      "An editorial brutalist-tech portfolio with Framer Motion scroll animations, SVG grain textures, and a dark monochrome design system with coral accents — the site you're looking at right now.",
+      "A premium photography portfolio featuring advanced scroll-driven GSAP animations, parallax floating images, filterable masonry galleries with lightbox, and a validated contact system — designed and built for a professional photographer.",
     longDescription:
-      "This portfolio website follows an editorial brutalist-tech design direction — near-black backgrounds, serif + monospace typography pairing, and a strict monochrome palette with a single coral accent color. The design system was built from scratch with semantic HSL CSS variables, SVG grain texture overlays, and deliberate asymmetric layouts. Every section uses Framer Motion for scroll-triggered entrance animations with mechanical easing curves. The project detail system includes modal views with task breakdowns, technology tags, and screenshot galleries.",
+      "Phoetic is a high-end photography portfolio website built for a professional photographer. The project demanded a visually immersive experience that would let the photography speak for itself while maintaining buttery-smooth performance. Every section features custom scroll-driven animations powered by GSAP ScrollTrigger, from center-outward clip-path text reveals to parallax depth-layered floating images that respond to mouse movement. The portfolio page includes a filterable masonry gallery with a direction-aware lightbox viewer, sticky filter bar, and dynamic category routing. The contact system uses React Hook Form with Zod validation and features a morphing submit button with animated state transitions.",
     technologies: [
       "Next.js 16",
       "React 19",
       "TypeScript",
-      "Tailwind CSS",
-      "Framer Motion",
+      "Tailwind CSS 4",
       "GSAP",
+      "Framer Motion",
       "shadcn/ui",
       "Radix UI",
       "Zod",
+      "React Hook Form",
     ],
-    image: "/projects/portfolio.png",
-    color: "#ff4f33",
+    demoUrl: "https://phoetic.vercel.app/",
+    image: "/projects/phoetic.png",
+    screenshots: [
+      "/projects/phoetic.png",
+      "/projects/phoetic-portfolio.png",
+      "/projects/phoetic-services.png",
+      "/projects/phoetic-about.png",
+      "/projects/phoetic-contact.png",
+    ],
+    color: "#10B981",
     status: "in-progress",
     category: "Software Dev",
     tasks: [
       {
-        title: "Editorial Brutalist Design System",
+        title: "Scroll-Driven Animation System",
         description:
-          "Created a complete design system with HSL CSS variables, grain texture overlays, Instrument Serif + JetBrains Mono typography pairing, and semantic color tokens for a dark monochrome aesthetic.",
+          "Built a comprehensive GSAP ScrollTrigger animation system with pinned sections, scrub-based parallax, staggered grid reveals, and clip-path text animations that trigger on viewport entry.",
       },
       {
-        title: "Scroll-Based Section Animations",
+        title: "Parallax Floating Image Engine",
         description:
-          "Implemented Framer Motion scroll-triggered animations with mechanical easing curves, staggered reveals, and viewport-aware entrance transitions for every section.",
+          "Implemented mouse-responsive floating images with depth layers using useAnimationFrame for high-performance position calculations across multiple z-depth planes.",
       },
       {
-        title: "Project Detail Modal System",
+        title: "Masonry Gallery with Lightbox",
         description:
-          "Built a Radix UI dialog-based modal for detailed project views, featuring task breakdowns, technology tags, screenshot galleries, and external links.",
+          "Created a filterable responsive masonry gallery (2/3/4 columns) with a sticky filter bar, GSAP sliding underline, and a direction-aware lightbox viewer with keyboard navigation.",
       },
       {
-        title: "Responsive Navigation",
+        title: "Contact Form with Animated States",
         description:
-          "Designed a scroll-aware navbar that tracks active sections with a glow effect, rendering at the bottom on mobile and top on desktop.",
+          "Built a validated contact form using React Hook Form + Zod with a morphing submit button that transitions through idle, sending, success, and error states via GSAP timelines.",
+      },
+      {
+        title: "Multi-Page Architecture",
+        description:
+          "Designed and implemented 5 distinct pages (Home, Portfolio, Services, About, Contact) with shared layout components, page transition animations, and dynamic category routing.",
+      },
+      {
+        title: "3D Perspective Interactions",
+        description:
+          "Added 3D perspective tilt cards in the Why Choose Us section and per-character rotateY flip animations for hero text across multiple pages.",
       },
     ],
   },
