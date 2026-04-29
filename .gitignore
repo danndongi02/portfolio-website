@@ -23,6 +23,8 @@
 # misc
 .DS_Store
 *.pem
+.stfolder/
+.stignore
 
 # debug
 npm-debug.log*
@@ -45,3 +47,6 @@ next-env.d.ts
 
 # temporary portfolio intel
 .tmp/
+
+# claude
+.claude/
