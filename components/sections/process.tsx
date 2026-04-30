@@ -197,21 +197,55 @@ export function ProcessSection() {
             </div>
           </motion.div>
 
-          {/* Right — Decorative code */}
-          <div className="hidden lg:flex lg:col-span-5 items-center justify-center">
-            <pre className="font-mono text-xs leading-[2] text-[#222] select-none">
-{`pipeline:
-  trigger: "client.request"
-  stages:
-    - discover
-    - architect
-    - build
-    - automate
-    - deploy
-  status: "running"
-  uptime: "99.9%"
-  delivery: "on_time"`}
-            </pre>
+          {/* Right — Animated Terminal */}
+          <div className="hidden lg:flex lg:col-span-5 items-start justify-center pt-2">
+            <div className="w-full max-w-sm bg-[#0d0d0d] border border-[#1e1e1e] rounded-lg overflow-hidden">
+              {/* Title bar */}
+              <div className="flex items-center gap-2 px-4 py-3 border-b border-[#1a1a1a]">
+                <div className="w-2.5 h-2.5 rounded-full bg-[#3a1a1a]" />
+                <div className="w-2.5 h-2.5 rounded-full bg-[#2a2a1a]" />
+                <div className="w-2.5 h-2.5 rounded-full bg-[#1a2a1a]" />
+                <span className="ml-auto font-mono text-[10px] text-[#2a2a2a] uppercase tracking-widest">
+                  pipeline.sh
+                </span>
+              </div>
+
+              {/* Terminal body */}
+              <div className="p-4 min-h-[180px] font-mono text-[11px] leading-[1.9]">
+                {/* Command line with typing cursor */}
+                <div className="flex items-center gap-2">
+                  <span className="text-coral flex-shrink-0">▸</span>
+                  <span className="text-cream/80">{typedCommand}</span>
+                  {showCursor && terminalLines.length === 0 && (
+                    <span className="inline-block w-[5px] h-[13px] bg-cream/50 cursor-blink align-middle" />
+                  )}
+                </div>
+
+                {/* Output lines */}
+                {terminalLines.map((line, i) => (
+                  <div
+                    key={i}
+                    className={
+                      line.type === "ok"
+                        ? "text-[#22c55e]"
+                        : line.type === "running"
+                        ? "text-[#facc15]"
+                        : "text-[#3a3a3a] pl-3"
+                    }
+                  >
+                    {line.text}
+                  </div>
+                ))}
+
+                {/* Trailing cursor on new prompt line after output */}
+                {showCursor && terminalLines.length > 0 && (
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="text-coral flex-shrink-0">▸</span>
+                    <span className="inline-block w-[5px] h-[13px] bg-cream/50 cursor-blink align-middle" />
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
 
