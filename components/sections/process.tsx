@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { useGSAP } from "@gsap/react";
 import { motion } from "framer-motion";
-import { gsap } from "gsap";
+import { gsap } from "@/lib/gsap-config";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { staggerContainer, staggerItem } from "@/lib/motion-variants";
 import { scrollToSection } from "@/lib/utils";
@@ -100,7 +101,7 @@ export function ProcessSection() {
   const [terminalLines, setTerminalLines] = useState<TerminalLine[]>([]);
   const [showCursor, setShowCursor] = useState(false);
 
-  const mountedRef = useRef(true);
+  const mountedRef = useRef(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const glowLineRef = useRef<HTMLDivElement>(null);
 
@@ -224,7 +225,7 @@ export function ProcessSection() {
                 {/* Output lines */}
                 {terminalLines.map((line, i) => (
                   <div
-                    key={i}
+                    key={`${activePhase}-${i}`}
                     className={
                       line.type === "ok"
                         ? "text-[#22c55e]"
