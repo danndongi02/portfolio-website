@@ -105,6 +105,107 @@ export function ProcessSection() {
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const glowLineRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    mountedRef.current = true;
+
+    const sleep = (ms: number) =>
+      new Promise<void>((resolve) => {
+        timeoutRef.current = setTimeout(resolve, ms);
+      });
+
+    const runLoop = async () => {
+      let phase = 0;
+
+      while (mountedRef.current) {
+        // Activate phase: dot turns coral, terminal clears
+        setActivePhase(phase);
+        setTypedCommand("");
+        setTerminalLines([]);
+        setShowCursor(true);
+
+        // Brief pause before typing starts
+        await sleep(300);
+        if (!mountedRef.current) return;
+
+        // Type command character by character
+        const cmd = PHASE_TERMINALS[phase].command;
+        for (let i = 1; i <= cmd.length; i++) {
+          if (!mountedRef.current) return;
+          setTypedCommand(cmd.slice(0, i));
+          await sleep(50);
+        }
+
+        // Hide cursor while output prints
+        setShowCursor(false);
+
+        // Print each output line
+        for (const line of PHASE_TERMINALS[phase].output) {
+          if (!mountedRef.current) return;
+          await sleep(300);
+          setTerminalLines((prev) => [...prev, line]);
+        }
+
+        // Show trailing cursor on new prompt line
+        setShowCursor(true);
+
+        // Hold before advancing
+        await sleep(1500);
+        if (!mountedRef.current) return;
+
+        // Mark this phase complete
+        const done = phase;
+        setCompletedPhases((prev) => new Set([...prev, done]));
+
+        phase = (phase + 1) % PHASE_TERMINALS.length;
+
+        // After completing phase 05 (index 4), phase wraps to 0 — reset visual state
+        if (phase === 0) {
+          await sleep(700);
+          if (!mountedRef.current) return;
+          setCompletedPhases(new Set());
+          await sleep(300);
+        }
+      }
+    };
+
+    runLoop();
+
+    return () => {
+      mountedRef.current = false;
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
+
+  useGSAP(() => {
+    if (!glowLineRef.current) return;
+
+    const completed = completedPhases.size;
+
+    if (completed === 0) {
+      // Reset: shrink line back to invisible
+      gsap.to(glowLineRef.current, {
+        scaleY: 0,
+        opacity: 0,
+        duration: 0.5,
+        ease: "power2.inOut",
+        transformOrigin: "top center",
+      });
+      return;
+    }
+
+    // Each completed phase fills 1/(total-1) of the line height
+    // Cap at 1 to prevent scaleY > 1
+    const fraction = Math.min(completed / (PHASE_TERMINALS.length - 1), 1);
+
+    gsap.to(glowLineRef.current, {
+      scaleY: fraction,
+      opacity: 1,
+      duration: 0.6,
+      ease: "power2.out",
+      transformOrigin: "top center",
+    });
+  }, [completedPhases]);
+
   return (
     <section id="process" className="bg-void py-24 md:py-32">
       <div className="container mx-auto px-6 md:px-8">
