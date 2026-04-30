@@ -102,69 +102,63 @@ export function ProcessSection() {
   const [showCursor, setShowCursor] = useState(false);
 
   const mountedRef = useRef(false);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const timeoutRef = useRef<(() => void) | null>(null);
   const glowLineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     mountedRef.current = true;
 
     const sleep = (ms: number) =>
-      new Promise<void>((resolve) => {
-        timeoutRef.current = setTimeout(resolve, ms);
+      new Promise<void>((resolve, reject) => {
+        const id = setTimeout(resolve, ms);
+        timeoutRef.current = () => {
+          clearTimeout(id);
+          reject(new Error("unmounted"));
+        };
       });
 
     const runLoop = async () => {
       let phase = 0;
 
-      while (mountedRef.current) {
-        // Activate phase: dot turns coral, terminal clears
-        setActivePhase(phase);
-        setTypedCommand("");
-        setTerminalLines([]);
-        setShowCursor(true);
+      try {
+        while (mountedRef.current) {
+          setActivePhase(phase);
+          setTypedCommand("");
+          setTerminalLines([]);
+          setShowCursor(true);
 
-        // Brief pause before typing starts
-        await sleep(300);
-        if (!mountedRef.current) return;
-
-        // Type command character by character
-        const cmd = PHASE_TERMINALS[phase].command;
-        for (let i = 1; i <= cmd.length; i++) {
-          if (!mountedRef.current) return;
-          setTypedCommand(cmd.slice(0, i));
-          await sleep(50);
-        }
-
-        // Hide cursor while output prints
-        setShowCursor(false);
-
-        // Print each output line
-        for (const line of PHASE_TERMINALS[phase].output) {
-          if (!mountedRef.current) return;
           await sleep(300);
-          setTerminalLines((prev) => [...prev, line]);
+
+          const cmd = PHASE_TERMINALS[phase].command;
+          for (let i = 1; i <= cmd.length; i++) {
+            setTypedCommand(cmd.slice(0, i));
+            await sleep(50);
+          }
+
+          setShowCursor(false);
+
+          for (const line of PHASE_TERMINALS[phase].output) {
+            await sleep(300);
+            setTerminalLines((prev) => [...prev, line]);
+          }
+
+          setShowCursor(true);
+
+          await sleep(1500);
+
+          const done = phase;
+          setCompletedPhases((prev) => new Set([...prev, done]));
+
+          phase = (phase + 1) % PHASE_TERMINALS.length;
+
+          if (phase === 0) {
+            await sleep(700);
+            setCompletedPhases(new Set());
+            await sleep(300);
+          }
         }
-
-        // Show trailing cursor on new prompt line
-        setShowCursor(true);
-
-        // Hold before advancing
-        await sleep(1500);
-        if (!mountedRef.current) return;
-
-        // Mark this phase complete
-        const done = phase;
-        setCompletedPhases((prev) => new Set([...prev, done]));
-
-        phase = (phase + 1) % PHASE_TERMINALS.length;
-
-        // After completing phase 05 (index 4), phase wraps to 0 — reset visual state
-        if (phase === 0) {
-          await sleep(700);
-          if (!mountedRef.current) return;
-          setCompletedPhases(new Set());
-          await sleep(300);
-        }
+      } catch {
+        // Unmount signal from sleep() abort — exit cleanly
       }
     };
 
@@ -172,7 +166,7 @@ export function ProcessSection() {
 
     return () => {
       mountedRef.current = false;
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      timeoutRef.current?.();
     };
   }, []);
 
@@ -240,7 +234,6 @@ export function ProcessSection() {
                   backgroundColor: "#22c55e",
                   boxShadow: "0 0 6px 2px rgba(34,197,94,0.45)",
                   transform: "scaleY(0)",
-                  transformOrigin: "top center",
                 }}
               />
 
