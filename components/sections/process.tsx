@@ -127,49 +127,72 @@ export function ProcessSection() {
             viewport={{ once: true, margin: "-80px" }}
           >
             <div className="relative">
-              {/* Vertical line */}
+              {/* Background dim line */}
               <div className="absolute left-3 top-2 bottom-2 w-px bg-cream/10" />
 
-              <div className="space-y-10">
-                {phases.map((phase) => (
-                  <motion.div
-                    key={phase.number}
-                    variants={staggerItem}
-                    className="relative pl-10"
-                  >
-                    {/* Node dot */}
-                    <div
-                      className={`absolute left-0 top-1.5 w-6 h-6 flex items-center justify-center`}
-                    >
-                      <div
-                        className={`w-2.5 h-2.5 rounded-full ${
-                          phase.active
-                            ? "bg-coral shadow-[0_0_8px_rgba(255,79,51,0.4)]"
-                            : "border border-cream/20 bg-transparent"
-                        }`}
-                      />
-                    </div>
+              {/* GSAP glow overlay — scaleY(0) initially, expands as phases complete */}
+              <div
+                ref={glowLineRef}
+                className="absolute left-3 top-2 bottom-2 w-px"
+                style={{
+                  backgroundColor: "#22c55e",
+                  boxShadow: "0 0 6px 2px rgba(34,197,94,0.45)",
+                  transform: "scaleY(0)",
+                  transformOrigin: "top center",
+                }}
+              />
 
-                    {/* Phase content */}
-                    <div>
-                      <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-[#666]">
-                        Phase {phase.number}
-                      </span>
-                      <h3 className="font-serif text-xl md:text-2xl text-cream serif-italic mt-1 mb-2">
-                        {phase.title}
-                      </h3>
-                      <p className="text-sm font-mono text-[#aaa] leading-[1.7] max-w-[480px]">
-                        {phase.description}
-                      </p>
-                      {phase.active && (
-                        <span className="inline-flex items-center gap-1.5 mt-2 text-[10px] font-mono uppercase tracking-[0.2em] text-[#22c55e]">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#22c55e]" />
-                          Running
+              <div className="space-y-10">
+                {phases.map((phase, index) => {
+                  const isActive = activePhase === index;
+                  const isCompleted = completedPhases.has(index);
+
+                  return (
+                    <motion.div
+                      key={phase.number}
+                      variants={staggerItem}
+                      className="relative pl-10"
+                    >
+                      {/* Node dot */}
+                      <div className="absolute left-0 top-1.5 w-6 h-6 flex items-center justify-center">
+                        <div
+                          className={`w-2.5 h-2.5 rounded-full flex items-center justify-center transition-colors duration-300 ${
+                            isCompleted
+                              ? "bg-[#22c55e] shadow-[0_0_8px_rgba(34,197,94,0.4)]"
+                              : isActive
+                              ? "bg-coral shadow-[0_0_8px_rgba(255,79,51,0.4)]"
+                              : "border border-cream/20 bg-transparent"
+                          }`}
+                        >
+                          {isCompleted && (
+                            <span className="text-[5px] text-void font-bold leading-none">
+                              ✓
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Phase content */}
+                      <div>
+                        <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-[#666]">
+                          Phase {phase.number}
                         </span>
-                      )}
-                    </div>
-                  </motion.div>
-                ))}
+                        <h3 className="font-serif text-xl md:text-2xl text-cream serif-italic mt-1 mb-2">
+                          {phase.title}
+                        </h3>
+                        <p className="text-sm font-mono text-[#aaa] leading-[1.7] max-w-[480px]">
+                          {phase.description}
+                        </p>
+                        {isActive && (
+                          <span className="inline-flex items-center gap-1.5 mt-2 text-[10px] font-mono uppercase tracking-[0.2em] text-[#22c55e]">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#22c55e]" />
+                            Running
+                          </span>
+                        )}
+                      </div>
+                    </motion.div>
+                  );
+                })}
               </div>
             </div>
           </motion.div>
