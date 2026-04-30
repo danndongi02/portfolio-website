@@ -1,9 +1,64 @@
 "use client";
 
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
+import { gsap } from "gsap";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { staggerContainer, staggerItem } from "@/lib/motion-variants";
 import { scrollToSection } from "@/lib/utils";
+
+type TerminalLine = {
+  text: string;
+  type: "ok" | "running" | "note";
+};
+
+const PHASE_TERMINALS: { command: string; output: TerminalLine[] }[] = [
+  {
+    command: "scope --analyze client.brief",
+    output: [
+      { text: "✓ stakeholder goals    parsed", type: "ok" },
+      { text: "✓ existing systems     mapped", type: "ok" },
+      { text: "✓ constraints          defined", type: "ok" },
+      { text: "  deliverable: scope.md", type: "note" },
+    ],
+  },
+  {
+    command: "design --stack next,postgres",
+    output: [
+      { text: "✓ data flow            mapped", type: "ok" },
+      { text: "✓ api surface          planned", type: "ok" },
+      { text: "✓ schema               drafted", type: "ok" },
+      { text: "  deliverable: arch.diagram", type: "note" },
+    ],
+  },
+  {
+    command: "npm run dev --watch",
+    output: [
+      { text: "✓ tsc                  0 errors", type: "ok" },
+      { text: "✓ tests                24 passed", type: "ok" },
+      { text: "◉ hot reload           active", type: "running" },
+      { text: "  demo: friday 3pm", type: "note" },
+    ],
+  },
+  {
+    command: "integrate --env production",
+    output: [
+      { text: "✓ webhooks             connected", type: "ok" },
+      { text: "✓ ai agents            deployed", type: "ok" },
+      { text: "◉ workflows            running", type: "running" },
+      { text: "  overhead: -40%", type: "note" },
+    ],
+  },
+  {
+    command: "vercel deploy --prod",
+    output: [
+      { text: "✓ build                success", type: "ok" },
+      { text: "✓ cdn                  propagated", type: "ok" },
+      { text: "✓ uptime               99.9%", type: "ok" },
+      { text: "  monitoring: active", type: "note" },
+    ],
+  },
+];
 
 const phases = [
   {
@@ -23,7 +78,6 @@ const phases = [
     title: "Build & Iterate",
     description:
       "Iterative development with weekly demos. Clean, typed, tested code. You see progress in real-time, not after months of silence.",
-    active: true,
   },
   {
     number: "04",
@@ -40,6 +94,16 @@ const phases = [
 ];
 
 export function ProcessSection() {
+  const [activePhase, setActivePhase] = useState(0);
+  const [completedPhases, setCompletedPhases] = useState<Set<number>>(new Set());
+  const [typedCommand, setTypedCommand] = useState("");
+  const [terminalLines, setTerminalLines] = useState<TerminalLine[]>([]);
+  const [showCursor, setShowCursor] = useState(false);
+
+  const mountedRef = useRef(true);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const glowLineRef = useRef<HTMLDivElement>(null);
+
   return (
     <section id="process" className="bg-void py-24 md:py-32">
       <div className="container mx-auto px-6 md:px-8">
