@@ -103,3 +103,11 @@
   background-repeat: repeat-x;
   height: 1px;
 }
+
+@keyframes terminal-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.cursor-blink {
+  animation: terminal-blink 1s step-end infinite;
+}
