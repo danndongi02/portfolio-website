@@ -14,7 +14,10 @@
       "mcp__shadcn__get_item_examples_from_registries",
       "Bash(npx next build)",
       "Bash(npx puppeteer:*)",
-      "Skill(git-update)"
+      "Skill(git-update)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(node -e ' *)"
     ]
   },
   "enableAllProjectMcpServers": true,
