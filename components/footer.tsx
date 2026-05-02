@@ -70,9 +70,6 @@ export function Footer() {
             &copy; {new Date().getFullYear()} IAN
           </span>
           <span className="text-[11px] font-mono text-[#555]">
-            BUILT WITH NEXT.JS + TAILWIND
-          </span>
-          <span className="text-[11px] font-mono text-[#555]">
             NAIROBI, KE &mdash; AVAILABLE WORLDWIDE
           </span>
         </div>
