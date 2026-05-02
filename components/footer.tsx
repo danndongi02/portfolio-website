@@ -12,8 +12,8 @@ const navLinks = [
 
 const socialLinks = [
   { name: "GITHUB", href: "https://github.com/danndongi02" },
-  { name: "LINKEDIN", href: "https://linkedin.com" },
-  { name: "EMAIL", href: "mailto:your.email@example.com" },
+  { name: "LINKEDIN", href: process.env.NEXT_PUBLIC_LINKEDIN_URL ?? "https://linkedin.com" },
+  { name: "EMAIL", href: `mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? ""}` },
 ];
 
 export function Footer() {

@@ -4,11 +4,15 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { ContactForm } from "@/components/ui/contact-form";
 import { SlideIn } from "@/components/ui/motion-wrapper";
 
+const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "";
+const linkedinUrl = process.env.NEXT_PUBLIC_LINKEDIN_URL ?? "https://linkedin.com";
+const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "";
+
 const contactLinks = [
-  { label: "EMAIL", href: "mailto:your.email@example.com", display: "ian@example.com" },
+  { label: "EMAIL", href: `mailto:${contactEmail}`, display: contactEmail },
   { label: "GITHUB", href: "https://github.com/danndongi02", display: "danndongi02" },
-  { label: "LINKEDIN", href: "https://linkedin.com", display: "Profile" },
-  { label: "WHATSAPP", href: "https://wa.me/yourphonenumber", display: "Message" },
+  { label: "LINKEDIN", href: linkedinUrl, display: "Profile" },
+  { label: "WHATSAPP", href: `https://wa.me/${whatsappNumber}`, display: "Message" },
 ];
 
 export function ContactSection() {
