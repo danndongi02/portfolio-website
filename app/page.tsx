@@ -6,6 +6,7 @@ import { AboutSection } from "@/components/sections/about";
 import { ServicesSection } from "@/components/sections/services";
 import { ProjectsSection } from "@/components/sections/projects";
 import { ProcessSection } from "@/components/sections/process";
+import { TestimonialsSection } from "@/components/sections/testimonials";
 import { ContactSection } from "@/components/sections/contact";
 import { Footer } from "@/components/footer";
 import { HeroGeometric } from "@/components/ui/shape-landing-hero";
@@ -36,6 +37,7 @@ export default function Home() {
       <ServicesSection />
       <ProjectsSection />
       <ProcessSection />
+      <TestimonialsSection />
       <ContactSection />
       <Footer />
     </main>

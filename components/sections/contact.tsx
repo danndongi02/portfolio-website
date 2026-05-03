@@ -26,7 +26,7 @@ export function ContactSection() {
 
       <div className="container mx-auto px-6 md:px-8 relative z-10">
         <SectionHeading
-          number="006"
+          number="007"
           label="CONTACT"
           title={
             <>
