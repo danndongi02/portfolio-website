@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { staggerContainer, staggerItem } from "@/lib/motion-variants";
+import { scrollToSection } from "@/lib/utils";
 
 const services = [
   {
@@ -55,7 +56,9 @@ export function ServicesSection() {
             <motion.div
               key={service.number}
               variants={staggerItem}
-              className={`group border-t border-iron py-10 md:py-14 transition-colors duration-200 ${
+              onClick={() => scrollToSection("contact")}
+            title="Get in touch about this"
+            className={`group border-t border-iron py-10 md:py-14 transition-colors duration-200 cursor-pointer ${
                 service.active ? "border-l-2 border-l-coral pl-6" : "pl-0 hover:border-l-2 hover:border-l-coral hover:pl-6"
               }`}
             >
