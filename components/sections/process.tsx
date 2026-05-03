@@ -206,12 +206,65 @@ export function ProcessSection() {
 
   return (
     <section id="process" className="bg-void">
+      {/* Mobile layout — static, no scroll pinning */}
+      <div className="lg:hidden bg-void py-16">
+        <div className="container mx-auto px-6">
+          <div className="flex items-center gap-4 mb-4">
+            <span className="text-xs uppercase tracking-[0.2em] text-[#666]">
+              005 &mdash; PROCESS
+            </span>
+            <div className="h-px flex-1 bg-iron" />
+          </div>
+          <h2 className="font-serif text-3xl text-cream leading-[1.1] mb-10">
+            How every project <span className="serif-italic">runs</span>.
+          </h2>
+
+          <div className="space-y-8 mb-10">
+            {phases.map((phase) => (
+              <div key={phase.number} className="pl-8 relative">
+                <div className="absolute left-0 top-1.5 w-2.5 h-2.5 rounded-full border border-[rgba(240,236,230,0.2)]" />
+                <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-[#666]">
+                  Phase {phase.number}
+                </span>
+                <h3 className="font-serif text-lg text-cream serif-italic mt-0.5 mb-1">
+                  {phase.title}
+                </h3>
+                <p className="text-sm font-mono text-[#aaa] leading-[1.65]">
+                  {phase.description}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="border border-iron overflow-hidden">
+            <div className="flex items-center gap-3 px-4 py-3 bg-surface border-b border-iron">
+              <div className="flex gap-1.5">
+                <div className="w-2.5 h-2.5 rounded-full bg-coral" />
+                <div className="w-2.5 h-2.5 rounded-full bg-[#f59e0b]" />
+                <div className="w-2.5 h-2.5 rounded-full bg-[#22c55e]" />
+              </div>
+              <span className="text-xs text-[#888] font-mono">pipeline.sh</span>
+            </div>
+            <div className="bg-[#0a0c10] p-6 font-mono text-xs leading-[2]">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-coral">▸</span>
+                <span className="text-cream/80">vercel deploy --prod</span>
+              </div>
+              <div className="text-[#22c55e]">✓ build                success</div>
+              <div className="text-[#22c55e]">✓ cdn                  propagated</div>
+              <div className="text-[#22c55e]">✓ uptime               99.9%</div>
+              <div className="text-[#444] pl-3">  monitoring: active</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/*
        * Pinned block — h-screen caps the panel to exactly the viewport height
        * so content never overflows below the fold. flex-col lets the heading
        * sit at the top while the grid fills the remaining space.
        */}
-      <div ref={pinnedRef} className="bg-void h-screen flex flex-col">
+      <div ref={pinnedRef} className="bg-void h-screen hidden lg:flex flex-col">
 
         {/* Compact heading — smaller than SectionHeading to give the grid more room */}
         <div className="container mx-auto px-6 md:px-8 pt-16 md:pt-20 pb-6 flex-none">
