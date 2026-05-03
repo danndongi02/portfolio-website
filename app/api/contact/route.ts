@@ -138,17 +138,21 @@ export async function POST(request: Request) {
     const { name, email, phone, message } = result.data;
     const toEmail = process.env.CONTACT_EMAIL!;
     const fromEmail = process.env.RESEND_FROM_EMAIL!;
+    const fromName = process.env.RESEND_FROM_NAME ?? "Ian";
+    const from = `${fromName} <${fromEmail}>`;
 
     await Promise.all([
       resend.emails.send({
-        from: fromEmail,
+        from,
         to: toEmail,
+        replyTo: email,
         subject: `New project inquiry from ${name}`,
         html: ownerEmailHtml({ name, email, phone, message }),
       }),
       resend.emails.send({
-        from: fromEmail,
+        from,
         to: email,
+        replyTo: fromEmail,
         subject: `Got your message — I'll be in touch`,
         html: userEmailHtml({ name }),
       }),

@@ -83,9 +83,11 @@ export async function POST(request: NextRequest) {
 
       const body = email?.html ?? email?.text?.replace(/\n/g, "<br>") ?? "(no body)";
 
+      const fromName = process.env.RESEND_FROM_NAME ?? "Ian";
       await resend.emails.send({
-        from: process.env.RESEND_FROM_EMAIL!,
+        from: `${fromName} <${process.env.RESEND_FROM_EMAIL!}>`,
         to: process.env.CONTACT_EMAIL!,
+        replyTo: from,
         subject: `[ian@codesynergi.co.ke] ${subject}`,
         html: forwardedEmailHtml({
           from,
