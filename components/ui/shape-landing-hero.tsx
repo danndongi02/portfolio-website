@@ -49,9 +49,10 @@ function HeroGeometric({
               transition={{ duration: 0.8, delay: 0.5, ease: mechanical }}
               className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] text-cream leading-[1.05] mb-6"
             >
-              Software that
+              I build software that runs
               <br />
-              <span className="serif-italic">thinks</span> for itself.
+              your business on{" "}
+              <span className="serif-italic">autopilot</span>.
             </motion.h1>
 
             {/* Description */}
@@ -61,7 +62,7 @@ function HeroGeometric({
               transition={{ duration: 0.6, delay: 1, ease: mechanical }}
               className="text-sm md:text-[15px] text-[#aaa] font-mono leading-[1.8] max-w-[520px] mb-8"
             >
-              Full-stack developer &amp; automation architect. I build intelligent
+              Full-stack developer &amp; automation architect. Intelligent
               systems, agentic workflows, and software that eliminates human
               bottlenecks.
             </motion.p>
@@ -73,11 +74,11 @@ function HeroGeometric({
               transition={{ duration: 0.6, delay: 1.3, ease: mechanical }}
               className="flex flex-wrap gap-4 mb-10"
             >
-              <Button onClick={onViewWorkClick}>
-                View Work &rarr;
+              <Button onClick={onContactClick}>
+                Start a Project &rarr;
               </Button>
-              <Button variant="outline" onClick={onContactClick}>
-                Get In Touch
+              <Button variant="outline" onClick={onViewWorkClick}>
+                View Work
               </Button>
             </motion.div>
 
@@ -90,7 +91,7 @@ function HeroGeometric({
             >
               <span>50+ Automations</span>
               <span className="text-iron">|</span>
-              <span>7+ Projects</span>
+              <span>7+ Clients</span>
               <span className="text-iron">|</span>
               <span>100% Retention</span>
             </motion.div>
