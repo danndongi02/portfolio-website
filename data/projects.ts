@@ -2,6 +2,78 @@ import { Project } from "@/types/project";
 
 export const projects: Project[] = [
   {
+    title: "Ndururu",
+    description:
+      "A Kenya-rooted personal finance app with a grounded AI financial advisor, Paystack subscription billing, and a full double-entry-style ledger — built end to end as a solo project and live in production.",
+    longDescription:
+      "Ndururu (\"coin\" in Sheng/Swahili — tagline \"Every cent, accounted for.\") is a production multi-user personal finance platform covering accounts, ten transaction types, categories, budgets, savings goals, loans with amortization, recurring payments, balance reconciliation, net-worth snapshots, and reports with CSV/PDF export, with each user able to pick their own currency and KES and other African currencies prioritized. The core differentiator is Rafiki, an AI financial advisor built with Google's Agent Development Kit and deployed on Vertex AI Agent Engine. It reads the user's real financial data through tools, grounds answers with search, sends a proactive weekly insights digest, and proposes budgets and savings goals that only apply after the user confirms. Around it sits a complete commercial layer: Paystack subscription billing (Free / Plus / Pro tiers, 30-day reverse trial, automated renewals with grace periods and dunning, M-Pesa renewals, plan upgrades and downgrades), server-side quota enforcement, transactional email, and a live-key cutover that was smoke-tested with a real KES 5 charge. Because it handles real money, most of the engineering effort went into integrity and safety: every write goes through validated Cloud Functions, per-user rate limiting and Firebase App Check protect every callable, Firestore security rules are covered by an emulator test suite, every domain action is written to an audit log exported to BigQuery, and deletion and reversal logic compensates linked goals, loans and balances rather than silently corrupting them. It is one of three connected repos: this consumer app, an internal admin dashboard, and a marketing landing site.",
+    technologies: [
+      "Next.js",
+      "TypeScript",
+      "Firebase (Auth, Firestore, Functions)",
+      "Google ADK",
+      "Vertex AI Agent Engine",
+      "Gemini",
+      "Paystack",
+      "BigQuery",
+      "Sentry",
+    ],
+    demoUrl: "https://ndururuapp.co.ke",
+    image: "/projects/ndururu-dashboard.webp",
+    screenshots: [
+      "/projects/ndururu-dashboard.webp",
+      "/projects/ndururu-advisor-chat.webp",
+      "/projects/ndururu-budgets.webp",
+      "/projects/ndururu-reports.webp",
+      "/projects/ndururu-loans.webp",
+    ],
+    color: "#D97706",
+    status: "completed",
+    category: "Full-Stack",
+    tasks: [
+      {
+        title: "Full-Stack Personal Finance Platform",
+        description:
+          "Designed and built the whole app solo (about 48,000 lines of TypeScript and Python across 330+ files): accounts, ten transaction types, budgets, savings goals, loans with amortization, recurring payments, reconciliation, net-worth snapshots, reports and CSV/PDF export — a complete multi-user personal finance product built from the ground up.",
+      },
+      {
+        title: "Rafiki, the Grounded AI Financial Advisor",
+        description:
+          "Built the advisor as a Python ADK agent on Vertex AI Agent Engine with read tools over the user's own data, search grounding, and a confirm-before-apply flow for budget and savings-goal proposals. Added a weekly insights digest by email, per-tier usage quotas, and a rubric-based LLM-judge evalset.",
+      },
+      {
+        title: "Subscription Billing with Paystack",
+        description:
+          "Delivered a nine-phase billing system: signature-verified webhooks, idempotent entitlement grants, a Cloud Tasks renewal engine with grace periods and dunning, M-Pesa STK renewals limited to business hours, plan changes, and a dual live/test mode. Validated end to end with a real live-money smoke test.",
+      },
+      {
+        title: "Server-Side Entitlements and Quota Enforcement",
+        description:
+          "Made the subscription document the single source of truth for feature tiers, with a 30-day reverse trial, admin comp grants, and server-enforced caps on accounts, budgets, goals, history window and advisor messages. Advisor chat is deliberately capped on every tier so it can never become an uncapped cost.",
+      },
+      {
+        title: "Security, Data Integrity and Audit Trail",
+        description:
+          "Moved every write behind roughly 60 validated Cloud Functions, added per-user rate limiting and App Check, locked sensitive collections to server-only writes with rules covered by emulator tests, and audit-logged every domain event to BigQuery. Fixed deletion and reversal bugs so linked goals, loans and balances stay correct.",
+      },
+      {
+        title: "Account Lifecycle, Onboarding and Transactional Email",
+        description:
+          "Built a 9-step onboarding wizard with an escape hatch, a guided product tour, forgot/change-password and change-email flows, and account deletion with an audit trail. Added Resend-powered billing, digest and welcome emails with user preferences and unsubscribe.",
+      },
+      {
+        title: "Brand Design, Rebrand and Ecosystem",
+        description:
+          "Rebranded Expense Tracker to Ndururu with a coin-mark logo, light/dark themes and the Fraunces + DM Sans identity. Also split out a separate admin dashboard (MRR, dunning queue, webhook log) and built a companion marketing landing site using real app screenshots.",
+      },
+      {
+        title: "Production Deployment, Monitoring and Testing",
+        description:
+          "Deployed on Firebase App Hosting with separate dev and live backends, GitHub Actions CI for lint, typecheck and tests, and Sentry on client and functions. Backed the critical money paths with about 47 test files covering billing, renewals, quotas, entitlements, recurrence and Firestore rules.",
+      },
+    ],
+  },
+  {
     title: "Intric Solves Website",
     description:
       "A modern, high-converting landing page for Intric Solves — an AI automation agency — built to communicate their \"Max Compute\" brand, showcase their 4 core service engines, and drive consultation bookings.",
