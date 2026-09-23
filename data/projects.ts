@@ -4,9 +4,9 @@ export const projects: Project[] = [
   {
     title: "Ndururu",
     description:
-      "A Kenya-rooted personal finance app with a grounded AI financial advisor, Paystack subscription billing, and a full double-entry-style ledger — built end to end as a solo project and live in production.",
+      "A Kenya-rooted personal finance app with a grounded AI financial advisor, Paystack subscription billing, and a full double-entry-style ledger — built end to end and live in production.",
     longDescription:
-      "Ndururu (\"coin\" in Sheng/Swahili — tagline \"Every cent, accounted for.\") is a production multi-user personal finance platform covering accounts, ten transaction types, categories, budgets, savings goals, loans with amortization, recurring payments, balance reconciliation, net-worth snapshots, and reports with CSV/PDF export, with each user able to pick their own currency and KES and other African currencies prioritized. The core differentiator is Rafiki, an AI financial advisor built with Google's Agent Development Kit and deployed on Vertex AI Agent Engine. It reads the user's real financial data through tools, grounds answers with search, sends a proactive weekly insights digest, and proposes budgets and savings goals that only apply after the user confirms. Around it sits a complete commercial layer: Paystack subscription billing (Free / Plus / Pro tiers, 30-day reverse trial, automated renewals with grace periods and dunning, M-Pesa renewals, plan upgrades and downgrades), server-side quota enforcement, transactional email, and a live-key cutover that was smoke-tested with a real KES 5 charge. Because it handles real money, most of the engineering effort went into integrity and safety: every write goes through validated Cloud Functions, per-user rate limiting and Firebase App Check protect every callable, Firestore security rules are covered by an emulator test suite, every domain action is written to an audit log exported to BigQuery, and deletion and reversal logic compensates linked goals, loans and balances rather than silently corrupting them. It is one of three connected repos: this consumer app, an internal admin dashboard, and a marketing landing site.",
+      "Ndururu (\"coin\" in Sheng/Swahili — tagline \"Every cent, accounted for.\") is a production multi-user personal finance platform covering accounts, ten transaction types, categories, budgets, savings goals, loans with amortization, recurring payments, balance reconciliation, net-worth snapshots, and reports with CSV/PDF export, with each user able to pick their own currency and KES and other African currencies prioritized. The core differentiator is Rafiki, an AI financial advisor built with Google's Agent Development Kit and deployed on Vertex AI Agent Engine. It reads the user's real financial data through tools, grounds answers with search, sends a proactive weekly insights digest, and proposes budgets and savings goals that only apply after the user confirms. Around it sits a complete commercial layer: Paystack subscription billing (Free / Plus / Pro tiers, 30-day reverse trial, automated renewals with grace periods and dunning, M-Pesa renewals, plan upgrades and downgrades), server-side quota enforcement, transactional email, and a live-key cutover that was smoke-tested with a real KES 5 charge. Because it handles real money, most of the engineering effort went into integrity and safety: every write goes through validated Cloud Functions, per-user rate limiting and Firebase App Check protect every callable, Firestore security rules are covered by an emulator test suite, every domain action is written to an audit log exported to BigQuery, and deletion and reversal logic compensates linked goals, loans and balances rather than silently corrupting them.",
     technologies: [
       "Next.js",
       "TypeScript",
@@ -34,7 +34,7 @@ export const projects: Project[] = [
       {
         title: "Full-Stack Personal Finance Platform",
         description:
-          "Designed and built the whole app solo (about 48,000 lines of TypeScript and Python across 330+ files): accounts, ten transaction types, budgets, savings goals, loans with amortization, recurring payments, reconciliation, net-worth snapshots, reports and CSV/PDF export — a complete multi-user personal finance product built from the ground up.",
+          "Designed and built a complete multi-user personal finance platform from the ground up, covering accounts, ten transaction types, budgets, savings goals, loans with amortization, recurring payments, reconciliation, net-worth snapshots, reports, and CSV/PDF export.",
       },
       {
         title: "Rafiki, the Grounded AI Financial Advisor",
@@ -60,16 +60,6 @@ export const projects: Project[] = [
         title: "Account Lifecycle, Onboarding and Transactional Email",
         description:
           "Built a 9-step onboarding wizard with an escape hatch, a guided product tour, forgot/change-password and change-email flows, and account deletion with an audit trail. Added Resend-powered billing, digest and welcome emails with user preferences and unsubscribe.",
-      },
-      {
-        title: "Brand Design, Rebrand and Ecosystem",
-        description:
-          "Rebranded Expense Tracker to Ndururu with a coin-mark logo, light/dark themes and the Fraunces + DM Sans identity. Also split out a separate admin dashboard (MRR, dunning queue, webhook log) and built a companion marketing landing site using real app screenshots.",
-      },
-      {
-        title: "Production Deployment, Monitoring and Testing",
-        description:
-          "Deployed on Firebase App Hosting with separate dev and live backends, GitHub Actions CI for lint, typecheck and tests, and Sentry on client and functions. Backed the critical money paths with about 47 test files covering billing, renewals, quotas, entitlements, recurrence and Firestore rules.",
       },
     ],
   },
