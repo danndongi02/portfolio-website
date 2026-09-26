@@ -105,31 +105,37 @@ export function ProcessSection() {
   const glowLineRef = useRef<HTMLDivElement>(null);
   const cancelRef = useRef<(() => void) | null>(null);
 
-  // Pin the panel and map scroll progress → discrete phase (120 vh per phase)
+  // Pin the panel and map scroll progress → discrete phase (120 vh per phase).
+  // Desktop with motion allowed only; otherwise the static layout is shown.
   useGSAP(() => {
     if (!pinnedRef.current) return;
 
-    const st = ScrollTrigger.create({
-      trigger: pinnedRef.current,
-      start: "top top",
-      end: `+=${phases.length * 120}vh`,
-      pin: true,
-      pinSpacing: true,
-      onEnter: () => setActivePhase((p) => (p < 0 ? 0 : p)),
-      onLeaveBack: () => setActivePhase(-1),
-      onUpdate: (self) => {
-        const next = Math.min(
-          Math.floor(self.progress * phases.length),
-          phases.length - 1
-        );
-        setActivePhase((p) => (p !== next ? next : p));
-      },
+    const mm = gsap.matchMedia();
+    mm.add("(min-width: 1024px) and (prefers-reduced-motion: no-preference)", () => {
+      const st = ScrollTrigger.create({
+        trigger: pinnedRef.current,
+        start: "top top",
+        end: `+=${phases.length * 120}vh`,
+        pin: true,
+        pinSpacing: true,
+        onEnter: () => setActivePhase((p) => (p < 0 ? 0 : p)),
+        onLeaveBack: () => setActivePhase(-1),
+        onUpdate: (self) => {
+          const next = Math.min(
+            Math.floor(self.progress * phases.length),
+            phases.length - 1
+          );
+          setActivePhase((p) => (p !== next ? next : p));
+        },
+      });
+
+      return () => st.kill();
     });
 
-    return () => st.kill();
+    return () => mm.revert();
   }, []);
 
-  // Grow the green glow spine as phases complete
+  // Grow the coral progress spine as phases complete
   useGSAP(() => {
     if (!glowLineRef.current) return;
 
@@ -206,11 +212,11 @@ export function ProcessSection() {
 
   return (
     <section id="process" className="bg-void">
-      {/* Mobile layout — static, no scroll pinning */}
-      <div className="lg:hidden bg-void py-16">
+      {/* Static layout — mobile, and desktop under reduced motion (no scroll pinning) */}
+      <div className="motion-safe:lg:hidden bg-void py-16">
         <div className="container mx-auto px-6">
           <div className="flex items-center gap-4 mb-4">
-            <span className="text-xs uppercase tracking-[0.2em] text-[#666]">
+            <span className="text-xs uppercase tracking-[0.2em] text-graphite">
               005 &mdash; PROCESS
             </span>
             <div className="h-px flex-1 bg-iron" />
@@ -223,13 +229,13 @@ export function ProcessSection() {
             {phases.map((phase) => (
               <div key={phase.number} className="pl-8 relative">
                 <div className="absolute left-0 top-1.5 w-2.5 h-2.5 rounded-full border border-[rgba(240,236,230,0.2)]" />
-                <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-[#666]">
+                <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-graphite">
                   Phase {phase.number}
                 </span>
                 <h3 className="font-serif text-lg text-cream serif-italic mt-0.5 mb-1">
                   {phase.title}
                 </h3>
-                <p className="text-sm font-mono text-[#aaa] leading-[1.65]">
+                <p className="text-sm font-mono text-ash leading-[1.65] max-w-[65ch]">
                   {phase.description}
                 </p>
               </div>
@@ -240,20 +246,20 @@ export function ProcessSection() {
             <div className="flex items-center gap-3 px-4 py-3 bg-surface border-b border-iron">
               <div className="flex gap-1.5">
                 <div className="w-2.5 h-2.5 rounded-full bg-coral" />
-                <div className="w-2.5 h-2.5 rounded-full bg-[#f59e0b]" />
-                <div className="w-2.5 h-2.5 rounded-full bg-[#22c55e]" />
+                <div className="w-2.5 h-2.5 rounded-full bg-signal-amber" />
+                <div className="w-2.5 h-2.5 rounded-full bg-signal-green" />
               </div>
-              <span className="text-xs text-[#888] font-mono">pipeline.sh</span>
+              <span className="text-xs text-steel font-mono">pipeline.sh</span>
             </div>
-            <div className="bg-[#0a0c10] p-6 font-mono text-xs leading-[2]">
+            <div className="bg-terminal p-6 font-mono text-xs leading-[2]">
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-coral">▸</span>
                 <span className="text-cream/80">vercel deploy --prod</span>
               </div>
-              <div className="text-[#22c55e]">✓ build                success</div>
-              <div className="text-[#22c55e]">✓ cdn                  propagated</div>
-              <div className="text-[#22c55e]">✓ uptime               99.9%</div>
-              <div className="text-[#444] pl-3">  monitoring: active</div>
+              <div className="text-signal-green">✓ build                success</div>
+              <div className="text-signal-green">✓ cdn                  propagated</div>
+              <div className="text-signal-green">✓ uptime               99.9%</div>
+              <div className="text-graphite pl-3">  monitoring: active</div>
             </div>
           </div>
         </div>
@@ -264,12 +270,12 @@ export function ProcessSection() {
        * so content never overflows below the fold. flex-col lets the heading
        * sit at the top while the grid fills the remaining space.
        */}
-      <div ref={pinnedRef} className="bg-void h-screen hidden lg:flex flex-col">
+      <div ref={pinnedRef} className="bg-void h-screen hidden motion-safe:lg:flex flex-col">
 
         {/* Compact heading — smaller than SectionHeading to give the grid more room */}
         <div className="container mx-auto px-6 md:px-8 pt-16 md:pt-20 pb-6 flex-none">
           <div className="flex items-center gap-4 mb-4">
-            <span className="text-xs uppercase tracking-[0.2em] text-[#666]">
+            <span className="text-xs uppercase tracking-[0.2em] text-graphite">
               005 &mdash; PROCESS
             </span>
             <div className="h-px flex-1 bg-iron" />
@@ -290,13 +296,12 @@ export function ProcessSection() {
                   {/* Dim spine */}
                   <div className="absolute left-3 top-2 bottom-2 w-px bg-cream/10" />
 
-                  {/* Animated green glow spine */}
+                  {/* Animated coral progress spine */}
                   <div
                     ref={glowLineRef}
                     className="absolute left-3 top-2 bottom-2 w-px"
                     style={{
-                      backgroundColor: "#22c55e",
-                      boxShadow: "0 0 6px 2px rgba(34,197,94,0.45)",
+                      backgroundColor: "#ff4f33",
                       transform: "scaleY(0)",
                       opacity: 0,
                     }}
@@ -319,7 +324,7 @@ export function ProcessSection() {
                                 ? 1
                                 : isCompleted
                                 ? 0.45
-                                : 0.2,
+                                : 0.35,
                           }}
                           transition={{ duration: 0.55, ease: EASE }}
                         >
@@ -329,7 +334,7 @@ export function ProcessSection() {
                               className="w-2.5 h-2.5 rounded-full flex items-center justify-center border"
                               animate={{
                                 backgroundColor: isCompleted
-                                  ? "#22c55e"
+                                  ? "#f0ece6"
                                   : isActive
                                   ? "#ff4f33"
                                   : "transparent",
@@ -337,11 +342,6 @@ export function ProcessSection() {
                                   isCompleted || isActive
                                     ? "transparent"
                                     : "rgba(240,236,230,0.2)",
-                                boxShadow: isCompleted
-                                  ? "0 0 8px rgba(34,197,94,0.4)"
-                                  : isActive
-                                  ? "0 0 8px rgba(255,79,51,0.4)"
-                                  : "none",
                               }}
                               transition={{ duration: 0.4, ease: "easeInOut" }}
                             >
@@ -363,7 +363,7 @@ export function ProcessSection() {
 
                           {/* Phase label + title (always visible) */}
                           <div>
-                            <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-[#666]">
+                            <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-graphite">
                               Phase {phase.number}
                             </span>
                             <h3 className="font-serif text-lg md:text-xl text-cream serif-italic mt-0.5">
@@ -380,7 +380,7 @@ export function ProcessSection() {
                               transition={{ duration: 0.45, ease: EASE }}
                               className="overflow-hidden"
                             >
-                              <p className="text-sm font-mono text-[#aaa] leading-[1.65] max-w-[480px]">
+                              <p className="text-sm font-mono text-ash leading-[1.65] max-w-[480px]">
                                 {phase.description}
                               </p>
                             </motion.div>
@@ -399,8 +399,8 @@ export function ProcessSection() {
                               }}
                               className="overflow-hidden"
                             >
-                              <span className="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-[0.2em] text-[#22c55e]">
-                                <span className="w-1.5 h-1.5 rounded-full bg-[#22c55e]" />
+                              <span className="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-[0.2em] text-coral">
+                                <span className="w-1.5 h-1.5 rounded-full bg-coral" />
                                 Running
                               </span>
                             </motion.div>
@@ -419,10 +419,10 @@ export function ProcessSection() {
                   <div className="flex items-center gap-3 px-4 py-3 bg-surface border-b border-iron">
                     <div className="flex gap-1.5">
                       <div className="w-2.5 h-2.5 rounded-full bg-coral" />
-                      <div className="w-2.5 h-2.5 rounded-full bg-[#f59e0b]" />
-                      <div className="w-2.5 h-2.5 rounded-full bg-[#22c55e]" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-signal-amber" />
+                      <div className="w-2.5 h-2.5 rounded-full bg-signal-green" />
                     </div>
-                    <span className="text-xs text-[#888] font-mono">pipeline.sh</span>
+                    <span className="text-xs text-steel font-mono">pipeline.sh</span>
                   </div>
 
                   {/* Body fades on each phase transition via key */}
@@ -431,7 +431,7 @@ export function ProcessSection() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.4, ease: "easeInOut" }}
-                    className="bg-[#0a0c10] p-6 min-h-[220px] font-mono text-xs leading-[2]"
+                    className="bg-terminal p-6 min-h-[220px] font-mono text-xs leading-[2]"
                   >
                     <div className="flex items-center gap-2">
                       <span className="text-coral flex-shrink-0">▸</span>
@@ -446,10 +446,10 @@ export function ProcessSection() {
                         key={`${activePhase}-${i}`}
                         className={
                           line.type === "ok"
-                            ? "text-[#22c55e]"
+                            ? "text-signal-green"
                             : line.type === "running"
-                            ? "text-[#facc15]"
-                            : "text-[#444] pl-3"
+                            ? "text-signal-amber"
+                            : "text-graphite pl-3"
                         }
                       >
                         {line.text}
@@ -479,9 +479,9 @@ export function ProcessSection() {
           </p>
           <button
             onClick={() => scrollToSection("contact")}
-            className="text-xs font-mono uppercase tracking-[0.15em] text-coral hover:text-coral/80 transition-colors cursor-pointer"
+            className="py-3 -my-3 text-xs font-mono uppercase tracking-[0.15em] text-coral hover:text-coral/80 transition-colors cursor-pointer"
           >
-            LET&apos;S TALK &rarr;
+            LET&apos;S TALK <span aria-hidden="true">&rarr;</span>
           </button>
         </div>
       </div>

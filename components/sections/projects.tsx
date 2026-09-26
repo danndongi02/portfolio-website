@@ -12,8 +12,8 @@ import { staggerContainer, staggerItem, fadeUp } from "@/lib/motion-variants";
 function StatusBadge({ status }: { status?: string }) {
   if (status !== "in-progress") return null;
   return (
-    <span className="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-[0.2em] text-[#f0a030]">
-      <span className="w-1.5 h-1.5 rounded-full bg-[#f0a030] animate-pulse" />
+    <span className="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-[0.2em] text-cream">
+      <span className="w-1.5 h-1.5 rounded-full bg-coral animate-pulse motion-reduce:animate-none" />
       In Progress
     </span>
   );
@@ -60,7 +60,7 @@ export function ProjectsSection() {
               <h3 className="font-serif text-3xl md:text-4xl text-cream serif-italic mb-4">
                 {featured.title}
               </h3>
-              <p className="text-sm font-mono text-[#aaa] leading-[1.7] mb-6">
+              <p className="text-sm font-mono text-ash leading-[1.7] mb-6">
                 {featured.description}
               </p>
 
@@ -69,7 +69,7 @@ export function ProjectsSection() {
                 {featured.technologies.map((tech) => (
                   <span
                     key={tech}
-                    className="text-[11px] font-mono uppercase tracking-[0.1em] text-[#888]"
+                    className="text-[11px] font-mono uppercase tracking-[0.1em] text-steel"
                   >
                     {tech}
                   </span>
@@ -83,22 +83,22 @@ export function ProjectsSection() {
                     href={featured.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs font-mono uppercase tracking-[0.15em] text-cream hover:text-coral transition-colors"
+                    className="py-3 -my-3 text-xs font-mono uppercase tracking-[0.15em] text-cream hover:text-coral transition-colors"
                   >
-                    GITHUB ↗
+                    GITHUB <span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span>
                   </a>
                 )}
                 <button
                   onClick={() => setSelectedProject(featured)}
-                  className="text-xs font-mono uppercase tracking-[0.15em] text-coral hover:text-coral/80 transition-colors cursor-pointer"
+                  className="py-3 -my-3 text-xs font-mono uppercase tracking-[0.15em] text-coral hover:text-coral/80 transition-colors cursor-pointer"
                 >
-                  LEARN MORE &rarr;
+                  LEARN MORE <span aria-hidden="true">&rarr;</span>
                 </button>
               </div>
             </div>
 
             {/* Right — Project screenshot */}
-            <div className="bg-[#0a0c10] border-l border-iron relative overflow-hidden min-h-[300px]">
+            <div className="bg-terminal border-l border-iron relative overflow-hidden min-h-[300px]">
               <Image
                 src={featured.image}
                 alt={featured.title}
@@ -132,7 +132,7 @@ export function ProjectsSection() {
 
                 <div className="p-6 md:p-8">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-mono text-[#666]">
+                    <span className="text-xs font-mono text-graphite">
                       {String(i + 2).padStart(2, "0")}
                     </span>
                     <StatusBadge status={project.status} />
@@ -140,7 +140,7 @@ export function ProjectsSection() {
                   <h3 className="font-serif text-xl md:text-2xl text-cream serif-italic mt-2 mb-2">
                     {project.title}
                   </h3>
-                  <p className="text-xs font-mono text-[#aaa] leading-[1.7] mb-4">
+                  <p className="text-xs font-mono text-ash leading-[1.7] mb-4">
                     {project.description}
                   </p>
 
@@ -149,7 +149,7 @@ export function ProjectsSection() {
                     {project.technologies.map((tech) => (
                       <span
                         key={tech}
-                        className="text-[10px] font-mono uppercase tracking-[0.1em] text-[#888]"
+                        className="text-[10px] font-mono uppercase tracking-[0.1em] text-steel"
                       >
                         {tech}
                       </span>
@@ -162,16 +162,16 @@ export function ProjectsSection() {
                         href={project.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-xs font-mono uppercase tracking-[0.15em] text-cream hover:text-coral transition-colors"
+                        className="py-3 -my-3 text-xs font-mono uppercase tracking-[0.15em] text-cream hover:text-coral transition-colors"
                       >
-                        GITHUB ↗
+                        GITHUB <span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span>
                       </a>
                     )}
                     <button
                       onClick={() => setSelectedProject(project)}
-                      className="text-xs font-mono uppercase tracking-[0.15em] text-coral hover:text-coral/80 transition-colors cursor-pointer"
+                      className="py-3 -my-3 text-xs font-mono uppercase tracking-[0.15em] text-coral hover:text-coral/80 transition-colors cursor-pointer"
                     >
-                      LEARN MORE &rarr;
+                      LEARN MORE <span aria-hidden="true">&rarr;</span>
                     </button>
                   </div>
                 </div>
@@ -182,16 +182,16 @@ export function ProjectsSection() {
 
         {/* Bottom */}
         <div className="border-t border-iron mt-16 pt-8 flex items-center justify-between">
-          <span className="text-xs font-mono text-[#888]">
+          <span className="text-xs font-mono text-steel">
             More work available on request.
           </span>
           <a
             href="https://github.com/danndongi02"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs font-mono uppercase tracking-[0.15em] text-coral hover:text-coral/80 transition-colors"
+            className="py-3 -my-3 text-xs font-mono uppercase tracking-[0.15em] text-coral hover:text-coral/80 transition-colors"
           >
-            GITHUB ↗
+            GITHUB <span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span>
           </a>
         </div>
       </div>

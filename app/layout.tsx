@@ -23,6 +23,7 @@ const metaDescription =
   "Freelance full-stack developer and automation architect based in Nairobi, available worldwide. I build web applications, workflow automation systems, and agentic AI pipelines that eliminate manual overhead.";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "Ian Muigai — Full-Stack Developer & Automation Architect",
   description: metaDescription,
   alternates: {
@@ -33,21 +34,13 @@ export const metadata: Metadata = {
     description: metaDescription,
     url: siteUrl,
     siteName: "Ian Muigai",
-    images: [
-      {
-        url: `${siteUrl}/me.png`,
-        width: 1200,
-        height: 630,
-        alt: "Ian Muigai — Full-Stack Developer & Automation Architect",
-      },
-    ],
+    // og:image comes from app/opengraph-image.tsx (1200×630, generated at build)
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "Ian Muigai — Full-Stack Developer & Automation Architect",
     description: metaDescription,
-    images: [`${siteUrl}/me.png`],
   },
 };
 
@@ -96,6 +89,10 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        {/* Without JS, Framer's hidden entrance states would never resolve */}
+        <noscript>
+          <style>{`[style*="opacity:0"]{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
         <div className="grain-overlay" aria-hidden="true" />
         {children}
         <Analytics />

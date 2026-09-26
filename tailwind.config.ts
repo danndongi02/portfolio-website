@@ -48,6 +48,19 @@ export default {
   			surface: '#0f0f12',
   			iron: '#1a1a1e',
   			void: '#08080a',
+  			abyss: '#050507',
+  			terminal: '#0a0c10',
+  			// Text tiers — all ≥4.5:1 on void, surface, terminal and abyss
+  			ash: '#aaaaaa',
+  			steel: '#888888',
+  			graphite: '#7e7e7e',
+  			// Decorative-only type (aria-hidden, never carries meaning)
+  			whisper: '#151518',
+  			// Terminal-only status colours: title-bar dots and command output
+  			signal: {
+  				green: '#22c55e',
+  				amber: '#f59e0b',
+  			},
   		},
   		fontFamily: {
   			serif: ['var(--font-serif)', 'Instrument Serif', 'Playfair Display', 'serif'],

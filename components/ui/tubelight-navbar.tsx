@@ -22,12 +22,27 @@ export function NavBar({ items, className }: NavBarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const navBarRef = useRef<HTMLDivElement>(null);
 
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  // Escape closes the mobile menu and returns focus to its toggle
+  useEffect(() => {
+    if (!menuOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMenuOpen(false);
+        menuButtonRef.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [menuOpen]);
 
   useGSAP(() => {
     const sections = items
@@ -37,13 +52,15 @@ export function NavBar({ items, className }: NavBarProps) {
         name: item.name,
       }));
 
-    sections.forEach(({ id, name }) => {
+    sections.forEach(({ id, name }, i) => {
       ScrollTrigger.create({
         trigger: `#${id}`,
         start: "top center",
         end: "bottom center",
         onEnter: () => setActiveTab(name),
         onEnterBack: () => setActiveTab(name),
+        // Scrolling back above a section hands the highlight to the one before it
+        onLeaveBack: () => setActiveTab(i === 0 ? "Home" : sections[i - 1].name),
       });
     });
 
@@ -54,7 +71,9 @@ export function NavBar({ items, className }: NavBarProps) {
       onEnterBack: () => setActiveTab("Home"),
     });
 
-    if (navBarRef.current) {
+    // Hide-on-scroll-down is spatial motion; under reduced motion the bar stays put
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (navBarRef.current && !reduceMotion) {
       const showAnim = gsap
         .from(navBarRef.current, {
           yPercent: -100,
@@ -77,8 +96,9 @@ export function NavBar({ items, className }: NavBarProps) {
   return (
     <nav
       ref={navBarRef}
+      aria-label="Primary"
       className={cn(
-        "fixed top-0 left-0 right-0 z-50",
+        "fixed top-0 left-0 right-0 z-50 bg-void/85 backdrop-blur-sm",
         className
       )}
     >
@@ -87,7 +107,7 @@ export function NavBar({ items, className }: NavBarProps) {
           {/* Logo */}
           <Link
             href="#"
-            className="text-sm uppercase tracking-[0.3em] text-cream font-mono font-medium"
+            className="py-3 -my-3 text-sm uppercase tracking-[0.3em] text-cream font-mono font-medium"
           >
             IAN
           </Link>
@@ -99,11 +119,12 @@ export function NavBar({ items, className }: NavBarProps) {
                 key={item.name}
                 href={item.url}
                 onClick={() => setActiveTab(item.name)}
+                aria-current={activeTab === item.name ? "location" : undefined}
                 className={cn(
-                  "text-xs uppercase tracking-[0.2em] font-mono transition-colors duration-200",
+                  "py-3 text-xs uppercase tracking-[0.2em] font-mono transition-colors duration-200",
                   activeTab === item.name
                     ? "text-cream"
-                    : "text-[#666] hover:text-cream"
+                    : "text-graphite hover:text-cream"
                 )}
               >
                 {item.name}
@@ -116,7 +137,11 @@ export function NavBar({ items, className }: NavBarProps) {
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden text-cream text-xs uppercase tracking-[0.2em] font-mono"
+            ref={menuButtonRef}
+            type="button"
+            aria-expanded={menuOpen && isMobile}
+            aria-controls="mobile-menu"
+            className="md:hidden -mr-3 px-3 min-h-11 text-cream text-xs uppercase tracking-[0.2em] font-mono"
             onClick={() => setMenuOpen(!menuOpen)}
           >
             {menuOpen ? "CLOSE" : "MENU"}
@@ -125,7 +150,7 @@ export function NavBar({ items, className }: NavBarProps) {
 
         {/* Mobile menu */}
         {menuOpen && isMobile && (
-          <div className="md:hidden py-6 space-y-4 border-b border-iron/50 bg-void">
+          <div id="mobile-menu" className="md:hidden py-3 border-b border-iron/50 bg-void">
             {items.filter(i => i.name !== "Home").map((item) => (
               <Link
                 key={item.name}
@@ -134,11 +159,12 @@ export function NavBar({ items, className }: NavBarProps) {
                   setActiveTab(item.name);
                   setMenuOpen(false);
                 }}
+                aria-current={activeTab === item.name ? "location" : undefined}
                 className={cn(
-                  "block text-xs uppercase tracking-[0.2em] font-mono transition-colors",
+                  "block py-3 text-xs uppercase tracking-[0.2em] font-mono transition-colors",
                   activeTab === item.name
                     ? "text-cream"
-                    : "text-[#666] hover:text-cream"
+                    : "text-graphite hover:text-cream"
                 )}
               >
                 {item.name}

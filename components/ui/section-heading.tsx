@@ -26,7 +26,7 @@ export function SectionHeading({
         viewport={{ once: true }}
         className="flex items-center gap-4"
       >
-        <span className="text-xs uppercase tracking-[0.2em] text-[#666]">
+        <span className="text-xs uppercase tracking-[0.2em] text-graphite">
           {number} &mdash; {label}
         </span>
         <div className="h-px flex-1 bg-iron" />

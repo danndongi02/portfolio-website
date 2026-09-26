@@ -4,16 +4,17 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { ContactForm } from "@/components/ui/contact-form";
 import { SlideIn } from "@/components/ui/motion-wrapper";
 
-const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "";
-const linkedinUrl = process.env.NEXT_PUBLIC_LINKEDIN_URL ?? "https://linkedin.com";
-const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "";
+const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL;
+const linkedinUrl = process.env.NEXT_PUBLIC_LINKEDIN_URL;
+const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(/\D/g, "");
 
+// Channels whose env var is missing are dropped rather than rendered as dead links
 const contactLinks = [
-  { label: "EMAIL", href: `mailto:${contactEmail}`, display: contactEmail },
-  { label: "GITHUB", href: "https://github.com/danndongi02", display: "danndongi02" },
-  { label: "LINKEDIN", href: linkedinUrl, display: "Profile" },
-  { label: "WHATSAPP", href: `https://wa.me/${whatsappNumber}`, display: "Message" },
-];
+  contactEmail && { label: "EMAIL", href: `mailto:${contactEmail}`, display: contactEmail, external: false },
+  { label: "GITHUB", href: "https://github.com/danndongi02", display: "danndongi02", external: true },
+  linkedinUrl && { label: "LINKEDIN", href: linkedinUrl, display: "Profile", external: true },
+  whatsappNumber && { label: "WHATSAPP", href: `https://wa.me/${whatsappNumber}`, display: "Message", external: true },
+].filter((link): link is { label: string; href: string; display: string; external: boolean } => Boolean(link));
 
 export function ContactSection() {
   return (
@@ -45,7 +46,7 @@ export function ContactSection() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
           {/* Left — Info */}
           <SlideIn direction="left" className="lg:col-span-5 space-y-8">
-            <p className="text-sm font-mono text-[#aaa] leading-[1.8] max-w-[420px]">
+            <p className="text-sm font-mono text-ash leading-[1.8] max-w-[420px]">
               I&apos;m currently available for contract work &mdash; software
               development, automation systems, and agentic AI workflows.
               Let&apos;s talk about what you need.
@@ -60,26 +61,25 @@ export function ContactSection() {
             </div>
 
             {/* Contact links */}
-            <div className="space-y-3 pt-4 border-t border-iron">
+            <div className="pt-2 border-t border-iron">
               {contactLinks.map((link) => (
                 <a
                   key={link.label}
                   href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 group"
+                  {...(link.external && { target: "_blank", rel: "noopener noreferrer" })}
+                  className="flex items-center gap-3 py-2.5 group"
                 >
                   <span className="text-xs font-mono uppercase tracking-[0.15em] text-cream group-hover:text-coral transition-colors">
-                    {link.label} ↗
+                    {link.label} {link.external ? (<><span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span></>) : <span aria-hidden="true">→</span>}
                   </span>
-                  <span className="text-xs font-mono text-[#888]">
+                  <span className="text-xs font-mono text-steel">
                     {link.display}
                   </span>
                 </a>
               ))}
             </div>
 
-            <p className="text-[11px] font-mono text-[#666]">
+            <p className="text-[11px] font-mono text-graphite">
               Based in Nairobi, KE &mdash; Available worldwide
             </p>
           </SlideIn>

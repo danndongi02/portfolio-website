@@ -108,7 +108,7 @@ export function ContactForm() {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-[11px] font-mono uppercase tracking-[0.2em] text-[#888]">
+                <FormLabel className="text-[11px] font-mono uppercase tracking-[0.2em] text-steel">
                   NAME
                 </FormLabel>
                 <FormControl>
@@ -124,7 +124,7 @@ export function ContactForm() {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-[11px] font-mono uppercase tracking-[0.2em] text-[#888]">
+                <FormLabel className="text-[11px] font-mono uppercase tracking-[0.2em] text-steel">
                   EMAIL
                 </FormLabel>
                 <FormControl>
@@ -140,9 +140,9 @@ export function ContactForm() {
             name="phone"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-[11px] font-mono uppercase tracking-[0.2em] text-[#888]">
+                <FormLabel className="text-[11px] font-mono uppercase tracking-[0.2em] text-steel">
                   PHONE{" "}
-                  <span className="text-[#555] normal-case tracking-normal">
+                  <span className="text-graphite normal-case tracking-normal">
                     (optional)
                   </span>
                 </FormLabel>
@@ -159,7 +159,7 @@ export function ContactForm() {
             name="message"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-[11px] font-mono uppercase tracking-[0.2em] text-[#888]">
+                <FormLabel className="text-[11px] font-mono uppercase tracking-[0.2em] text-steel">
                   MESSAGE
                 </FormLabel>
                 <FormControl>
@@ -174,13 +174,23 @@ export function ContactForm() {
             )}
           />
 
+          {/* Screen-reader announcement; the panels below are visual only */}
+          <p aria-live="polite" className="sr-only">
+            {submitStatus === "success"
+              ? "Message sent. Check your inbox for a confirmation."
+              : submitStatus === "error"
+              ? "Something went wrong. Please try again or reach out directly."
+              : ""}
+          </p>
+
           {/* Success message */}
           <div
             ref={successRef}
+            aria-hidden="true"
             className="overflow-hidden"
             style={{ opacity: 0, height: 0 }}
           >
-            <div className="text-xs font-mono text-[#22c55e] border border-[#22c55e]/20 px-4 py-3">
+            <div className="text-xs font-mono text-signal-green border border-signal-green/20 px-4 py-3">
               // message sent — check your inbox for a confirmation
             </div>
           </div>
@@ -188,10 +198,11 @@ export function ContactForm() {
           {/* Error message */}
           <div
             ref={errorRef}
+            aria-hidden="true"
             className="overflow-hidden"
             style={{ opacity: 0, height: 0 }}
           >
-            <div className="text-xs font-mono text-[#ff4f33] border border-[#ff4f33]/20 px-4 py-3">
+            <div className="text-xs font-mono text-coral border border-coral/20 px-4 py-3">
               // something went wrong — please try again or reach out directly
             </div>
           </div>
@@ -203,11 +214,11 @@ export function ContactForm() {
                 Processing...
               </>
             ) : (
-              "Initialize Project →"
+              <>Initialize Project <span aria-hidden="true">→</span></>
             )}
           </Button>
 
-          <p className="text-[11px] font-mono text-[#666]">
+          <p className="text-[11px] font-mono text-graphite">
             // typically responds within 24 hours
           </p>
         </form>

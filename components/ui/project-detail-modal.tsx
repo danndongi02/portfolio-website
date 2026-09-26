@@ -12,8 +12,8 @@ import {
 function StatusBadge({ status }: { status?: string }) {
   if (status !== "in-progress") return null;
   return (
-    <span className="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-[0.2em] text-[#f0a030]">
-      <span className="w-1.5 h-1.5 rounded-full bg-[#f0a030] animate-pulse" />
+    <span className="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-[0.2em] text-cream">
+      <span className="w-1.5 h-1.5 rounded-full bg-coral animate-pulse motion-reduce:animate-none" />
       In Progress
     </span>
   );
@@ -40,7 +40,7 @@ function ScatteredScreenshot({
   const style = scatterStyles[index % scatterStyles.length];
   return (
     <div
-      className={`relative w-[85%] md:w-[70%] border border-[#1a1a1e] overflow-hidden my-6 ${style.className}`}
+      className={`relative w-[85%] md:w-[70%] border border-iron overflow-hidden my-6 ${style.className}`}
       style={{ transform: `rotate(${style.rotate})` }}
     >
       <div className="relative w-full" style={{ aspectRatio: "16 / 9" }}>
@@ -117,14 +117,14 @@ function buildInterleavedContent(
 
 function TaskItem({ task, index }: { task: ProjectTask; index: number }) {
   return (
-    <div className="border-l border-[#1a1a1e] pl-4">
+    <div className="border-l border-iron pl-4">
       <div className="flex items-baseline gap-3">
         <span className="text-xs font-mono text-coral">
           {String(index + 1).padStart(2, "0")}
         </span>
         <h4 className="text-sm font-mono text-cream">{task.title}</h4>
       </div>
-      <p className="text-xs font-mono text-[#888] leading-[1.7] mt-1 ml-8">
+      <p className="text-xs font-mono text-steel leading-[1.7] mt-1 ml-8">
         {task.description}
       </p>
     </div>
@@ -155,12 +155,12 @@ export function ProjectDetailModal({
           <div className="mb-6">
             <div className="flex items-center gap-3 mb-3">
               {project.category && (
-                <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#666]">
+                <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-graphite">
                   {project.category}
                 </span>
               )}
               {project.category && project.status === "in-progress" && (
-                <span className="text-[#333]">&middot;</span>
+                <span className="text-graphite">&middot;</span>
               )}
               <StatusBadge status={project.status} />
             </div>
@@ -173,16 +173,16 @@ export function ProjectDetailModal({
           </div>
 
           {/* Divider */}
-          <div className="h-px bg-[#1a1a1e] mb-6" />
+          <div className="h-px bg-iron mb-6" />
 
           {/* Description */}
-          <p className="text-sm font-mono text-[#aaa] leading-[1.8] mb-6">
+          <p className="text-sm font-mono text-ash leading-[1.8] mb-6">
             {project.longDescription || project.description}
           </p>
 
           {/* First scattered screenshot — hero-like, full width */}
           {screenshots.length > 0 && (
-            <div className="relative w-full border border-[#1a1a1e] overflow-hidden mb-6">
+            <div className="relative w-full border border-iron overflow-hidden mb-6">
               <div
                 className="relative w-full"
                 style={{ aspectRatio: "16 / 9" }}
@@ -201,9 +201,9 @@ export function ProjectDetailModal({
           {/* Tasks interleaved with scattered screenshots */}
           {tasks.length > 0 && (
             <>
-              <div className="h-px bg-[#1a1a1e] mb-6" />
+              <div className="h-px bg-iron mb-6" />
               <div className="mb-6">
-                <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#666] mb-4 block">
+                <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-graphite mb-4 block">
                   What I Did
                 </span>
                 <div className="space-y-4">
@@ -218,16 +218,16 @@ export function ProjectDetailModal({
           )}
 
           {/* Technologies */}
-          <div className="h-px bg-[#1a1a1e] mb-6" />
+          <div className="h-px bg-iron mb-6" />
           <div className="mb-6">
-            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#666] mb-4 block">
+            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-graphite mb-4 block">
               Technologies
             </span>
             <div className="flex flex-wrap gap-2">
               {project.technologies.map((tech) => (
                 <span
                   key={tech}
-                  className="text-[10px] font-mono uppercase tracking-[0.1em] text-[#aaa] border border-[#1a1a1e] px-3 py-1.5"
+                  className="text-[10px] font-mono uppercase tracking-[0.1em] text-ash border border-iron px-3 py-1.5"
                 >
                   {tech}
                 </span>
@@ -238,7 +238,7 @@ export function ProjectDetailModal({
           {/* Links */}
           {(project.demoUrl || project.githubUrl) && (
             <>
-              <div className="h-px bg-[#1a1a1e] mb-6" />
+              <div className="h-px bg-iron mb-6" />
               <div className="flex gap-6">
                 {project.demoUrl && project.demoUrl !== "#" && (
                   <a
@@ -247,7 +247,7 @@ export function ProjectDetailModal({
                     rel="noopener noreferrer"
                     className="text-xs font-mono uppercase tracking-[0.15em] text-coral hover:text-coral/80 transition-colors"
                   >
-                    VISIT PROJECT &rarr;
+                    VISIT PROJECT <span aria-hidden="true">&rarr;</span><span className="sr-only"> (opens in a new tab)</span>
                   </a>
                 )}
                 {project.githubUrl && (
@@ -257,7 +257,7 @@ export function ProjectDetailModal({
                     rel="noopener noreferrer"
                     className="text-xs font-mono uppercase tracking-[0.15em] text-cream hover:text-coral transition-colors"
                   >
-                    GITHUB ↗
+                    GITHUB <span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span>
                   </a>
                 )}
               </div>

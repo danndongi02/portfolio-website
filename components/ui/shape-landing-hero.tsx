@@ -33,25 +33,24 @@ function HeroGeometric({
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.3, ease: mechanical }}
+              transition={{ duration: 0.6, delay: 0.1, ease: mechanical }}
               className="flex items-center gap-4 mb-8"
             >
-              <span className="text-xs uppercase tracking-[0.2em] text-[#666] font-mono">
+              <span className="text-xs uppercase tracking-[0.2em] text-graphite font-mono">
                 001 &mdash; Introduction
               </span>
               <div className="h-px flex-1 bg-iron max-w-[200px]" />
             </motion.div>
 
-            {/* Headline */}
+            {/* Headline — visible from first paint (it is the LCP element);
+                only a short settle, never an opacity fade */}
             <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.5, ease: mechanical }}
-              className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] text-cream leading-[1.05] mb-6"
+              initial={{ y: 12 }}
+              animate={{ y: 0 }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] text-cream leading-[1.05] mb-6 text-balance"
             >
-              I build software that runs
-              <br />
-              your business on{" "}
+              I build software that runs your business on{" "}
               <span className="serif-italic">autopilot</span>.
             </motion.h1>
 
@@ -59,8 +58,8 @@ function HeroGeometric({
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 1, ease: mechanical }}
-              className="text-sm md:text-[15px] text-[#aaa] font-mono leading-[1.8] max-w-[520px] mb-8"
+              transition={{ duration: 0.6, delay: 0.35, ease: mechanical }}
+              className="text-sm md:text-[15px] text-ash font-mono leading-[1.8] max-w-[520px] mb-8"
             >
               Full-stack developer &amp; automation architect. Intelligent
               systems, agentic workflows, and software that eliminates human
@@ -71,11 +70,11 @@ function HeroGeometric({
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 1.3, ease: mechanical }}
+              transition={{ duration: 0.6, delay: 0.5, ease: mechanical }}
               className="flex flex-wrap gap-4 mb-10"
             >
               <Button onClick={onContactClick}>
-                Start a Project &rarr;
+                Start a Project <span aria-hidden="true">&rarr;</span>
               </Button>
               <Button variant="outline" onClick={onViewWorkClick}>
                 View Work
@@ -86,13 +85,13 @@ function HeroGeometric({
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 1.6, ease: mechanical }}
-              className="flex items-center gap-6 text-xs font-mono text-[#888] uppercase tracking-[0.15em]"
+              transition={{ duration: 0.6, delay: 0.65, ease: mechanical }}
+              className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs font-mono text-steel uppercase tracking-[0.15em]"
             >
               <span>50+ Automations</span>
-              <span className="text-iron">|</span>
-              <span>7+ Clients</span>
-              <span className="text-iron">|</span>
+              <span aria-hidden="true" className="hidden sm:inline text-iron">|</span>
+              <span>7+ Projects</span>
+              <span aria-hidden="true" className="hidden sm:inline text-iron">|</span>
               <span>100% Retention</span>
             </motion.div>
           </div>
@@ -101,7 +100,7 @@ function HeroGeometric({
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.8 }}
+            transition={{ duration: 1, delay: 0.2 }}
             className="hidden lg:flex lg:col-span-5 justify-end"
           >
             <div className="relative group w-full max-w-[480px]">
@@ -109,15 +108,15 @@ function HeroGeometric({
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.8, delay: 1.4, ease: mechanical }}
-                className="absolute -top-3 -right-3 w-full h-full border border-[#1a1a1e]"
+                transition={{ duration: 0.8, delay: 0.5, ease: mechanical }}
+                className="absolute -top-3 -right-3 w-full h-full border border-iron"
               />
 
               {/* Coral accent corner */}
               <motion.div
                 initial={{ scaleY: 0 }}
                 animate={{ scaleY: 1 }}
-                transition={{ duration: 0.6, delay: 1.8, ease: mechanical }}
+                transition={{ duration: 0.6, delay: 0.7, ease: mechanical }}
                 className="absolute -left-4 top-0 w-[2px] h-20 bg-coral origin-top"
               />
 
@@ -133,20 +132,20 @@ function HeroGeometric({
                 />
 
                 {/* Subtle gradient overlay at bottom */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#08080a] via-transparent to-transparent opacity-60 pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-void via-transparent to-transparent opacity-60 pointer-events-none" />
               </div>
 
               {/* Label beneath the image */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 2, ease: mechanical }}
+                transition={{ duration: 0.6, delay: 0.8, ease: mechanical }}
                 className="mt-3 flex items-center justify-between"
               >
-                <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#555]">
+                <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-graphite">
                   Ian Muigai
                 </span>
-                <span className="text-[10px] font-mono text-[#333]">
+                <span className="text-[10px] font-mono text-graphite">
                   // developer &amp; automation architect
                 </span>
               </motion.div>
@@ -157,7 +156,7 @@ function HeroGeometric({
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.2, ease: mechanical }}
+            transition={{ duration: 0.8, delay: 0.3, ease: mechanical }}
             className="lg:hidden flex justify-center mt-4"
           >
             <div className="relative group w-full max-w-[320px] sm:max-w-[380px]">
@@ -173,14 +172,14 @@ function HeroGeometric({
                   priority
                   sizes="(max-width: 640px) 320px, 380px"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#08080a] via-transparent to-transparent opacity-60 pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-void via-transparent to-transparent opacity-60 pointer-events-none" />
               </div>
 
               <div className="mt-2 flex items-center justify-between">
-                <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#555]">
+                <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-graphite">
                   Ian Muigai
                 </span>
-                <span className="text-[10px] font-mono text-[#333]">
+                <span className="text-[10px] font-mono text-graphite">
                   // developer &amp; automation architect
                 </span>
               </div>
@@ -193,16 +192,16 @@ function HeroGeometric({
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 2.5, duration: 0.6 }}
+        transition={{ delay: 1.2, duration: 0.6 }}
         className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
       >
-        <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-[#555]">
+        <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-graphite">
           Scroll
         </span>
         <motion.div
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 2, ease: "easeInOut", repeat: Infinity }}
-          className="w-px h-8 bg-gradient-to-b from-[#555] to-transparent"
+          className="w-px h-8 bg-gradient-to-b from-graphite to-transparent"
         />
       </motion.div>
     </div>

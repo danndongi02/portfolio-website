@@ -23,9 +23,10 @@ export const scrollToSection = (sectionId: string) => {
   if (!element) return;
 
   import("@/lib/gsap-config").then(({ gsap }) => {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     gsap.to(window, {
       scrollTo: { y: element, offsetY: 80 },
-      duration: 1,
+      duration: reduceMotion ? 0 : 1,
       ease: "power2.inOut",
     });
   });

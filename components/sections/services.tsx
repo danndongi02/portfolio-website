@@ -53,19 +53,23 @@ export function ServicesSection() {
           viewport={{ once: true, margin: "-80px" }}
         >
           {services.map((service) => (
-            <motion.div
+            <motion.a
               key={service.number}
               variants={staggerItem}
-              onClick={() => scrollToSection("contact")}
-            title="Get in touch about this"
-            className={`group border-t border-iron py-10 md:py-14 transition-colors duration-200 cursor-pointer ${
-                service.active ? "border-l-2 border-l-coral pl-6" : "pl-0 hover:border-l-2 hover:border-l-coral hover:pl-6"
+              href="#contact"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection("contact");
+              }}
+              aria-label={`${service.title} — get in touch about this`}
+              className={`group block border-t border-iron py-10 md:py-14 transition-colors duration-200 ${
+                service.active ? "border-l-2 border-l-coral pl-6" : "pl-0 hover:border-l-2 hover:border-l-coral hover:pl-6 focus-visible:border-l-2 focus-visible:border-l-coral focus-visible:pl-6"
               }`}
             >
               <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
                 {/* Number */}
                 <div className="md:col-span-1">
-                  <span className="font-serif text-6xl md:text-7xl text-[#1a1a1e] select-none">
+                  <span aria-hidden="true" className="font-serif text-6xl md:text-7xl text-iron select-none">
                     {service.number}
                   </span>
                 </div>
@@ -79,7 +83,7 @@ export function ServicesSection() {
 
                 {/* Description */}
                 <div className="md:col-span-4">
-                  <p className="text-sm font-mono text-[#aaa] leading-[1.7]">
+                  <p className="text-sm font-mono text-ash leading-[1.7]">
                     {service.description}
                   </p>
                 </div>
@@ -90,23 +94,26 @@ export function ServicesSection() {
                     {service.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="text-[11px] font-mono uppercase tracking-[0.1em] text-[#888]"
+                        className="text-[11px] font-mono uppercase tracking-[0.1em] text-steel"
                       >
                         {tag}
                       </span>
                     ))}
                   </div>
-                  <span className="text-coral font-mono text-sm shrink-0 group-hover:translate-x-1 transition-transform duration-200">
+                  <span
+                    aria-hidden="true"
+                    className="text-coral font-mono text-sm shrink-0 group-hover:translate-x-1 group-focus-visible:translate-x-1 transition-transform duration-200"
+                  >
                     &rarr;
                   </span>
                 </div>
               </div>
-            </motion.div>
+            </motion.a>
           ))}
 
           {/* Bottom rule + note */}
           <div className="border-t border-iron pt-8">
-            <p className="text-center text-sm font-mono text-[#888] italic">
+            <p className="text-center text-sm font-mono text-steel italic">
               Each discipline reinforces the others. That&apos;s the advantage.
             </p>
           </div>

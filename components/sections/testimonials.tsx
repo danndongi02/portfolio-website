@@ -36,19 +36,19 @@ export function TestimonialsSection() {
                   &ldquo;
                 </span>
 
-                <p className="font-mono text-sm text-[#ccc] leading-[1.8] mt-2 mb-6">
+                <p className="font-mono text-sm text-cream/80 leading-[1.8] mt-2 mb-6">
                   {t.quote}
                 </p>
 
                 <div className="border-t border-iron pt-6 flex items-center gap-4">
-                  <div className="w-8 h-8 rounded-full bg-[#1a1a1e] border border-iron flex items-center justify-center flex-shrink-0">
-                    <span className="text-[10px] font-mono uppercase text-[#888]">
+                  <div className="w-8 h-8 rounded-full bg-iron border border-iron flex items-center justify-center flex-shrink-0">
+                    <span className="text-[10px] font-mono uppercase text-steel">
                       {t.initials}
                     </span>
                   </div>
                   <div>
                     <p className="text-sm font-mono text-cream">{t.name}</p>
-                    <p className="text-xs font-mono text-[#888]">
+                    <p className="text-xs font-mono text-steel">
                       {t.title} &middot; {t.company}
                     </p>
                   </div>

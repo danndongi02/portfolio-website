@@ -32,10 +32,10 @@
 | Token | Name | Hex | Role |
 |-------|------|-----|------|
 | `text-primary` | Warm Cream | `#f0ece6` | Headlines, primary text, navigation, important labels |
-| `text-body` | Soft Ash | `#aaaaaa` / `#b0b0b0` | Body copy, descriptions, bio text — readable without competing |
-| `text-label` | Weathered Steel | `#888888` / `#999999` | Form labels, tech tags, stat labels, secondary info |
-| `text-muted` | Faded Graphite | `#555555` / `#666666` | Section numbers (001–006), monospace labels, placeholder text |
-| `text-ghost` | Phantom Gray | `#333333` | Decorative code snippets, barely-visible atmospheric text |
+| `text-body` (`ash`) | Soft Ash | `#aaaaaa` | Body copy, descriptions, bio text — readable without competing |
+| `text-label` (`steel`) | Weathered Steel | `#888888` | Form labels, tech tags, stat labels, secondary info |
+| `text-muted` (`graphite`) | Faded Graphite | `#7e7e7e` | Section numbers (001–006), monospace labels, placeholder text, inactive nav. The floor for any readable text: ≥4.5:1 on every surface |
+| `text-ghost` | Phantom Gray | `#333333` | Rules and dotted separators only — never text |
 | `text-decorative` | Whisper Dark | `#151518` / `#1a1a1e` | Massive background numbers ("02", "03"), nearly invisible decorative type |
 
 ### Accent Colors
@@ -43,10 +43,10 @@
 | Token | Name | Hex | Role |
 |-------|------|-----|------|
 | `accent-primary` | Hot Coral | `#ff4f33` | THE accent. Used for: CTA buttons, interactive arrows, active borders, hover states, coral dots, "FEATURED" labels, focus rings. Appears sparingly — maximum 2–3 elements per section |
-| `accent-amber` | Signal Amber | `#f59e0b` | Terminal window title bar dot (middle dot only) — extremely rare |
-| `accent-green` | System Green | `#22c55e` | Terminal window title bar dot (right dot only) — extremely rare, reserved for status |
+| `signal-amber` | Signal Amber | `#f59e0b` | Terminal only: title bar middle dot, "running" lines in command output |
+| `signal-green` | System Green | `#22c55e` | Terminal only: title bar right dot, `✓` success lines, the `"available"` value in config code, form success message |
 
-> **Critical Rule:** Hot Coral (`#ff4f33`) is the ONLY accent used in the design system proper. Amber and green appear exclusively in the terminal window title bar's three-dot motif. Do not introduce additional accent colors.
+> **Critical Rule:** Hot Coral (`#ff4f33`) is the ONLY accent used in the design system proper. Amber and green are terminal semantics: they appear only inside terminal windows (title-bar dots and command/code output). Status outside a terminal — timelines, project badges — uses coral for active and cream for complete. Do not introduce additional accent colors.
 
 ---
 
@@ -78,7 +78,7 @@
 - **Serif italic** is reserved for emphasis words within headlines (e.g., "*thinks*" in "Software that *thinks* for itself") and for service/project titles. Never use bold serif — italic carries all the emphasis.
 - **Monospace uppercase with letter-spacing** is the standard for all labels, navigation, tags, and small informational text. This creates a systematic, data-driven feel.
 - **Line-height** is generous (1.7–1.8) on monospace body text to ensure readability and editorial breathing room.
-- **Section numbering** uses the format "001 — SECTION NAME" in muted monospace (#555/#666) with a thin horizontal line extending from the text. This creates a systematic indexing feel throughout the site.
+- **Section numbering** uses the format "001 — SECTION NAME" in muted monospace (`graphite`, #7e7e7e) with a thin horizontal line extending from the text. This creates a systematic indexing feel throughout the site.
 
 ---
 
@@ -105,14 +105,14 @@
 
 - **Input Style:** Bottom-border-only — a single horizontal line (`#f0ece6` at 40–50% opacity) beneath the input area. No box, no background fill, no rounded corners.
 - **Labels:** Monospace uppercase in Weathered Steel (`#888`), positioned above the input.
-- **Placeholder Text:** Faded Graphite (`#666`), monospace, lowercase or with format hints ("software | automation | agentic_ai | other").
+- **Placeholder Text:** Faded Graphite (`#7e7e7e`), monospace, lowercase or with format hints ("software | automation | agentic_ai | other").
 - **Focus State:** Bottom border color transitions to Hot Coral (`#ff4f33`), with `outline: none`.
 - **Textarea:** Same bottom-border-only style, taller. No visible border on sides or top.
 
 ### Separators & Rules
 
 - **Horizontal Rules:** 1px solid Iron Line (`#1a1a1e`). Used generously between sections, service bands, and content blocks.
-- **Vertical Accent Lines:** 1px wide, gradient from `#555` to transparent, 100px tall. Sometimes topped with a small 5px coral dot (`#ff4f33`).
+- **Vertical Accent Lines:** 1px wide, gradient from `graphite` to transparent, 100px tall. Sometimes topped with a small 5px coral dot (`#ff4f33`).
 - **Dotted Lines:** Created via CSS gradient: `to right, #333 10%, transparent 0%` at 8px × 1px intervals. Used in the tech stack data table between rows.
 - **Section Label Lines:** Thin horizontal lines extending right from the "001 — SECTION" label text, fading out.
 

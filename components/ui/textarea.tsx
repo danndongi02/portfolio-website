@@ -9,7 +9,7 @@ const Textarea = React.forwardRef<
   return (
     <textarea
       className={cn(
-        "flex min-h-[100px] w-full border-0 border-b border-cream/40 bg-transparent px-0 py-2 font-mono text-sm text-cream placeholder:text-[#666] transition-colors focus-visible:outline-none focus-visible:border-b-coral disabled:cursor-not-allowed disabled:opacity-50 resize-none",
+        "flex min-h-[100px] w-full border-0 border-b border-cream/40 bg-transparent px-0 py-2 font-mono text-sm text-cream placeholder:text-graphite transition-colors focus-visible:outline-none focus-visible:border-b-coral focus-visible:shadow-[0_1px_0_0_#ff4f33] caret-coral disabled:cursor-not-allowed disabled:opacity-50 resize-none",
         className
       )}
       ref={ref}
