@@ -338,4 +338,80 @@ export const projects: Project[] = [
       },
     ],
   },
+  {
+    title: "Bloom & Bond",
+    description:
+      "A complete e-commerce platform for a Nairobi floral, gifting and event-styling brand: a 3D-animated storefront with Paystack checkout and M-Pesa support, backed by a real-time admin dashboard that runs orders, catalog, delivery, promotions, sales analytics and website traffic.",
+    longDescription:
+      "Bloom & Bond is a Nairobi floral, gifting and event-styling business that needed to stop taking orders by hand and sell online, with a proper back office to run the operation. The platform is two Next.js applications sharing one Firebase backend. The customer storefront offers a catalog filtered by occasion, category and price, product pages with size variants and personalised add-ons, a two-step guest checkout through Paystack (M-Pesa, cards and bank transfer), a live-updating order confirmation page, sitewide sales and promo codes, and an events inquiry form for weddings, showers and corporate styling, all behind a landing page with a 3D rotating bouquet hero and scroll-driven motion. The separate admin dashboard is the business's day-to-day operating system: a real-time order queue with guided status transitions and a status-journey stepper, manual order entry for phone and walk-in sales, full management of products, categories, add-ons, delivery areas, blackout dates, recurring closures, offer periods and promo codes, Chart.js sales analytics for revenue, order status and sales channel, a Website Traffic page that pulls visitors, traffic sources, the shopping funnel and Google search performance from the GA4 Data API and Search Console, and an append-only activity log of every staff change. Because the store takes money from anonymous visitors, the backend never trusts the browser: Cloud Functions re-price every cart from Firestore, enforce delivery zones, blackout dates and same-day cutoffs, verify Paystack webhook signatures and cross-check amounts, apply per-IP rate limiting, and sit behind Firebase App Check. Promo codes are reserved atomically only once payment is confirmed, every staff write is gated by Firestore rules covered by an emulator test suite, and staff sessions use server-verified cookies with idle timeout and cross-tab sign-out. Every paid order instantly alerts the owner on Telegram and email, and customers receive branded status emails from the store's own domain. Both apps run on Firebase App Hosting, with the storefront live on its custom domain and the end-to-end payment path verified in Paystack's test environment ahead of the live-payments switch.",
+    technologies: [
+      "Next.js",
+      "JavaScript",
+      "Firebase (Auth, Firestore, Functions, App Hosting)",
+      "Paystack",
+      "Three.js / React Three Fiber",
+      "GSAP",
+      "Chart.js",
+      "Resend",
+      "GA4 & Search Console APIs",
+      "Telegram Bot API",
+    ],
+    demoUrl: "https://bloomandbond.co.ke",
+    image: "/projects/bloom-and-bond-home.png",
+    screenshots: [
+      "/projects/bloom-and-bond-home.png",
+      "/projects/bloom-and-bond-admin-overview.png",
+      "/projects/bloom-and-bond-admin-orders.png",
+      "/projects/bloom-and-bond-admin-order-detail.png",
+      "/projects/bloom-and-bond-admin-analytics.png",
+      "/projects/bloom-and-bond-admin-traffic.png",
+      "/projects/bloom-and-bond-catalog.png",
+      "/projects/bloom-and-bond-product.png",
+    ],
+    color: "#C4876A",
+    status: "in-progress",
+    category: "Full-Stack",
+    tasks: [
+      {
+        title: "Customer Storefront and Catalog",
+        description:
+          "Designed and built the public storefront: a catalog filtered by occasion, category and price, product pages with a swipeable image gallery, size variants and per-product add-ons, and an events inquiry form for the Bloom Events service line. Added per-page metadata, a sitemap, structured data and a consent-gated GA4 ecommerce funnel.",
+      },
+      {
+        title: "Brand Experience and Motion Design",
+        description:
+          "Applied the brand's pink, cream and sage identity across a landing page with a 3D rotating rose-bouquet hero in React Three Fiber, GSAP scroll reveals and Framer Motion transitions. Low-power, touch and reduced-motion visitors get a lightweight fallback.",
+      },
+      {
+        title: "Paystack Checkout and Order Notifications",
+        description:
+          "Built a two-step guest checkout that hands off to Paystack's inline popup for M-Pesa, card and bank payments. A signature-verified webhook confirms payment, the confirmation page updates live, the owner is alerted instantly on Telegram and email, and customers receive branded status emails through Resend.",
+      },
+      {
+        title: "Admin Dashboard: Real-Time Order Operations",
+        description:
+          "Delivered a separate, mobile-responsive back-office app on the same Firebase project, with a live order queue and search, guided status transitions with a status-journey stepper, and manual entry for phone and walk-in orders. Added an append-only activity log that records every staff change against the writer's identity and server time.",
+      },
+      {
+        title: "Admin Dashboard: Catalog, Delivery and Promotions",
+        description:
+          "Built real-time management for products (with image upload and size variants), categories, add-ons, delivery areas, blackout dates and recurring closures, with guarded deletes that block removing anything still in use. Added sitewide offer periods and usage-limited promo codes that never stack, with the better discount applied automatically at checkout.",
+      },
+      {
+        title: "Admin Dashboard: Sales Analytics and Website Traffic",
+        description:
+          "Built an overview and analytics section on Chart.js with revenue trends, order status and sales-channel breakdowns, and week-over-week summaries. Added a Website Traffic page that reads the GA4 Data API and Search Console server-side to show visitors, traffic sources, the shopping funnel, top pages, devices and Google search queries, cached in Firestore with per-source fallbacks.",
+      },
+      {
+        title: "Server-Side Pricing, Security and Access Control",
+        description:
+          "Moved all order creation into Cloud Functions that re-price every cart from Firestore and enforce delivery zones, blackout dates and same-day cutoffs, with per-IP rate limiting, payment-time promo reservation and Firebase App Check on checkout. Secured staff access with server-verified session cookies, an admin custom claim enforced by emulator-tested Firestore and Storage rules, idle timeout and cross-tab sign-out.",
+      },
+      {
+        title: "Cloud Deployment on Firebase App Hosting",
+        description:
+          "Deployed the storefront and admin dashboard as two App Hosting backends with secrets in Secret Manager, autoscaling sized for launch traffic, and the storefront on its own custom domain with a verified email-sending domain. Separated Paystack test and live keys by environment and verified the full payment path end to end in Paystack's test environment.",
+      },
+    ],
+  },
 ];
