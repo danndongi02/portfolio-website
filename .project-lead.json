@@ -14,5 +14,5 @@
     "e2e": "npm run e2e"
   },
   "gates": { "stage": "bootstrap", "minCoverage": 60 },
-  "deploy": { "mode": "auto", "healthUrl": "https://ianmuigai.dev", "command": null, "timeoutMin": 15 }
+  "deploy": { "mode": "auto", "healthUrl": "https://codesynergi.co.ke", "command": null, "timeoutMin": 15 }
 }
