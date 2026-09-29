@@ -53,3 +53,11 @@ next-env.d.ts
 
 # claude
 .claude/
+# project-lead / symphony
+.symphony/
+REFERENCE.md
+
+# playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/

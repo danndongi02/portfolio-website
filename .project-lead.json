@@ -1,0 +1,18 @@
+{
+  "team": "COD",
+  "projectSlug": "34e421d851f9",
+  "baseBranch": "dev",
+  "stack": "next",
+  "ui": true,
+  "features": { "firestore": false, "multiTenant": false },
+  "commands": {
+    "lint": "npm run lint",
+    "typecheck": "npx tsc --noEmit",
+    "build": "npm run build",
+    "test": "npm test",
+    "coverage": "npm run test:coverage",
+    "e2e": "npm run e2e"
+  },
+  "gates": { "stage": "bootstrap", "minCoverage": 60 },
+  "deploy": { "mode": "auto", "healthUrl": "https://ianmuigai.dev", "command": null, "timeoutMin": 15 }
+}

@@ -9,9 +9,10 @@ npm run dev       # Start dev server (localhost:3000)
 npm run build     # Production build
 npm run start     # Start production server
 npm run lint      # ESLint
+npm test          # Vitest unit tests (lib/__tests__/)
+npm run test:coverage  # Vitest with v8 coverage
+npm run e2e       # Playwright E2E (e2e/), starts the dev server
 ```
-
-No test framework is configured.
 
 ## Architecture
 
@@ -65,3 +66,12 @@ External image hostnames must be whitelisted in `next.config.ts` under `images.r
 ### MCP Integration
 
 shadcn/ui MCP server is configured (`.mcp.json`) for component management. Add components via `npx shadcn@latest add [component]`.
+
+## Project workflow
+
+This project uses the project-lead workflow (Linear + Symphony).
+- Issues live in Linear project `34e421d851f9`; releases are milestones (`vX.Y.Z — Theme`).
+- `dev` is the integration branch; `main` only changes through `/project-lead:release` or `/project-lead:hotfix`.
+- Every change ships with tests. Run `npm test` before committing.
+- Reference docs: `.tmp/reference/` (regenerated automatically after merges).
+- Roadmap: `ROADMAP.md`. Changelog: `CHANGELOG.md`.
