@@ -322,6 +322,7 @@ If there are conflicts:
 ## Instructions
 
 - You are on branch `{{ branch }}` cut from `{{ base_branch }}`.
+- Monitor is a deferred tool: call ToolSearch with `select:Monitor` first, then call Monitor with a `description` and the command. Calling it directly fails with "required parameter `description` is missing". To wait for a server, port or log line, use Monitor or a short until-loop (`for i in $(seq 1 30); do <check> && break; sleep 5; done`); a bare `sleep N` or `Start-Sleep` is blocked.
 - Write or update automated tests that cover this issue's acceptance criteria, and run `npm test`
   before finishing — it must pass. Untested changes will be sent back.
 - Follow existing patterns (see `CLAUDE.md` and `DESIGN.md`): Next.js 16 App Router, React 19, TypeScript, Tailwind CSS with the brand tokens in `tailwind.config.ts` (no arbitrary hex classes), shadcn/ui + CVA components in `components/ui/`, Framer Motion and GSAP (gate GSAP with `gsap.matchMedia()` for reduced motion). Project data lives in `data/projects.ts`; the contact form uses React Hook Form + Zod and posts to `app/api/contact/route.ts` (Resend). Unit tests use Vitest + Testing Library; E2E uses Playwright (`npm run e2e`).
